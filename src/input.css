@@ -1,0 +1,46 @@
+@import url("https://fonts.cdnfonts.com/css/trial-rooftop");
+
+@import "tailwindcss";
+
+@theme {
+  --breakpoint-xs: 36rem;
+  --font-rooftop: "TRIAL Rooftop";
+  --color-primary: #303030;
+  --color-main-gray: #898989;
+  --color-main-gray-400: #555555;
+  --color-main-yellow: #ffe68d;
+
+  /* Custom text sizes - additional to Tailwind defaults */
+  --text-main-sm: 0.8125rem; /* 13px */
+  --text-main-base: 0.9375rem; /* 15px */
+  --text-main-lg: 1.1875rem; /* 19px */
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply font-rooftop font-[450] text-primary tracking-[0%] overflow-x-hidden;
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
+}
+
+@utility container-base {
+  @apply w-full max-w-343 mx-auto px-4 lg:px-6;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+}
+.accordion-content.open {
+  max-height: 500px;
+  opacity: 1;
+}
