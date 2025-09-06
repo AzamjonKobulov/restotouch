@@ -13,12 +13,14 @@
     ></script>
   </head>
 
-  <body>
+  <body
+    x-data="{ catalogOpen: false }"
+    :class="{ 'overflow-hidden': catalogOpen }"
+  >
     <!-- Header -->
     <header
       class="max-xl:mt-4 mb-6 xl:mb-4"
       x-data="{ 
-      catalogOpen: false, 
       selectedCategory: 'Фарфоровая и керамическая посуда',
       categoryData: {
         'Фарфоровая и керамическая посуда': [
