@@ -3,12 +3,22 @@
 @import "tailwindcss";
 
 @theme {
-  --breakpoint-xs: 36rem;
+  --breakpoint-3xs: 375px;
+  --breakpoint-2xs: 425px;
+  --breakpoint-xs: 576px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1440px;
+
   --font-rooftop: "TRIAL Rooftop";
-  --color-primary: #303030;
+  --color-main-black: #303030;
   --color-main-gray: #898989;
+  --color-main-gray-100: #e5e5e5;
   --color-main-gray-400: #555555;
   --color-main-yellow: #ffe68d;
+  --color-main-silver: #efefef;
 
   /* Custom text sizes - additional to Tailwind defaults */
   --text-main-sm: 0.8125rem; /* 13px */
@@ -22,7 +32,7 @@
   }
 
   body {
-    @apply font-rooftop font-[450] text-primary tracking-[0%] overflow-x-hidden;
+    @apply font-rooftop font-[450] text-main-black tracking-[0%] overflow-x-hidden;
   }
 
   button {
@@ -31,7 +41,15 @@
 }
 
 @utility container-base {
-  @apply w-full max-w-343 mx-auto px-4 lg:px-6;
+  @apply w-full max-w-339 mx-auto px-4;
+}
+
+@utility flex-between {
+  @apply flex items-center justify-between;
+}
+
+@utility flex-center {
+  @apply flex items-center justify-center;
 }
 
 .accordion-content {
@@ -43,4 +61,66 @@
 .accordion-content.open {
   max-height: 500px;
   opacity: 1;
+}
+
+/* Scrollbar: custom-scroll */
+.custom-scroll::-webkit-scrollbar {
+  width: 15px;
+  background-color: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #e4e4e4;
+  border-left: 12px solid transparent;
+  background-clip: content-box;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+.custom-scroll::-webkit-scrollbar-track-piece {
+  border: 0 1px #ffffff;
+}
+
+.custom-scroll::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* Scrollbar: custom-scroll-brands */
+.custom-scroll-brands::-webkit-scrollbar {
+  width: 11px;
+  background-color: transparent;
+}
+
+.custom-scroll-brands::-webkit-scrollbar-thumb {
+  background: #e4e4e4;
+  border-right: 8px solid transparent;
+  background-clip: content-box;
+  transition: all 0.2s ease;
+}
+
+.custom-scroll-brands::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 5px 0;
+  border-radius: 6px;
+}
+
+/* Allow hover effects to show through the scrollbar area */
+.custom-scroll-brands {
+  padding-right: 0;
+  margin-right: 0;
+  position: relative;
+}
+
+/* Create a pseudo-element to position scrollbar 5px from right edge */
+.custom-scroll-brands::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 5px;
+  width: 8px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
 }

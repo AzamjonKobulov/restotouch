@@ -15,8 +15,152 @@
 
   <body>
     <!-- Header -->
-    <header class="max-xl:mt-4 mb-6 xl:mb-4">
-      <nav class="container-base">
+    <header
+      class="max-xl:mt-4 mb-6 xl:mb-4"
+      x-data="{ 
+      catalogOpen: false, 
+      selectedCategory: 'Фарфоровая и керамическая посуда',
+      categoryData: {
+        'Фарфоровая и керамическая посуда': [
+          { name: 'Мелкие столовые тарелки', image: 'catalog-1.png' },
+          { name: 'Тарелки для пиццы', image: 'catalog-2.png' },
+          { name: 'Тарелки с вертикальным бортом', image: 'catalog-3.png' },
+          { name: 'Тарелки для пасты', image: 'catalog-4.png' },
+          { name: 'Блюда', image: 'catalog-5.png' },
+          { name: 'Глубокие тарелки', image: 'catalog-6.png' },
+          { name: 'Салатники', image: 'catalog-7.png' },
+          { name: 'Миски и суповые', image: 'catalog-8.png' },
+          { name: 'Молочники', image: 'catalog-9.png' },
+          { name: 'Сахарницы', image: 'catalog-10.png' },
+          { name: 'Чайники', image: 'catalog-11.png' },
+          { name: 'Чашки и блюдца', image: 'catalog-12.png' },
+          { name: 'Кружки', image: 'catalog-13.png' },
+          { name: 'Солонки и перечницы', image: 'catalog-14.png' },
+          { name: 'Десертные тарелки', image: 'catalog-15.png' }
+        ],
+        'Бокалы и барное стекло': [
+          { name: 'Бокалы для вина', image: 'catalog-1.png' },
+          { name: 'Бокалы для шампанского', image: 'catalog-2.png' },
+          { name: 'Бокалы для коктейлей', image: 'catalog-3.png' },
+          { name: 'Рюмки', image: 'catalog-4.png' },
+          { name: 'Стаканы', image: 'catalog-5.png' },
+          { name: 'Кувшины', image: 'catalog-6.png' },
+          { name: 'Декантеры', image: 'catalog-7.png' },
+          { name: 'Барные аксессуары', image: 'catalog-8.png' },
+          { name: 'Ледяные ведра', image: 'catalog-9.png' },
+          { name: 'Шейкеры', image: 'catalog-10.png' },
+          { name: 'Стрейнеры', image: 'catalog-11.png' },
+          { name: 'Мерные стаканы', image: 'catalog-12.png' },
+          { name: 'Барные ложки', image: 'catalog-13.png' },
+          { name: 'Подставки', image: 'catalog-14.png' },
+          { name: 'Барные наборы', image: 'catalog-15.png' }
+        ],
+        'Столовые приборы': [
+          { name: 'Вилки столовые', image: 'catalog-1.png' },
+          { name: 'Ножи столовые', image: 'catalog-2.png' },
+          { name: 'Ложки столовые', image: 'catalog-3.png' },
+          { name: 'Вилки десертные', image: 'catalog-4.png' },
+          { name: 'Ножи десертные', image: 'catalog-5.png' },
+          { name: 'Ложки десертные', image: 'catalog-6.png' },
+          { name: 'Вилки для рыбы', image: 'catalog-7.png' },
+          { name: 'Ножи для рыбы', image: 'catalog-8.png' },
+          { name: 'Ложки для супа', image: 'catalog-9.png' },
+          { name: 'Вилки для салата', image: 'catalog-10.png' },
+          { name: 'Ножи для масла', image: 'catalog-11.png' },
+          { name: 'Ложки для сахара', image: 'catalog-12.png' },
+          { name: 'Щипцы для сахара', image: 'catalog-13.png' },
+          { name: 'Щипцы для льда', image: 'catalog-14.png' },
+          { name: 'Столовые наборы', image: 'catalog-15.png' }
+        ],
+        'Деревянная посуда': [
+          { name: 'Деревянные тарелки', image: 'catalog-1.png' },
+          { name: 'Деревянные миски', image: 'catalog-2.png' },
+          { name: 'Деревянные ложки', image: 'catalog-3.png' },
+          { name: 'Деревянные доски', image: 'catalog-4.png' },
+          { name: 'Деревянные подносы', image: 'catalog-5.png' },
+          { name: 'Деревянные салатники', image: 'catalog-6.png' },
+          { name: 'Деревянные хлебницы', image: 'catalog-7.png' },
+          { name: 'Деревянные масленки', image: 'catalog-8.png' },
+          { name: 'Деревянные сахарницы', image: 'catalog-9.png' },
+          { name: 'Деревянные солонки', image: 'catalog-10.png' },
+          { name: 'Деревянные перечницы', image: 'catalog-11.png' },
+          { name: 'Деревянные подставки', image: 'catalog-12.png' },
+          { name: 'Деревянные салфетницы', image: 'catalog-13.png' },
+          { name: 'Деревянные корзинки', image: 'catalog-14.png' },
+          { name: 'Деревянные наборы', image: 'catalog-15.png' }
+        ],
+        'Металлическая посуда': [
+          { name: 'Металлические кастрюли', image: 'catalog-1.png' },
+          { name: 'Металлические сковороды', image: 'catalog-2.png' },
+          { name: 'Металлические тарелки', image: 'catalog-3.png' },
+          { name: 'Металлические миски', image: 'catalog-4.png' },
+          { name: 'Металлические ложки', image: 'catalog-5.png' },
+          { name: 'Металлические вилки', image: 'catalog-6.png' },
+          { name: 'Металлические ножи', image: 'catalog-7.png' },
+          { name: 'Металлические подносы', image: 'catalog-8.png' },
+          { name: 'Металлические кувшины', image: 'catalog-9.png' },
+          { name: 'Металлические чайники', image: 'catalog-10.png' },
+          { name: 'Металлические кофейники', image: 'catalog-11.png' },
+          { name: 'Металлические молочники', image: 'catalog-12.png' },
+          { name: 'Металлические сахарницы', image: 'catalog-13.png' },
+          { name: 'Металлические солонки', image: 'catalog-14.png' },
+          { name: 'Металлические наборы', image: 'catalog-15.png' }
+        ],
+        'Барный инвентарь': [
+          { name: 'Барные шейкеры', image: 'catalog-1.png' },
+          { name: 'Барные стрейнеры', image: 'catalog-2.png' },
+          { name: 'Барные ложки', image: 'catalog-3.png' },
+          { name: 'Барные мерные стаканы', image: 'catalog-4.png' },
+          { name: 'Барные щипцы', image: 'catalog-5.png' },
+          { name: 'Барные подносы', image: 'catalog-6.png' },
+          { name: 'Барные ведра для льда', image: 'catalog-7.png' },
+          { name: 'Барные декантеры', image: 'catalog-8.png' },
+          { name: 'Барные кувшины', image: 'catalog-9.png' },
+          { name: 'Барные стаканы', image: 'catalog-10.png' },
+          { name: 'Барные бокалы', image: 'catalog-11.png' },
+          { name: 'Барные рюмки', image: 'catalog-12.png' },
+          { name: 'Барные подставки', image: 'catalog-13.png' },
+          { name: 'Барные салфетки', image: 'catalog-14.png' },
+          { name: 'Барные наборы', image: 'catalog-15.png' }
+        ],
+        'Сервировка стола и прочее': [
+          { name: 'Скатерти', image: 'catalog-1.png' },
+          { name: 'Салфетки', image: 'catalog-2.png' },
+          { name: 'Подставки под тарелки', image: 'catalog-3.png' },
+          { name: 'Подставки под бокалы', image: 'catalog-4.png' },
+          { name: 'Подставки под столовые приборы', image: 'catalog-5.png' },
+          { name: 'Салфетницы', image: 'catalog-6.png' },
+          { name: 'Хлебницы', image: 'catalog-7.png' },
+          { name: 'Масленки', image: 'catalog-8.png' },
+          { name: 'Сахарницы', image: 'catalog-9.png' },
+          { name: 'Солонки', image: 'catalog-10.png' },
+          { name: 'Перечницы', image: 'catalog-11.png' },
+          { name: 'Подносы', image: 'catalog-12.png' },
+          { name: 'Корзинки для хлеба', image: 'catalog-13.png' },
+          { name: 'Держатели для салфеток', image: 'catalog-14.png' },
+          { name: 'Наборы для сервировки', image: 'catalog-15.png' }
+        ],
+        'Мебель и декор': [
+          { name: 'Столы', image: 'catalog-1.png' },
+          { name: 'Стулья', image: 'catalog-2.png' },
+          { name: 'Скамейки', image: 'catalog-3.png' },
+          { name: 'Шкафы', image: 'catalog-4.png' },
+          { name: 'Полки', image: 'catalog-5.png' },
+          { name: 'Стеллажи', image: 'catalog-6.png' },
+          { name: 'Тумбы', image: 'catalog-7.png' },
+          { name: 'Комоды', image: 'catalog-8.png' },
+          { name: 'Зеркала', image: 'catalog-9.png' },
+          { name: 'Картины', image: 'catalog-10.png' },
+          { name: 'Вазы', image: 'catalog-11.png' },
+          { name: 'Подсвечники', image: 'catalog-12.png' },
+          { name: 'Цветочные горшки', image: 'catalog-13.png' },
+          { name: 'Декоративные элементы', image: 'catalog-14.png' },
+          { name: 'Наборы мебели', image: 'catalog-15.png' }
+        ]
+      }
+    }"
+    >
+      <nav class="container-base relative">
         <!-- Top -->
         <div class="max-xl:hidden flex items-center justify-between gap-5 py-1">
           <div class="flex items-center gap-2.25">
@@ -93,45 +237,62 @@
           </a>
           <div class="w-full flex items-center gap-4 lg:gap-8.25">
             <!-- Каталог  -->
-            <form class="w-full flex items-center gap-3.25">
+            <div class="w-full flex items-center gap-3.25">
               <button
                 class="max-lg:hidden bg-white lg:h-10.25 border border-transparent flex items-center gap-2 rounded-lg px-4 py-2 transition duration-200 hover:border-main-gray"
+                @click="catalogOpen = !catalogOpen"
               >
+                <!-- Hamburger Menu Icon (when catalog is closed) -->
                 <svg
-                  width="12"
+                  x-show="!catalogOpen"
+                  width="15"
                   height="10"
                   viewBox="0 0 12 10"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <g clip-path="url(#clip0_14314_292)">
+                  <g clip-path="url(#clip0_12695_94292)">
                     <path
-                      d="M0.27002 8.64502H12"
+                      d="M0.269531 8.64062H11.9995"
                       stroke="#303030"
                       stroke-miterlimit="10"
                     />
                     <path
-                      d="M0.27002 5.005H12"
+                      d="M0.269531 5H11.9995"
                       stroke="#303030"
                       stroke-miterlimit="10"
                     />
                     <path
-                      d="M0.27002 1.35498H12"
+                      d="M0.269531 1.35156H11.9995"
                       stroke="#303030"
                       stroke-miterlimit="10"
                     />
                   </g>
                   <defs>
-                    <clipPath id="clip0_14314_292">
+                    <clipPath id="clip0_12695_94292">
                       <rect
                         width="11.73"
                         height="8.29"
                         fill="white"
-                        transform="translate(0.27002 0.85498)"
+                        transform="translate(0.269531 0.851562)"
                       />
                     </clipPath>
                   </defs>
                 </svg>
+
+                <!-- X Icon (when catalog is open) -->
+                <svg
+                  x-show="catalogOpen"
+                  width="15"
+                  height="16"
+                  viewBox="0 0 15 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M14 14.75L7.25 8L14 1.25" stroke="#303030" />
+                  <path d="M0.5 1.25L7.25 8L0.499999 14.75" stroke="#303030" />
+                </svg>
+
                 <span class="text-main-lg leading-6"> Каталог </span>
               </button>
 
@@ -174,7 +335,7 @@
                   </svg>
                 </div>
               </div>
-            </form>
+            </div>
 
             <!-- Links -->
             <div class="flex items-center gap-5 xl:gap-8 py-2">
@@ -317,6 +478,628 @@
             </div>
           </div>
         </div>
+
+        <!-- Catalog -->
+        <div
+          class="container-base w-full hidden lg:block absolute left-0 top-full z-50"
+          x-show="catalogOpen"
+          x-transition:enter="transition-all ease-out duration-300"
+          x-transition:enter-start="opacity-0 transform -translate-y-4"
+          x-transition:enter-end="opacity-100 transform translate-y-0"
+          x-transition:leave="transition-all ease-in duration-250"
+          x-transition:leave-start="opacity-100 transform translate-y-0"
+          x-transition:leave-end="opacity-0 transform -translate-y-4"
+          @click.outside="catalogOpen = false"
+        >
+          <div
+            class="w-full min-h-full flex items-stretch bg-white rounded-b-3xl px-6 relative"
+          >
+            <!-- Left Categories -->
+            <div
+              class="w-max shrink-0 h-full text-xs xl:text-main-sm/4.5 border-r border-main-gray/20 pt-6 pr-1"
+            >
+              <ul class="space-y-2">
+                <li
+                  class="bg-main-silver cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  @click="selectedCategory = 'Фарфоровая и керамическая посуда'"
+                >
+                  Фарфоровая и керамическая посуда
+                </li>
+                <li
+                  class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  @click="selectedCategory = 'Бокалы и барное стекло'"
+                >
+                  Бокалы и барное стекло
+                </li>
+                <li
+                  class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  @click="selectedCategory = 'Столовые приборы'"
+                >
+                  Столовые приборы
+                </li>
+                <li
+                  class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  @click="selectedCategory = 'Деревянная посуда'"
+                >
+                  Деревянная посуда
+                </li>
+                <li
+                  class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  @click="selectedCategory = 'Металлическая посуда'"
+                >
+                  Металлическая посуда
+                </li>
+                <li
+                  class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  @click="selectedCategory = 'Барный инвентарь'"
+                >
+                  Барный инвентарь
+                </li>
+                <li
+                  class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  @click="selectedCategory = 'Сервировка стола и прочее'"
+                >
+                  Сервировка стола и прочее
+                </li>
+                <li
+                  class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  @click="selectedCategory = 'Мебель и декор'"
+                >
+                  Мебель и декор
+                </li>
+                <div x-data="{ open: false }" @click.outside="open = false">
+                  <li
+                    class="flex-between cursor-pointer rounded-lg py-2 px-2.5"
+                    @click="open = !open"
+                  >
+                    Наплитная посуда, кухонный <br />
+                    инвентарь
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      :class="{ 'rotate-180': open }"
+                      class="transition-transform duration-300 ease-out"
+                    >
+                      <path
+                        d="M18.75 9L12.75 15L6.75 9"
+                        stroke="#303030"
+                        stroke-width="1.02857"
+                      />
+                    </svg>
+                  </li>
+
+                  <ul
+                    class="space-y-2 w-full pt-2 pb-5 overflow-hidden"
+                    x-show="open"
+                    x-transition:enter="transition-all ease-out duration-300"
+                    x-transition:enter-start="opacity-0 max-h-0 transform -translate-y-2"
+                    x-transition:enter-end="opacity-100 max-h-[500px] transform translate-y-0"
+                    x-transition:leave="transition-all ease-in duration-250"
+                    x-transition:leave-start="opacity-100 max-h-[500px] transform translate-y-0"
+                    x-transition:leave-end="opacity-0 max-h-0 transform -translate-y-2"
+                  >
+                    <li
+                      class="bg-main-silver cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                    >
+                      Наплитная посуда
+                    </li>
+                    <li
+                      class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                    >
+                      Кухонный инвентарь
+                    </li>
+                    <li
+                      class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                    >
+                      Кондитерский инвентарь
+                    </li>
+                    <li
+                      class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                    >
+                      Ножи и аксессуары
+                    </li>
+                    <li
+                      class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                    >
+                      Инвентарь для пиццы
+                    </li>
+                    <li
+                      class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                    >
+                      Инвентарь для пиццы
+                    </li>
+                    <li
+                      class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                    >
+                      Инвентарь для пиццы
+                    </li>
+                    <li
+                      class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                    >
+                      Инвентарь для пиццы
+                    </li>
+                    <li
+                      class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                    >
+                      Инвентарь для пиццы
+                    </li>
+                  </ul>
+                </div>
+              </ul>
+            </div>
+            <!-- Center Products -->
+            <div class="space-y-5 !shrink pl-6 pr-3 pt-6 pb-10">
+              <p
+                class="font-medium text-main-dark transition-all duration-300 ease-out"
+                x-text="selectedCategory"
+              ></p>
+
+              <div
+                class="custom-scroll max-h-[calc(100vh-180px)] overflow-y-auto"
+              >
+                <div
+                  class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 transition-all duration-300 ease-out"
+                >
+                  <template
+                    x-for="item in categoryData[selectedCategory]"
+                    :key="item.name"
+                  >
+                    <a
+                      href="#"
+                      class="h-43.5 group flex flex-col justify-between bg-main-silver rounded-lg transition-all duration-300 ease-out hover:bg-main-silver/80 overflow-hidden"
+                      x-transition:enter="transition-all ease-out duration-300"
+                      x-transition:enter-start="opacity-0 transform scale-95"
+                      x-transition:enter-end="opacity-100 transform scale-100"
+                    >
+                      <p
+                        class="text-center text-xs/3.5 group-hover:scale-105 transition-all duration-300 ease-out px-1 py-2"
+                        x-text="item.name"
+                      ></p>
+
+                      <img
+                        :src="`./assets/images/${item.image}`"
+                        :alt="item.name"
+                        class="transition-all duration-300 ease-out group-hover:scale-105"
+                      />
+                    </a>
+                  </template>
+                </div>
+              </div>
+            </div>
+            <!-- Right Filters -->
+            <div class="w-66.5 shrink-0 space-y-6 py-6">
+              <!-- Search By Brands -->
+              <div
+                class="space-y-3"
+                x-data="{ 
+                showMoreBrands: false,
+                additionalBrands: [
+                  'BRAND A', 'BRAND B', 'BRAND C', 'BRAND D', 'BRAND E',
+                  'BRAND F', 'BRAND G', 'BRAND H', 'BRAND I', 'BRAND J',
+                  'BRAND K', 'BRAND L', 'BRAND M', 'BRAND N', 'BRAND O',
+                  'BRAND P', 'BRAND Q', 'BRAND R', 'BRAND S', 'BRAND T',
+                  'BRAND U', 'BRAND V', 'BRAND W', 'BRAND X', 'BRAND Y',
+                  'BRAND Z', 'BRAND AA', 'BRAND BB', 'BRAND CC', 'BRAND DD',
+                  'BRAND EE', 'BRAND FF', 'BRAND GG', 'BRAND HH', 'BRAND II',
+                  'BRAND JJ', 'BRAND KK', 'BRAND LL', 'BRAND MM', 'BRAND NN',
+                  'BRAND OO', 'BRAND PP', 'BRAND QQ', 'BRAND RR', 'BRAND SS'
+                ]
+              }"
+              >
+                <p class="font-medium text-main-dark">Поиск по брендам</p>
+
+                <!-- Brands -->
+                <div
+                  class="flex items-center flex-wrap gap-x-1 gap-y-2 uppercase text-xs xl:text-main-sm/4.5"
+                >
+                  <button
+                    class="bg-main-silver rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-0.75 px-2"
+                  >
+                    TUDOR
+                  </button>
+                  <button
+                    class="bg-main-silver rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-0.75 px-2"
+                  >
+                    PORLAND
+                  </button>
+                  <button
+                    class="bg-main-silver rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-0.75 px-2"
+                  >
+                    KUNSTWERK
+                  </button>
+                  <button
+                    class="bg-main-silver rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-0.75 px-2"
+                  >
+                    P.L. PROFF CUISINE
+                  </button>
+                  <button
+                    class="bg-main-silver rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-0.75 px-2"
+                  >
+                    COSY & TRENDY
+                  </button>
+                  <button
+                    class="bg-main-silver rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-0.75 px-2"
+                  >
+                    ARIANO DARO
+                  </button>
+                  <button
+                    class="bg-main-silver rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-0.75 px-2"
+                  >
+                    .L. PROFF CUISINE
+                  </button>
+                  <button
+                    class="bg-main-silver rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-0.75 px-2"
+                  >
+                    .L. PROFF CUISINE
+                  </button>
+                  <button
+                    class="bg-main-silver rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-0.75 px-2"
+                  >
+                    SUMMA
+                  </button>
+                  <button
+                    class="bg-main-silver rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-0.75 px-2"
+                  >
+                    SUMMA
+                  </button>
+                  <button
+                    class="bg-main-silver rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-0.75 px-2"
+                  >
+                    SUMMA
+                  </button>
+                  <!-- Additional hidden brands -->
+                  <template x-for="brand in additionalBrands" :key="brand">
+                    <button
+                      x-show="showMoreBrands"
+                      x-transition:enter="transition-all ease-out duration-300"
+                      x-transition:enter-start="opacity-0 transform scale-95"
+                      x-transition:enter-end="opacity-100 transform scale-100"
+                      x-transition:leave="transition-all ease-in duration-200"
+                      x-transition:leave-start="opacity-100 transform scale-100"
+                      x-transition:leave-end="opacity-0 transform scale-95"
+                      class="bg-main-silver rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-0.75 px-2"
+                      x-text="brand"
+                    ></button>
+                  </template>
+
+                  <button
+                    class="bg-main-yellow rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-0.75 px-2"
+                    @click="showMoreBrands = !showMoreBrands"
+                    x-text="showMoreBrands ? 'Скрыть' : `Еще +${additionalBrands.length}`"
+                  ></button>
+                </div>
+              </div>
+
+              <!-- Search By Series -->
+              <div class="space-y-3">
+                <p class="font-medium text-main-dark">Поиск по сериям</p>
+                <div class="space-y-3">
+                  <div class="space-y-1">
+                    <span class="text-main-sm/4.5 text-main-gray"
+                      >Выберите бренд</span
+                    >
+                    <div
+                      class="relative"
+                      x-data="{ brandsOpen: false, selectedBrand: '', searchQuery: '' }"
+                    >
+                      <!-- Input that acts like button -->
+                      <div
+                        class="relative w-full bg-main-silver rounded-lg overflow-hidden"
+                        @click.outside="brandsOpen = false"
+                      >
+                        <div class="relative">
+                          <input
+                            type="text"
+                            :placeholder="brandsOpen ? 'Поиск по брендам' : 'Бренды'"
+                            :value="brandsOpen ? searchQuery : (selectedBrand || '')"
+                            @input="searchQuery = $event.target.value"
+                            @focus="brandsOpen = true"
+                            @click="brandsOpen = true"
+                            :readonly="!brandsOpen"
+                            class="w-full text-sm/4.75 outline-none pl-5 pr-10 py-3.5 bg-transparent"
+                            :class="brandsOpen ? 'cursor-text placeholder:text-gray-400' : 'font-medium cursor-pointer placeholder:text-main-black'"
+                          />
+                          <div
+                            class="absolute h-full top-0 right-5 flex items-center gap-2"
+                          >
+                            <!-- Clear Input -->
+                            <button
+                              x-show="brandsOpen && searchQuery"
+                              @click="searchQuery = ''"
+                              class="p-1 hover:bg-gray-200 rounded transition-colors duration-200"
+                            >
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 14 14"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M10.9375 10.9375L7 7L10.9375 3.0625"
+                                  stroke="#303030"
+                                />
+                                <path
+                                  d="M3.0625 3.0625L7 7L3.0625 10.9375"
+                                  stroke="#303030"
+                                />
+                              </svg>
+                            </button>
+                            <!-- Arrow Icon -->
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                              :class="brandsOpen ? 'rotate-180' : ''"
+                              class="transition-transform duration-200"
+                            >
+                              <path
+                                d="M18.75 9L12.75 15L6.75 9"
+                                stroke="#303030"
+                                stroke-width="1.02857"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+
+                        <!-- Brand list -->
+                        <div
+                          x-show="brandsOpen"
+                          x-transition:enter="transition-all ease-out duration-300"
+                          x-transition:enter-start="opacity-0 max-h-0 transform -translate-y-2"
+                          x-transition:enter-end="opacity-100 max-h-[500px] transform translate-y-0"
+                          x-transition:leave="transition-all ease-in duration-250"
+                          x-transition:leave-start="opacity-100 max-h-[500px] transform translate-y-0"
+                          x-transition:leave-end="opacity-0 max-h-0 transform -translate-y-2"
+                          class="divide-y divide-main-gray-100 border-t border-gray-200 overflow-hidden"
+                        >
+                          <ul
+                            class="custom-scroll-brands leading-5.5 max-h-48 overflow-y-auto"
+                          >
+                            <template
+                              x-for="brand in [
+                            'Bonna',
+                            'Ariane', 
+                            'Porland',
+                            'Style Point',
+                            'Cosy & Trendy',
+                            'SUMMA',
+                            'Adidas',
+                            'Nike',
+                            'Puma',
+                            'Zara',
+                            'Mango',
+                            'H&M',
+                            'Uniqlo',
+                            'Levi\'s',
+                            'Calvin Klein'
+                          ].filter(b => b.toLowerCase().includes(searchQuery.toLowerCase()))"
+                              :key="brand"
+                            >
+                              <li class="hover:bg-main-yellow pl-6 pr-3">
+                                <button
+                                  @click="selectedBrand = brand; brandsOpen = false"
+                                  class="w-full text-left border-b border-main-gray-100 py-1.25"
+                                  x-text="brand"
+                                ></button>
+                              </li>
+                            </template>
+
+                            <!-- No results message -->
+                            <li
+                              x-show="searchQuery && !['Bonna', 'Ariane', 'Porland', 'Style Point', 'Cosy & Trendy', 'SUMMA', 'Adidas', 'Nike', 'Puma', 'Zara', 'Mango', 'H&M', 'Uniqlo', 'Levi\'s', 'Calvin Klein'].filter(b => b.toLowerCase().includes(searchQuery.toLowerCase())).length"
+                              class="px-6 py-2 text-gray-500 text-sm text-center"
+                            >
+                              Бренды не найдены
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="space-y-1">
+                  <span class="text-main-sm/4.5 text-main-gray"
+                    >Выберите серию</span
+                  >
+                  <div
+                    class="relative"
+                    x-data="{ seriesOpen: false, selectedSeries: '', searchQuerySeries: '' }"
+                  >
+                    <!-- Input that acts like button -->
+                    <div
+                      class="relative w-full bg-main-silver rounded-lg overflow-hidden"
+                      @click.outside="seriesOpen = false"
+                    >
+                      <div class="relative">
+                        <input
+                          type="text"
+                          :placeholder="seriesOpen ? 'Поиск по сериям' : 'Серии'"
+                          :value="seriesOpen ? searchQuerySeries : (selectedSeries || '')"
+                          @input="searchQuerySeries = $event.target.value"
+                          @focus="seriesOpen = true"
+                          @click="seriesOpen = true"
+                          :readonly="!seriesOpen"
+                          class="w-full text-sm/4.75 outline-none pl-5 pr-10 py-3.5 bg-transparent"
+                          :class="seriesOpen ? 'cursor-text placeholder:text-gray-400 ' : 'font-medium cursor-pointer placeholder:text-main-black'"
+                        />
+                        <div
+                          class="absolute h-full top-0 right-5 flex items-center gap-2"
+                        >
+                          <!-- Clear Input -->
+                          <button
+                            x-show="seriesOpen && searchQuerySeries"
+                            @click="searchQuerySeries = ''"
+                            class="p-1 hover:bg-gray-200 rounded transition-colors duration-200"
+                          >
+                            <svg
+                              width="14"
+                              height="14"
+                              viewBox="0 0 14 14"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M10.9375 10.9375L7 7L10.9375 3.0625"
+                                stroke="#303030"
+                              />
+                              <path
+                                d="M3.0625 3.0625L7 7L3.0625 10.9375"
+                                stroke="#303030"
+                              />
+                            </svg>
+                          </button>
+                          <!-- Arrow Icon -->
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            :class="seriesOpen ? 'rotate-180' : ''"
+                            class="transition-transform duration-200"
+                          >
+                            <path
+                              d="M18.75 9L12.75 15L6.75 9"
+                              stroke="#303030"
+                              stroke-width="1.02857"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+
+                      <!-- Series list -->
+                      <div
+                        x-show="seriesOpen"
+                        x-transition:enter="transition-all ease-out duration-300"
+                        x-transition:enter-start="opacity-0 max-h-0 transform -translate-y-2"
+                        x-transition:enter-end="opacity-100 max-h-[500px] transform translate-y-0"
+                        x-transition:leave="transition-all ease-in duration-250"
+                        x-transition:leave-start="opacity-100 max-h-[500px] transform translate-y-0"
+                        x-transition:leave-end="opacity-0 max-h-0 transform -translate-y-2"
+                        class="divide-y divide-main-gray-100 border-t border-gray-200 overflow-hidden"
+                      >
+                        <ul
+                          class="custom-scroll-brands leading-5.5 max-h-48 overflow-y-auto"
+                        >
+                          <template
+                            x-for="series in [
+                              'Ariane Prime',
+                              'Ariane Slide',
+                              'Ariana Vital',
+                              'Ariana Selas',
+                              'Ariane Daro',
+                              'Ariane Classic',
+                              'Ariane Premium',
+                              'Ariane Sport',
+                              'Ariane Business',
+                              'Ariane Elegant',
+                              'Ariane Modern',
+                              'Ariane Vintage',
+                              'Ariane Urban',
+                              'Ariane Outdoor',
+                              'Ariane Luxury',
+                              'Ariane Basic',
+                              'Ariane Pro',
+                              'Ariane Elite',
+                              'Ariane Standard',
+                              'Ariane Collection',
+                              'Ariane Signature',
+                              'Ariane Limited',
+                              'Ariane Exclusive',
+                              'Ariane Master',
+                              'Ariane Supreme'
+                            ].filter(s => s.toLowerCase().includes(searchQuerySeries.toLowerCase()))"
+                            :key="series"
+                          >
+                            <li class="hover:bg-main-gray-100 pl-6 pr-3">
+                              <button
+                                @click="selectedSeries = series; seriesOpen = false"
+                                class="w-full text-left border-b border-main-gray-100 py-1.25 flex items-center justify-between"
+                              >
+                                <span x-text="series"></span>
+                                <svg
+                                  width="24"
+                                  height="24"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M9.75 6L15.75 12L9.75 18"
+                                    stroke="#303030"
+                                    stroke-width="1.02857"
+                                  />
+                                </svg>
+                              </button>
+                            </li>
+                          </template>
+
+                          <!-- No results message -->
+                          <li
+                            x-show="searchQuerySeries && !['Ariane Prime', 'Ariane Slide', 'Ariana Vital', 'Ariana Selas', 'Ariane Daro', 'Ariane Classic', 'Ariane Premium', 'Ariane Sport', 'Ariane Business', 'Ariane Elegant', 'Ariane Modern', 'Ariane Vintage', 'Ariane Urban', 'Ariane Outdoor', 'Ariane Luxury', 'Ariane Basic', 'Ariane Pro', 'Ariane Elite', 'Ariane Standard', 'Ariane Collection', 'Ariane Signature', 'Ariane Limited', 'Ariane Exclusive', 'Ariane Master', 'Ariane Supreme'].filter(s => s.toLowerCase().includes(searchQuerySeries.toLowerCase())).length"
+                            class="px-6 py-2 text-gray-500 text-sm text-center"
+                          >
+                            Серии не найдены
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Search By Article -->
+              <div class="space-y-3">
+                <p class="font-medium text-main-dark">Поиск по сериям</p>
+
+                <div class="relative">
+                  <input
+                    type="text"
+                    placeholder="Поиск"
+                    class="w-full h-10 text-lg/6.25 bg-main-silver rounded-lg outline-none pl-5 pr-12 py-2"
+                  />
+                  <div class="absolute right-2 top-1/2 -translate-y-1/2">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M14.25 14.25L19.5 19.5" stroke="#303030" />
+                      <circle
+                        cx="10.125"
+                        cy="10.125"
+                        r="5.875"
+                        stroke="#303030"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Catalog overlay -->
+        <div
+          class="fixed top-16 lg:top-21 xl:top-24.5 inset-x-0 bottom-0 w-full hidden lg:block bg-main-black/50"
+          x-show="catalogOpen"
+          @click="catalogOpen = false"
+          x-transition:enter="transition-opacity ease-out duration-300"
+          x-transition:enter-start="opacity-0"
+          x-transition:enter-end="opacity-100"
+          x-transition:leave="transition-opacity ease-in duration-250"
+          x-transition:leave-start="opacity-100"
+          x-transition:leave-end="opacity-0"
+        ></div>
       </nav>
     </header>
 
@@ -527,7 +1310,7 @@
         <div class="flex items-center justify-between gap-4 mb-16">
           <!-- Prev -->
           <button
-            class="shrink-0 size-10 lg:size-8 flex items-center justify-center border border-primary rounded-full transition duration-200 hover:border-main-gray hover:text-main-gray"
+            class="shrink-0 size-10 lg:size-8 flex items-center justify-center border bordermain-black rounded-full transition duration-200 hover:border-main-gray hover:text-main-gray"
           >
             <svg
               width="10"
@@ -595,7 +1378,7 @@
 
           <!-- Next -->
           <button
-            class="shrink-0 size-10 lg:size-8 flex items-center justify-center border border-primary rounded-full transition duration-200 hover:border-main-gray hover:text-main-gray"
+            class="shrink-0 size-10 lg:size-8 flex items-center justify-center border bordermain-black rounded-full transition duration-200 hover:border-main-gray hover:text-main-gray"
           >
             <svg
               class="rotate-180"
@@ -616,7 +1399,7 @@
           @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
         >
           <div
-            class="shrink-0 size-10 lg:size-8 flex items-center justify-center border border-primary rounded-full transition duration-200 group-hover:border-main-gray group-hover:text-main-gray"
+            class="shrink-0 size-10 lg:size-8 flex items-center justify-center border bordermain-black rounded-full transition duration-200 group-hover:border-main-gray group-hover:text-main-gray"
           >
             <svg
               class="rotate-90"
