@@ -494,7 +494,7 @@
           @click.outside="catalogOpen = false"
         >
           <div
-            class="w-full min-h-full flex items-stretch bg-white rounded-b-3xl px-6 relative"
+            class="w-full min-h-full flex !items-stretch bg-white rounded-b-lg px-6 relative"
           >
             <!-- Left Categories -->
             <div
@@ -502,49 +502,57 @@
             >
               <ul class="space-y-2">
                 <li
-                  class="bg-main-silver cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  :class="selectedCategory === 'Фарфоровая и керамическая посуда' ? 'bg-main-silver' : ''"
                   @click="selectedCategory = 'Фарфоровая и керамическая посуда'"
                 >
                   Фарфоровая и керамическая посуда
                 </li>
                 <li
                   class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  :class="selectedCategory === 'Бокалы и барное стекло' ? 'bg-main-silver' : ''"
                   @click="selectedCategory = 'Бокалы и барное стекло'"
                 >
                   Бокалы и барное стекло
                 </li>
                 <li
                   class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  :class="selectedCategory === 'Столовые приборы' ? 'bg-main-silver' : ''"
                   @click="selectedCategory = 'Столовые приборы'"
                 >
                   Столовые приборы
                 </li>
                 <li
                   class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  :class="selectedCategory === 'Деревянная посуда' ? 'bg-main-silver' : ''"
                   @click="selectedCategory = 'Деревянная посуда'"
                 >
                   Деревянная посуда
                 </li>
                 <li
                   class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  :class="selectedCategory === 'Металлическая посуда' ? 'bg-main-silver' : ''"
                   @click="selectedCategory = 'Металлическая посуда'"
                 >
                   Металлическая посуда
                 </li>
                 <li
                   class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  :class="selectedCategory === 'Барный инвентарь' ? 'bg-main-silver' : ''"
                   @click="selectedCategory = 'Барный инвентарь'"
                 >
                   Барный инвентарь
                 </li>
                 <li
                   class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  :class="selectedCategory === 'Сервировка стола и прочее' ? 'bg-main-silver' : ''"
                   @click="selectedCategory = 'Сервировка стола и прочее'"
                 >
                   Сервировка стола и прочее
                 </li>
                 <li
                   class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                  :class="selectedCategory === 'Мебель и декор' ? 'bg-main-silver' : ''"
                   @click="selectedCategory = 'Мебель и декор'"
                 >
                   Мебель и декор
@@ -929,7 +937,7 @@
                           @click="seriesOpen = true"
                           :readonly="!seriesOpen"
                           class="w-full h-12 text-sm/4.75 outline-none pl-5 pr-10 py-3.5 bg-transparent"
-                          :class="seriesOpen ? 'cursor-text placeholder:text-gray-400 ' : 'font-medium cursor-pointer placeholder:text-main-black'"
+                          :class="seriesOpen ? 'cursor-text placeholder:text-gray-400' : 'font-medium cursor-pointer placeholder:text-main-gray'"
                         />
                         <div
                           class="absolute h-full top-0 right-5 flex items-center gap-2"
@@ -1065,7 +1073,7 @@
                   <input
                     type="text"
                     placeholder="Поиск"
-                    class="w-full h-10 text-lg/6.25 bg-main-silver rounded-lg outline-none pl-5 pr-12 py-2"
+                    class="w-full h-10 text-lg/6.25 bg-main-silver rounded-lg outline-none placeholder:text-main-gray-400/50 pl-5 pr-12 py-2"
                   />
                   <div class="absolute right-2 top-1/2 -translate-y-1/2">
                     <svg

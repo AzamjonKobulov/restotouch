@@ -556,6 +556,9 @@
   .flex-wrap {
     flex-wrap: wrap;
   }
+  .\!items-stretch {
+    align-items: stretch !important;
+  }
   .items-center {
     align-items: center;
   }
@@ -686,6 +689,10 @@
   .rounded-b-3xl {
     border-bottom-right-radius: var(--radius-3xl);
     border-bottom-left-radius: var(--radius-3xl);
+  }
+  .rounded-b-lg {
+    border-bottom-right-radius: var(--radius-lg);
+    border-bottom-left-radius: var(--radius-lg);
   }
   .border {
     border-style: var(--tw-border-style);
@@ -1028,6 +1035,11 @@
   .placeholder\:text-main-black {
     &::placeholder {
       color: var(--color-main-black);
+    }
+  }
+  .placeholder\:text-main-gray {
+    &::placeholder {
+      color: var(--color-main-gray);
     }
   }
   .placeholder\:text-main-gray-400\/50 {
