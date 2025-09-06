@@ -494,151 +494,153 @@
           @click.outside="catalogOpen = false"
         >
           <div
-            class="w-full min-h-full flex !items-stretch bg-white rounded-b-lg px-6 relative"
+            class="w-full flex !items-stretch bg-white rounded-b-lg px-6 relative"
           >
             <!-- Left Categories -->
-            <div
-              class="w-66.5 shrink-0 h-full text-xs xl:text-main-sm/4.5 tracking-tighter border-r border-main-gray/20 pt-6 pr-1"
-            >
-              <ul class="space-y-2">
-                <li
-                  class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
-                  :class="selectedCategory === 'Фарфоровая и керамическая посуда' ? 'bg-main-silver' : ''"
-                  @click="selectedCategory = 'Фарфоровая и керамическая посуда'"
-                >
-                  Фарфоровая и керамическая посуда
-                </li>
-                <li
-                  class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
-                  :class="selectedCategory === 'Бокалы и барное стекло' ? 'bg-main-silver' : ''"
-                  @click="selectedCategory = 'Бокалы и барное стекло'"
-                >
-                  Бокалы и барное стекло
-                </li>
-                <li
-                  class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
-                  :class="selectedCategory === 'Столовые приборы' ? 'bg-main-silver' : ''"
-                  @click="selectedCategory = 'Столовые приборы'"
-                >
-                  Столовые приборы
-                </li>
-                <li
-                  class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
-                  :class="selectedCategory === 'Деревянная посуда' ? 'bg-main-silver' : ''"
-                  @click="selectedCategory = 'Деревянная посуда'"
-                >
-                  Деревянная посуда
-                </li>
-                <li
-                  class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
-                  :class="selectedCategory === 'Металлическая посуда' ? 'bg-main-silver' : ''"
-                  @click="selectedCategory = 'Металлическая посуда'"
-                >
-                  Металлическая посуда
-                </li>
-                <li
-                  class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
-                  :class="selectedCategory === 'Барный инвентарь' ? 'bg-main-silver' : ''"
-                  @click="selectedCategory = 'Барный инвентарь'"
-                >
-                  Барный инвентарь
-                </li>
-                <li
-                  class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
-                  :class="selectedCategory === 'Сервировка стола и прочее' ? 'bg-main-silver' : ''"
-                  @click="selectedCategory = 'Сервировка стола и прочее'"
-                >
-                  Сервировка стола и прочее
-                </li>
-                <li
-                  class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
-                  :class="selectedCategory === 'Мебель и декор' ? 'bg-main-silver' : ''"
-                  @click="selectedCategory = 'Мебель и декор'"
-                >
-                  Мебель и декор
-                </li>
-                <div x-data="{ open: false }" @click.outside="open = false">
+            <div class="border-r border-main-gray/20 pt-6 pr-1">
+              <div
+                class="w-66.5 shrink-0 h-full text-xs xl:text-main-sm/4.5 tracking-tighter"
+              >
+                <ul class="space-y-2">
                   <li
-                    class="flex-between cursor-pointer rounded-lg py-2 px-2.5"
-                    @click="open = !open"
+                    class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                    :class="selectedCategory === 'Фарфоровая и керамическая посуда' ? 'bg-main-silver' : ''"
+                    @click="selectedCategory = 'Фарфоровая и керамическая посуда'"
                   >
-                    Наплитная посуда, кухонный <br />
-                    инвентарь
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      :class="{ 'rotate-180': open }"
-                      class="transition-transform duration-300 ease-out"
-                    >
-                      <path
-                        d="M18.75 9L12.75 15L6.75 9"
-                        stroke="#303030"
-                        stroke-width="1.02857"
-                      />
-                    </svg>
+                    Фарфоровая и керамическая посуда
                   </li>
-
-                  <ul
-                    class="space-y-2 w-full pt-2 pb-5 overflow-hidden"
-                    x-show="open"
-                    x-transition:enter="transition-all ease-out duration-300"
-                    x-transition:enter-start="opacity-0 max-h-0 transform -translate-y-2"
-                    x-transition:enter-end="opacity-100 max-h-[500px] transform translate-y-0"
-                    x-transition:leave="transition-all ease-in duration-250"
-                    x-transition:leave-start="opacity-100 max-h-[500px] transform translate-y-0"
-                    x-transition:leave-end="opacity-0 max-h-0 transform -translate-y-2"
+                  <li
+                    class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                    :class="selectedCategory === 'Бокалы и барное стекло' ? 'bg-main-silver' : ''"
+                    @click="selectedCategory = 'Бокалы и барное стекло'"
                   >
+                    Бокалы и барное стекло
+                  </li>
+                  <li
+                    class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                    :class="selectedCategory === 'Столовые приборы' ? 'bg-main-silver' : ''"
+                    @click="selectedCategory = 'Столовые приборы'"
+                  >
+                    Столовые приборы
+                  </li>
+                  <li
+                    class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                    :class="selectedCategory === 'Деревянная посуда' ? 'bg-main-silver' : ''"
+                    @click="selectedCategory = 'Деревянная посуда'"
+                  >
+                    Деревянная посуда
+                  </li>
+                  <li
+                    class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                    :class="selectedCategory === 'Металлическая посуда' ? 'bg-main-silver' : ''"
+                    @click="selectedCategory = 'Металлическая посуда'"
+                  >
+                    Металлическая посуда
+                  </li>
+                  <li
+                    class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                    :class="selectedCategory === 'Барный инвентарь' ? 'bg-main-silver' : ''"
+                    @click="selectedCategory = 'Барный инвентарь'"
+                  >
+                    Барный инвентарь
+                  </li>
+                  <li
+                    class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                    :class="selectedCategory === 'Сервировка стола и прочее' ? 'bg-main-silver' : ''"
+                    @click="selectedCategory = 'Сервировка стола и прочее'"
+                  >
+                    Сервировка стола и прочее
+                  </li>
+                  <li
+                    class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
+                    :class="selectedCategory === 'Мебель и декор' ? 'bg-main-silver' : ''"
+                    @click="selectedCategory = 'Мебель и декор'"
+                  >
+                    Мебель и декор
+                  </li>
+                  <div x-data="{ open: false }" @click.outside="open = false">
                     <li
-                      class="bg-main-silver cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                      class="flex-between cursor-pointer rounded-lg py-2 px-2.5"
+                      @click="open = !open"
                     >
-                      Наплитная посуда
+                      Наплитная посуда, кухонный <br />
+                      инвентарь
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        :class="{ 'rotate-180': open }"
+                        class="transition-transform duration-300 ease-out"
+                      >
+                        <path
+                          d="M18.75 9L12.75 15L6.75 9"
+                          stroke="#303030"
+                          stroke-width="1.02857"
+                        />
+                      </svg>
                     </li>
-                    <li
-                      class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+
+                    <ul
+                      class="space-y-2 w-full pt-2 pb-5 overflow-hidden"
+                      x-show="open"
+                      x-transition:enter="transition-all ease-out duration-300"
+                      x-transition:enter-start="opacity-0 max-h-0 transform -translate-y-2"
+                      x-transition:enter-end="opacity-100 max-h-[500px] transform translate-y-0"
+                      x-transition:leave="transition-all ease-in duration-250"
+                      x-transition:leave-start="opacity-100 max-h-[500px] transform translate-y-0"
+                      x-transition:leave-end="opacity-0 max-h-0 transform -translate-y-2"
                     >
-                      Кухонный инвентарь
-                    </li>
-                    <li
-                      class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
-                    >
-                      Кондитерский инвентарь
-                    </li>
-                    <li
-                      class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
-                    >
-                      Ножи и аксессуары
-                    </li>
-                    <li
-                      class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
-                    >
-                      Инвентарь для пиццы
-                    </li>
-                    <li
-                      class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
-                    >
-                      Инвентарь для пиццы
-                    </li>
-                    <li
-                      class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
-                    >
-                      Инвентарь для пиццы
-                    </li>
-                    <li
-                      class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
-                    >
-                      Инвентарь для пиццы
-                    </li>
-                    <li
-                      class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
-                    >
-                      Инвентарь для пиццы
-                    </li>
-                  </ul>
-                </div>
-              </ul>
+                      <li
+                        class="bg-main-silver cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                      >
+                        Наплитная посуда
+                      </li>
+                      <li
+                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                      >
+                        Кухонный инвентарь
+                      </li>
+                      <li
+                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                      >
+                        Кондитерский инвентарь
+                      </li>
+                      <li
+                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                      >
+                        Ножи и аксессуары
+                      </li>
+                      <li
+                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                      >
+                        Инвентарь для пиццы
+                      </li>
+                      <li
+                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                      >
+                        Инвентарь для пиццы
+                      </li>
+                      <li
+                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                      >
+                        Инвентарь для пиццы
+                      </li>
+                      <li
+                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                      >
+                        Инвентарь для пиццы
+                      </li>
+                      <li
+                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                      >
+                        Инвентарь для пиццы
+                      </li>
+                    </ul>
+                  </div>
+                </ul>
+              </div>
             </div>
             <!-- Center Products -->
             <div class="space-y-5 !shrink pl-6 pr-3 pt-6 pb-10">

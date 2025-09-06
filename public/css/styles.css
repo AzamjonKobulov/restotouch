@@ -247,6 +247,9 @@
   .z-50 {
     z-index: 50;
   }
+  .col-span-2 {
+    grid-column: span 2 / span 2;
+  }
   .container-base {
     margin-inline: auto;
     width: 100%;
