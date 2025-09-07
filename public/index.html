@@ -160,7 +160,20 @@
       isScrolled: false,
       init() {
         window.addEventListener('scroll', () => {
-          this.isScrolled = window.scrollY > 0;
+          const scrollY = window.scrollY;
+          const width = window.innerWidth;
+          
+          // Only apply scroll detection on lg and above screens (overlay is hidden under lg)
+          if (width >= 1024) {
+            if (width >= 1280) { // xl and above
+              this.isScrolled = scrollY > 98;
+            } else { // lg
+              this.isScrolled = scrollY > 84;
+            }
+          } else {
+            // Under lg - overlay is hidden, so no need to track scroll
+            this.isScrolled = false;
+          }
         });
       }
     }"
