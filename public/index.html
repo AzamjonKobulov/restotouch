@@ -576,7 +576,7 @@
 
           <!-- Mobile Menu -->
           <div
-            class="absolute inset-x-0 h-[calc(100vh-64px)] top-full z-50 bg-white overflow-auto"
+            class="absolute inset-x-0 h-[calc(100vh-64px)] top-full z-50 lg:hidden bg-white overflow-auto"
             x-show="$store.mobileMenuOpen"
             x-transition:enter="transition-all ease-out duration-300"
             x-transition:enter-start="opacity-0 transform -translate-y-4"
@@ -1538,10 +1538,10 @@
         }"
         >
           <template x-for="article in articles" :key="article.id">
-            <div>
+            <a href="#" class="group">
               <div class="h-56.25 lg:h-50 overflow-hidden rounded-2xl mb-4">
                 <img
-                  class="size-full object-cover"
+                  class="size-full object-cover group-hover:scale-105 transition-all duration-300"
                   :src="article.image"
                   :alt="article.title"
                 />
@@ -1556,7 +1556,7 @@
                   x-text="article.description"
                 ></p>
               </div>
-            </div>
+            </a>
           </template>
         </div>
 
