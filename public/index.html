@@ -6,55 +6,7 @@
     <title>Document</title>
     <!-- Styles -->
     <link rel="stylesheet" href="./css/styles.css" />
-    <style>
-      /* Custom scrollbar for mobile menu */
-      .mobile-menu-scroll::-webkit-scrollbar {
-        width: 8px;
-      }
 
-      .mobile-menu-scroll::-webkit-scrollbar-track {
-        background: transparent;
-      }
-
-      .mobile-menu-scroll::-webkit-scrollbar-thumb {
-        background: linear-gradient(
-          180deg,
-          #ffd700 0%,
-          #ffa500 50%,
-          #ff8c00 100%
-        );
-        border-radius: 4px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      .mobile-menu-scroll::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(
-          180deg,
-          #ffe55c 0%,
-          #ffb84d 50%,
-          #ff9f40 100%
-        );
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        transform: scale(1.05);
-      }
-
-      .mobile-menu-scroll::-webkit-scrollbar-thumb:active {
-        background: linear-gradient(
-          180deg,
-          #ffc107 0%,
-          #ff9800 50%,
-          #f57c00 100%
-        );
-      }
-
-      /* Firefox scrollbar */
-      .mobile-menu-scroll {
-        scrollbar-width: thin;
-        scrollbar-color: #ffd700 transparent;
-      }
-    </style>
     <!-- Alpine.js -->
     <script
       defer
@@ -66,16 +18,87 @@
       });
     </script>
   </head>
-
   <body
     x-data="{ catalogOpen: false }"
-    :class="{ 'overflow-hidden': $store.mobileMenuOpen }"
+    :class="{ 'overflow-hidden': $store.mobileMenuOpen || (catalogOpen && window.innerWidth < 1024) }"
   >
     <!-- Header -->
     <header
       class="max-xl:mt-4 mb-6 xl:mb-4"
       x-data="{ 
       selectedCategory: 'Фарфоровая и керамическая посуда',
+      showProducts: false,
+      navigationStack: [],
+      navigateToCategory(category) {
+        this.navigationStack.push({ type: 'category', name: category });
+        this.selectedCategory = category;
+        this.showProducts = true;
+      },
+      navigateToProducts(category) {
+        // Check if we're on mobile/tablet (under 1024px)
+        if (window.innerWidth < 1024) {
+          // Mobile navigation logic
+          if (this.navigationStack.length === 0) {
+            this.navigationStack.push({ type: 'categories' });
+          }
+          this.navigationStack.push({ type: 'products', name: category });
+          this.selectedCategory = category;
+          this.showProducts = true;
+        } else {
+          // Desktop navigation logic (original behavior)
+          this.selectedCategory = category;
+          this.showProducts = false; // Desktop doesn't use showProducts
+        }
+      },
+      goBack() {
+        // Check if we're on mobile/tablet (under 1024px)
+        if (window.innerWidth < 1024) {
+          // Mobile back button logic
+          if (this.navigationStack.length > 0) {
+            this.navigationStack.pop();
+          }
+          
+          if (this.navigationStack.length === 0) {
+            // Back to mobile menu
+            this.catalogOpen = false;
+            this.$store.mobileMenuOpen = true;
+          } else {
+            // Back to previous level - check what the previous level was
+            const previousLevel = this.navigationStack[this.navigationStack.length - 1];
+            if (previousLevel.type === 'products') {
+              this.showProducts = true;
+              this.selectedCategory = previousLevel.name;
+            } else if (previousLevel.type === 'categories') {
+              this.showProducts = false;
+            } else {
+              this.showProducts = false;
+            }
+          }
+        } else {
+          // Desktop back button logic (original behavior)
+          this.catalogOpen = false;
+          this.$store.mobileMenuOpen = true;
+        }
+      },
+      navigateToProduct(productName) {
+        console.log('navigateToProduct called with:', productName);
+        console.log('Window width:', window.innerWidth);
+        // Check if we're on mobile/tablet (under 1024px)
+        if (window.innerWidth < 1024) {
+          // Mobile navigation logic - close catalog and reset to main level
+          console.log('Closing catalog and resetting to main level');
+          this.catalogOpen = false;
+          this.$store.mobileMenuOpen = false;
+          this.showProducts = false;
+          this.selectedCategory = 'Фарфоровая и керамическая посуда';
+          this.navigationStack = [];
+          // You can add navigation to product page here
+          console.log('Navigated to product:', productName);
+        } else {
+          // Desktop navigation logic (original behavior)
+          console.log('Desktop product navigation:', productName);
+        }
+      },
       categoryData: {
         'Фарфоровая и керамическая посуда': [
           { name: 'Мелкие столовые тарелки', image: 'catalog-1.png' },
@@ -96,123 +119,146 @@
         ],
         'Бокалы и барное стекло': [
           { name: 'Бокалы для вина', image: 'catalog-1.png' },
-          { name: 'Бокалы для шампанского', image: 'catalog-2.png' },
-          { name: 'Бокалы для коктейлей', image: 'catalog-3.png' },
-          { name: 'Рюмки', image: 'catalog-4.png' },
-          { name: 'Стаканы', image: 'catalog-5.png' },
-          { name: 'Кувшины', image: 'catalog-6.png' },
-          { name: 'Декантеры', image: 'catalog-7.png' },
-          { name: 'Барные аксессуары', image: 'catalog-8.png' },
-          { name: 'Ледяные ведра', image: 'catalog-9.png' },
-          { name: 'Шейкеры', image: 'catalog-10.png' },
-          { name: 'Стрейнеры', image: 'catalog-11.png' },
-          { name: 'Мерные стаканы', image: 'catalog-12.png' },
-          { name: 'Барные ложки', image: 'catalog-13.png' },
-          { name: 'Подставки', image: 'catalog-14.png' },
-          { name: 'Барные наборы', image: 'catalog-15.png' }
+          { name: 'Бокалы для игристого вина', image: 'catalog-2.png' },
+          { name: 'Барные бокалы', image: 'catalog-3.png' },
+          { name: 'Бокалы и стаканы для пива', image: 'catalog-4.png' },
+          { name: 'Бокалы из цветного стекла', image: 'catalog-5.png' },
+          { name: 'Стаканы и кружки Тики', image: 'catalog-6.png' },
+          { name: 'Cтаканы для воды', image: 'catalog-7.png' },
+          { name: 'Бокалы для крепкого алкоголя', image: 'catalog-8.png' },
+          { name: 'Чайная посуда из стекла', image: 'catalog-9.png' },
+          { name: 'Наборы', image: 'catalog-10.png' },
+          { name: 'Кувшины графины штоф', image: 'catalog-11.png' },
+          { name: 'Стаканы из хрустального стекла', image: 'catalog-12.png' },
+          { name: 'Креманки', image: 'catalog-13.png' },
+          { name: 'Френч-прессы', image: 'catalog-14.png' },
         ],
         'Столовые приборы': [
-          { name: 'Вилки столовые', image: 'catalog-1.png' },
+          { name: 'Стейковые приборы', image: 'catalog-1.png' },
           { name: 'Ножи столовые', image: 'catalog-2.png' },
-          { name: 'Ложки столовые', image: 'catalog-3.png' },
-          { name: 'Вилки десертные', image: 'catalog-4.png' },
-          { name: 'Ножи десертные', image: 'catalog-5.png' },
-          { name: 'Ложки десертные', image: 'catalog-6.png' },
+          { name: 'Ножи десертные', image: 'catalog-3.png' },
+          { name: 'Ножи стейковые', image: 'catalog-4.png' },
+          { name: 'Ножи для рыбы', image: 'catalog-5.png' },
+          { name: 'Вилки десертные', image: 'catalog-6.png' },
           { name: 'Вилки для рыбы', image: 'catalog-7.png' },
-          { name: 'Ножи для рыбы', image: 'catalog-8.png' },
-          { name: 'Ложки для супа', image: 'catalog-9.png' },
-          { name: 'Вилки для салата', image: 'catalog-10.png' },
-          { name: 'Ножи для масла', image: 'catalog-11.png' },
-          { name: 'Ложки для сахара', image: 'catalog-12.png' },
-          { name: 'Щипцы для сахара', image: 'catalog-13.png' },
-          { name: 'Щипцы для льда', image: 'catalog-14.png' },
-          { name: 'Столовые наборы', image: 'catalog-15.png' }
+          { name: 'Вилки столовые', image: 'catalog-8.png' },
+          { name: 'Набор столовых приборов', image: 'catalog-9.png' },
+          { name: 'Ложки столовые', image: 'catalog-10.png' },
+          { name: 'Ложки десертные', image: 'catalog-11.png' },
+          { name: 'Чайные ложки', image: 'catalog-12.png' },
+          { name: 'Ложки кофейные', image: 'catalog-13.png' },
+          { name: 'Специальные', image: 'catalog-14.png' },
+          { name: 'Приборы с деревянной ручкой', image: 'catalog-15.png' }
         ],
         'Деревянная посуда': [
-          { name: 'Деревянные тарелки', image: 'catalog-1.png' },
-          { name: 'Деревянные миски', image: 'catalog-2.png' },
-          { name: 'Деревянные ложки', image: 'catalog-3.png' },
-          { name: 'Деревянные доски', image: 'catalog-4.png' },
-          { name: 'Деревянные подносы', image: 'catalog-5.png' },
-          { name: 'Деревянные салатники', image: 'catalog-6.png' },
-          { name: 'Деревянные хлебницы', image: 'catalog-7.png' },
-          { name: 'Деревянные масленки', image: 'catalog-8.png' },
-          { name: 'Деревянные сахарницы', image: 'catalog-9.png' },
-          { name: 'Деревянные солонки', image: 'catalog-10.png' },
-          { name: 'Деревянные перечницы', image: 'catalog-11.png' },
-          { name: 'Деревянные подставки', image: 'catalog-12.png' },
-          { name: 'Деревянные салфетницы', image: 'catalog-13.png' },
-          { name: 'Деревянные корзинки', image: 'catalog-14.png' },
-          { name: 'Деревянные наборы', image: 'catalog-15.png' }
+          { name: 'Доски', image: 'catalog-1.png' },
+          { name: 'Доски со стоком', image: 'catalog-2.png' },
+          { name: 'Планшеты', image: 'catalog-3.png' },
+          { name: 'Ящики', image: 'catalog-4.png' },
+          { name: 'Для подачи и сервировки', image: 'catalog-5.png' },
         ],
         'Металлическая посуда': [
-          { name: 'Металлические кастрюли', image: 'catalog-1.png' },
-          { name: 'Металлические сковороды', image: 'catalog-2.png' },
-          { name: 'Металлические тарелки', image: 'catalog-3.png' },
-          { name: 'Металлические миски', image: 'catalog-4.png' },
-          { name: 'Металлические ложки', image: 'catalog-5.png' },
-          { name: 'Металлические вилки', image: 'catalog-6.png' },
-          { name: 'Металлические ножи', image: 'catalog-7.png' },
-          { name: 'Металлические подносы', image: 'catalog-8.png' },
-          { name: 'Металлические кувшины', image: 'catalog-9.png' },
-          { name: 'Металлические чайники', image: 'catalog-10.png' },
-          { name: 'Металлические кофейники', image: 'catalog-11.png' },
-          { name: 'Металлические молочники', image: 'catalog-12.png' },
-          { name: 'Металлические сахарницы', image: 'catalog-13.png' },
-          { name: 'Металлические солонки', image: 'catalog-14.png' },
-          { name: 'Металлические наборы', image: 'catalog-15.png' }
+          { name: 'Ведерки для охлаждения', image: 'catalog-1.png' },
+          { name: 'Для морепродуктов', image: 'catalog-2.png' },
+          { name: 'Емкости для подачи', image: 'catalog-3.png' },
+          { name: 'Кастрюли', image: 'catalog-4.png' },
+          { name: 'Подносы металлические', image: 'catalog-5.png' },
+          { name: 'Салфетницы', image: 'catalog-6.png' },
+          { name: 'Сахарницы', image: 'catalog-7.png' },
+          { name: 'Сковородки для подачи', image: 'catalog-8.png' },
+          { name: 'Сотейники для подачи', image: 'catalog-9.png' },
+          { name: 'Соусники', image: 'catalog-10.png' },
+          { name: 'Стаканы и кружки', image: 'catalog-11.png' },
+          { name: 'Тарелки', image: 'catalog-12.png' },
+          { name: 'Салатники', image: 'catalog-13.png' },
         ],
         'Барный инвентарь': [
-          { name: 'Барные шейкеры', image: 'catalog-1.png' },
-          { name: 'Барные стрейнеры', image: 'catalog-2.png' },
-          { name: 'Барные ложки', image: 'catalog-3.png' },
-          { name: 'Барные мерные стаканы', image: 'catalog-4.png' },
-          { name: 'Барные щипцы', image: 'catalog-5.png' },
-          { name: 'Барные подносы', image: 'catalog-6.png' },
-          { name: 'Барные ведра для льда', image: 'catalog-7.png' },
-          { name: 'Барные декантеры', image: 'catalog-8.png' },
-          { name: 'Барные кувшины', image: 'catalog-9.png' },
-          { name: 'Барные стаканы', image: 'catalog-10.png' },
-          { name: 'Барные бокалы', image: 'catalog-11.png' },
-          { name: 'Барные рюмки', image: 'catalog-12.png' },
-          { name: 'Барные подставки', image: 'catalog-13.png' },
-          { name: 'Барные салфетки', image: 'catalog-14.png' },
-          { name: 'Барные наборы', image: 'catalog-15.png' }
+          { name: 'Джиггеры', image: 'catalog-1.png' },
+          { name: 'Направляющие для бокалов', image: 'catalog-2.png' },
+          { name: 'Мадлеры', image: 'catalog-3.png' },
+          { name: 'Аксессуары для сервировки стола', image: 'catalog-4.png' },
+          { name: 'Сквизеры, пинцеты', image: 'catalog-5.png' },
+          { name: 'Декорации', image: 'catalog-6.png' },
+          { name: 'Стрейнеры', image: 'catalog-7.png' },
+          { name: 'Шейкеры, смесительные стаканы', image: 'catalog-8.png' },
+          { name: 'Барные ложки', image: 'catalog-9.png' },
+          { name: 'Инвентарь бариста', image: 'catalog-10.png' },
+          { name: 'Прочее', image: 'catalog-11.png' },
+          { name: 'Бутылки для флейринга', image: 'catalog-12.png' },
         ],
         'Сервировка стола и прочее': [
-          { name: 'Скатерти', image: 'catalog-1.png' },
-          { name: 'Салфетки', image: 'catalog-2.png' },
-          { name: 'Подставки под тарелки', image: 'catalog-3.png' },
-          { name: 'Подставки под бокалы', image: 'catalog-4.png' },
-          { name: 'Подставки под столовые приборы', image: 'catalog-5.png' },
-          { name: 'Салфетницы', image: 'catalog-6.png' },
-          { name: 'Хлебницы', image: 'catalog-7.png' },
-          { name: 'Масленки', image: 'catalog-8.png' },
-          { name: 'Сахарницы', image: 'catalog-9.png' },
-          { name: 'Солонки', image: 'catalog-10.png' },
-          { name: 'Перечницы', image: 'catalog-11.png' },
-          { name: 'Подносы', image: 'catalog-12.png' },
-          { name: 'Корзинки для хлеба', image: 'catalog-13.png' },
-          { name: 'Держатели для салфеток', image: 'catalog-14.png' },
-          { name: 'Наборы для сервировки', image: 'catalog-15.png' }
+          { name: 'Лампы и светильники', image: 'catalog-1.png' },
+          { name: 'Ведерки для льда', image: 'catalog-2.png' },
+          { name: 'Мельница для специй', image: 'catalog-3.png' },
+          { name: 'Салфетницы для ресторана', image: 'catalog-4.png' },
+          { name: 'Хлебницы', image: 'catalog-5.png' },
+          { name: 'Бутылки для масла', image: 'catalog-6.png' },
+          { name: 'Боксы для приборов и органащйеров', image: 'catalog-7.png' },
+          { name: 'Подставки для сумок', image: 'catalog-8.png' },
+          { name: 'Вазы для сервировки', image: 'catalog-9.png' },
+          { name: 'Подставки под зубачистки', image: 'catalog-10.png' },
+          { name: 'Сервировка стола и прочее', image: 'catalog-11.png' },
+          { name: 'Бараканчики, клоши, крышки для блюд', image: 'catalog-12.png' },
+          { name: 'Менажи', image: 'catalog-13.png' },
+          { name: 'Наборы для специй', image: 'catalog-14.png' },
+           { name: 'Пепельницы', image: 'catalog-15.png' },
+           { name: 'Подсвечники и свечи', image: 'catalog-15.png' },
+           { name: 'Посуда чугунная порционная для подачи и запекания', image: 'catalog-15.png' },
+           { name: 'Фуршетная посуда для подачи из пластика', image: 'catalog-15.png' },
+           { name: 'Френч-прессы', image: 'catalog-15.png' },
+           { name: 'Блюда для подачи', image: 'catalog-15.png' },
+           { name: 'Наборы для Саджа, Фондю', image: 'catalog-15.png' },
+           { name: 'Подносы', image: 'catalog-15.png' },
+           { name: 'Барный инвентарь диспенсеры', image: 'catalog-15.png' }
         ],
-        'Мебель и декор': [
-          { name: 'Столы', image: 'catalog-1.png' },
-          { name: 'Стулья', image: 'catalog-2.png' },
-          { name: 'Скамейки', image: 'catalog-3.png' },
-          { name: 'Шкафы', image: 'catalog-4.png' },
-          { name: 'Полки', image: 'catalog-5.png' },
-          { name: 'Стеллажи', image: 'catalog-6.png' },
-          { name: 'Тумбы', image: 'catalog-7.png' },
-          { name: 'Комоды', image: 'catalog-8.png' },
-          { name: 'Зеркала', image: 'catalog-9.png' },
-          { name: 'Картины', image: 'catalog-10.png' },
-          { name: 'Вазы', image: 'catalog-11.png' },
-          { name: 'Подсвечники', image: 'catalog-12.png' },
-          { name: 'Цветочные горшки', image: 'catalog-13.png' },
-          { name: 'Декоративные элементы', image: 'catalog-14.png' },
-          { name: 'Наборы мебели', image: 'catalog-15.png' }
-        ]
+        'Наплитная посуда, кухонный инвентарь': [
+          { name: 'Наплитная посуда', image: 'catalog-1.png' },
+          { name: 'Кухонный инвентарь', image: 'catalog-2.png' },
+          { name: 'Кондитерский инвентарь', image: 'catalog-3.png' },
+          { name: 'Ножи и аксессуары', image: 'catalog-4.png' },
+          { name: 'Инвентарь для пиццы', image: 'catalog-5.png' },
+        ],
+        'Наплитная посуда': [
+          { name: 'Сковороды', image: 'catalog-1.png' },
+          { name: 'Кастрюли', image: 'catalog-2.png' },
+          { name: 'Сотейники', image: 'catalog-3.png' },
+          { name: 'Ковши', image: 'catalog-4.png' },
+        ],
+        'Кухонный инвентарь': [
+          { name: 'Кухонные ножи', image: 'catalog-1.png' },
+          { name: 'Разделочные доски', image: 'catalog-2.png' },
+          { name: 'Кухонные принадлежности', image: 'catalog-3.png' },
+          { name: 'Измерительные приборы', image: 'catalog-4.png' },
+        ],
+        'Кондитерский инвентарь': [
+          { name: 'Формы для выпечки', image: 'catalog-1.png' },
+          { name: 'Кондитерские мешки', image: 'catalog-2.png' },
+          { name: 'Насадки для кондитерских мешков', image: 'catalog-3.png' },
+          { name: 'Кондитерские инструменты', image: 'catalog-4.png' },
+        ],
+        'Ножи и аксессуары': [
+          { name: 'Поварские ножи', image: 'catalog-1.png' },
+          { name: 'Ножи для хлеба', image: 'catalog-2.png' },
+          { name: 'Ножи для сыра', image: 'catalog-3.png' },
+          { name: 'Точилки для ножей', image: 'catalog-4.png' },
+        ],
+        'Инвентарь для пиццы': [
+          { name: 'Лопатки для пиццы', image: 'catalog-1.png' },
+          { name: 'Формы для пиццы', image: 'catalog-2.png' },
+          { name: 'Ножи для пиццы', image: 'catalog-3.png' },
+        ],
+        'Текстиль': [
+          { name: 'Салфетки и плейсматы', image: 'catalog-1.png' },
+          { name: 'Скатерти и дорожки', image: 'catalog-2.png' },
+        ],
+        'Стеклянная посуда': [
+          { name: 'Тарелки', image: 'catalog-1.png' },
+          { name: 'Салатники', image: 'catalog-2.png' },
+          { name: 'Блюда', image: 'catalog-2.png' },
+          { name: 'Соусники', image: 'catalog-2.png' },
+          { name: 'Чайники', image: 'catalog-2.png' },
+          { name: 'Чашки', image: 'catalog-2.png' },
+        ],
       },
       isScrolled: false,
       init() {
@@ -521,11 +567,18 @@
               <!-- Menu btn -->
               <button
                 class="xl:hidden transition duration-200"
-                @click="$store.mobileMenuOpen = !$store.mobileMenuOpen"
+                @click="
+                  if ($store.mobileMenuOpen || catalogOpen) {
+                    $store.mobileMenuOpen = false;
+                    catalogOpen = false;
+                  } else {
+                    $store.mobileMenuOpen = true;
+                  }
+                "
               >
-                <!-- Hamburger Icon (when menu is closed) -->
+                <!-- Hamburger Icon (when both menu and catalog are closed) -->
                 <svg
-                  x-show="!$store.mobileMenuOpen"
+                  x-show="!$store.mobileMenuOpen && !catalogOpen"
                   width="32"
                   height="32"
                   viewBox="0 0 32 32"
@@ -558,9 +611,9 @@
                   />
                 </svg>
 
-                <!-- X Icon (when menu is open) -->
+                <!-- X Icon (when menu or catalog is open) -->
                 <svg
-                  x-show="$store.mobileMenuOpen"
+                  x-show="$store.mobileMenuOpen || catalogOpen"
                   width="32"
                   height="32"
                   viewBox="0 0 32 32"
@@ -587,44 +640,104 @@
             @click.outside="$store.mobileMenuOpen = false"
           >
             <div
-              class="size-full h-[calc(100vh-84px)] flex flex-col justify-between gap-8 bg-main-yellow rounded-b-lg overflow-auto pb-10 px-4 mobile-menu-scroll"
+              class="size-full h-[calc(100vh-84px)] flex flex-col justify-between gap-8 bg-main-yellow rounded-b-lg overflow-auto pb-10 px-4 custom-scroll"
             >
               <ul class="divide-y divide-white text-2xl/7.25 font-medium">
                 <li>
-                  <a href="#" class="block py-4">Каталог товаров</a>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="catalogOpen = true; $store.mobileMenuOpen = false"
+                    >Каталог товаров</a
+                  >
                 </li>
                 <li>
-                  <a href="#" class="block py-4">О компании</a>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >О компании</a
+                  >
                 </li>
                 <li>
-                  <a href="#" class="block py-4">Наше производство</a>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Наше производство</a
+                  >
                 </li>
                 <li>
-                  <a href="#" class="block py-4">Бренды</a>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Бренды</a
+                  >
                 </li>
                 <li>
-                  <a href="#" class="block py-4">Доставка</a>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Доставка</a
+                  >
                 </li>
                 <li>
-                  <a href="#" class="block py-4">Оплата</a>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Оплата</a
+                  >
                 </li>
                 <li>
-                  <a href="#" class="block py-4">Контакты</a>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Контакты</a
+                  >
                 </li>
                 <li>
-                  <a href="#" class="block py-4">Новинки</a>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Новинки</a
+                  >
                 </li>
                 <li>
-                  <a href="#" class="block py-4">Акции</a>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Акции</a
+                  >
                 </li>
                 <li>
-                  <a href="#" class="block py-4">Избранное</a>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Избранное</a
+                  >
                 </li>
                 <li>
-                  <a href="#" class="block py-4">Для партнеров</a>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Для партнеров</a
+                  >
                 </li>
                 <li>
-                  <a href="#" class="block py-4">Личный кабинет</a>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Личный кабинет</a
+                  >
                 </li>
               </ul>
 
@@ -658,6 +771,7 @@
                       <a
                         href="#"
                         class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
+                        @click="$store.mobileMenuOpen = false"
                       >
                         <svg
                           width="21"
@@ -678,6 +792,7 @@
                       <a
                         href="#"
                         class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
+                        @click="$store.mobileMenuOpen = false"
                       >
                         <svg
                           width="20"
@@ -698,6 +813,7 @@
                       <a
                         href="#"
                         class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
+                        @click="$store.mobileMenuOpen = false"
                       >
                         <svg
                           width="26"
@@ -724,7 +840,7 @@
 
         <!-- Catalog -->
         <div
-          class="container-base w-full hidden lg:block absolute left-0 top-full z-50"
+          class="custom-scroll container-base w-full absolute top-full inset-x-0 right-0 lg:right-auto z-50 bg-white lg:bg-transparent"
           x-show="catalogOpen"
           x-transition:enter="transition-all ease-out duration-300"
           x-transition:enter-start="opacity-0 transform -translate-y-4"
@@ -735,77 +851,388 @@
           @click.outside="catalogOpen = false"
         >
           <div
-            class="w-full flex !items-stretch bg-white rounded-b-lg px-6 relative overflow-y-auto"
+            class="catalog-mobile-scroll overflow-auto h-[calc(100vh-64px)] lg:h-auto w-full grid lg:flex !items-stretch bg-white rounded-b-lg px-4 lg:px-6 relative"
           >
             <!-- Left Categories -->
-            <div class="border-r border-main-gray/20 pt-6 pr-1">
+            <div class="lg:border-r border-main-gray/20 lg:pt-6 lg:pr-1">
               <div
-                class="w-66.5 shrink-0 h-full text-xs xl:text-main-sm/4.5 tracking-tighter"
+                class="lg:w-66.5 shrink-0 h-full font-medium lg:font-normal text-lg/5.75 lg:text-xs xl:text-main-sm/4.5 tracking-tighter"
               >
-                <ul class="space-y-2">
-                  <li
-                    class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
-                    :class="selectedCategory === 'Фарфоровая и керамическая посуда' ? 'bg-main-silver' : ''"
-                    @click="selectedCategory = 'Фарфоровая и керамическая посуда'"
+                <div
+                  class="flex lg:hidden items-center gap-3 border-b border-main-gray-200 mb-4 py-4"
+                >
+                  <!-- Back Button -->
+                  <button @click="goBack()">
+                    <svg
+                      width="32"
+                      height="32"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="0.5"
+                        y="0.5"
+                        width="31"
+                        height="31"
+                        rx="15.5"
+                        stroke="#303030"
+                      />
+                      <path d="M19 24L11 16L19 8" stroke="#303030" />
+                    </svg>
+                  </button>
+
+                  <h2
+                    class="lg:hidden text-2xl/7.25 font-medium lg:font-normal lg:text-xs xl:text-main-sm/4.5 tracking-tighter"
+                    x-text="showProducts ? selectedCategory : 'Каталог'"
                   >
-                    Фарфоровая и керамическая посуда
+                    Каталог
+                  </h2>
+                </div>
+                <ul
+                  class="space-y-6 lg:space-y-2"
+                  x-show="!showProducts"
+                  x-transition:enter="transition-all ease-out duration-300"
+                  x-transition:enter-start="opacity-0 transform translate-x-4"
+                  x-transition:enter-end="opacity-100 transform translate-x-0"
+                  x-transition:leave="transition-all ease-in duration-200"
+                  x-transition:leave-start="opacity-100 transform translate-x-0"
+                  x-transition:leave-end="opacity-0 transform -translate-x-4"
+                >
+                  <li
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Фарфоровая и керамическая посуда' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Фарфоровая и керамическая посуда')"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/catalog-1.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Фарфоровая и керамическая посуда
+                    </div>
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
                   </li>
                   <li
-                    class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
-                    :class="selectedCategory === 'Бокалы и барное стекло' ? 'bg-main-silver' : ''"
-                    @click="selectedCategory = 'Бокалы и барное стекло'"
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Бокалы и барное стекло' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Бокалы и барное стекло')"
                   >
-                    Бокалы и барное стекло
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/catalog-2.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Бокалы и барное стекло
+                    </div>
+
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
                   </li>
                   <li
-                    class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
-                    :class="selectedCategory === 'Столовые приборы' ? 'bg-main-silver' : ''"
-                    @click="selectedCategory = 'Столовые приборы'"
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Столовые приборы' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Столовые приборы')"
                   >
-                    Столовые приборы
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/catalog-3.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Столовые приборы
+                    </div>
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
                   </li>
                   <li
-                    class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
-                    :class="selectedCategory === 'Деревянная посуда' ? 'bg-main-silver' : ''"
-                    @click="selectedCategory = 'Деревянная посуда'"
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Деревянная посуда' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Деревянная посуда')"
                   >
-                    Деревянная посуда
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/catalog-4.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Деревянная посуда
+                    </div>
+
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
                   </li>
                   <li
-                    class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
-                    :class="selectedCategory === 'Металлическая посуда' ? 'bg-main-silver' : ''"
-                    @click="selectedCategory = 'Металлическая посуда'"
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Металлическая посуда' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Металлическая посуда')"
                   >
-                    Металлическая посуда
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/catalog-5.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Металлическая посуда
+                    </div>
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
                   </li>
                   <li
-                    class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
-                    :class="selectedCategory === 'Барный инвентарь' ? 'bg-main-silver' : ''"
-                    @click="selectedCategory = 'Барный инвентарь'"
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Барный инвентарь' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Барный инвентарь')"
                   >
-                    Барный инвентарь
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/catalog-6.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Барный инвентарь
+                    </div>
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
                   </li>
                   <li
-                    class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
-                    :class="selectedCategory === 'Сервировка стола и прочее' ? 'bg-main-silver' : ''"
-                    @click="selectedCategory = 'Сервировка стола и прочее'"
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Сервировка стола и прочее' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Сервировка стола и прочее')"
                   >
-                    Сервировка стола и прочее
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/catalog-7.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Сервировка стола и прочее
+                    </div>
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
                   </li>
                   <li
-                    class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 px-2.5"
-                    :class="selectedCategory === 'Мебель и декор' ? 'bg-main-silver' : ''"
-                    @click="selectedCategory = 'Мебель и декор'"
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Текстиль' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Текстиль')"
                   >
-                    Мебель и декор
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/catalog-2.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Текстиль
+                    </div>
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
                   </li>
+                  <li
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Стеклянная посуда' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Стеклянная посуда')"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/catalog-3.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Стеклянная посуда
+                    </div>
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
+                  </li>
+                  <!-- Mobile: Regular category, Desktop: Accordion -->
                   <div x-data="{ open: false }" @click.outside="open = false">
+                    <!-- Mobile: Regular category button -->
                     <li
-                      class="flex-between cursor-pointer rounded-lg py-2 px-2.5"
+                      class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5 lg:hidden"
+                      :class="selectedCategory === 'Наплитная посуда, кухонный инвентарь' ? 'lg:bg-main-silver' : ''"
+                      @click="navigateToProducts('Наплитная посуда, кухонный инвентарь')"
+                    >
+                      <div class="flex items-center gap-3">
+                        <div
+                          class="size-15 shrink-0 rounded-lg bg-main-silver relative"
+                        >
+                          <img
+                            src="./assets/images/catalog-8.png"
+                            class="size-full object-cover absolute bottom-0"
+                            alt=""
+                          />
+                        </div>
+                        Наплитная посуда, кухонный <br />
+                        инвентарь
+                      </div>
+                      <svg
+                        width="9"
+                        height="15"
+                        viewBox="0 0 9 15"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                          stroke="#303030"
+                          stroke-width="1.6"
+                        />
+                      </svg>
+                    </li>
+
+                    <!-- Desktop: Accordion button -->
+                    <li
+                      class="flex-between cursor-pointer rounded-lg lg:py-2 lg:px-2.5 hidden lg:flex"
                       @click="open = !open"
                     >
-                      Наплитная посуда, кухонный <br />
-                      инвентарь
+                      <div class="flex items-center gap-3">
+                        Наплитная посуда, кухонный инвентарь
+                      </div>
                       <svg
                         width="24"
                         height="24"
@@ -823,8 +1250,9 @@
                       </svg>
                     </li>
 
+                    <!-- Desktop: Accordion subcategories -->
                     <ul
-                      class="space-y-2 w-full pt-2 pb-5 overflow-hidden"
+                      class="space-y-2 w-full pt-2 pb-5 overflow-hidden hidden lg:block"
                       x-show="open"
                       x-transition:enter="transition-all ease-out duration-300"
                       x-transition:enter-start="opacity-0 max-h-0 transform -translate-y-2"
@@ -834,57 +1262,98 @@
                       x-transition:leave-end="opacity-0 max-h-0 transform -translate-y-2"
                     >
                       <li
-                        class="bg-main-silver cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                        :class="selectedCategory === 'Наплитная посуда' ? 'bg-main-silver' : ''"
+                        @click="navigateToProducts('Наплитная посуда')"
                       >
                         Наплитная посуда
                       </li>
                       <li
                         class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                        :class="selectedCategory === 'Кухонный инвентарь' ? 'bg-main-silver' : ''"
+                        @click="navigateToProducts('Кухонный инвентарь')"
                       >
                         Кухонный инвентарь
                       </li>
                       <li
                         class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                        :class="selectedCategory === 'Кондитерский инвентарь' ? 'bg-main-silver' : ''"
+                        @click="navigateToProducts('Кондитерский инвентарь')"
                       >
                         Кондитерский инвентарь
                       </li>
                       <li
                         class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                        :class="selectedCategory === 'Ножи и аксессуары' ? 'bg-main-silver' : ''"
+                        @click="navigateToProducts('Ножи и аксессуары')"
                       >
                         Ножи и аксессуары
                       </li>
                       <li
                         class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
-                      >
-                        Инвентарь для пиццы
-                      </li>
-                      <li
-                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
-                      >
-                        Инвентарь для пиццы
-                      </li>
-                      <li
-                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
-                      >
-                        Инвентарь для пиццы
-                      </li>
-                      <li
-                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
-                      >
-                        Инвентарь для пиццы
-                      </li>
-                      <li
-                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                        :class="selectedCategory === 'Инвентарь для пиццы' ? 'bg-main-silver' : ''"
+                        @click="navigateToProducts('Инвентарь для пиццы')"
                       >
                         Инвентарь для пиццы
                       </li>
                     </ul>
                   </div>
                 </ul>
+
+                <!-- Products View -->
+                <div
+                  x-show="showProducts"
+                  class="lg:hidden"
+                  :key="selectedCategory"
+                  x-transition:enter="transition-all ease-out duration-300"
+                  x-transition:enter-start="opacity-0 transform -translate-x-4"
+                  x-transition:enter-end="opacity-100 transform translate-x-0"
+                  x-transition:leave="transition-all ease-in duration-200"
+                  x-transition:leave-start="opacity-100 transform translate-x-0"
+                  x-transition:leave-end="opacity-0 transform translate-x-4"
+                >
+                  <ul class="space-y-6">
+                    <template
+                      x-for="item in categoryData[selectedCategory]"
+                      :key="`${selectedCategory}-${item.name}`"
+                    >
+                      <li
+                        class="flex-between gap-3 cursor-pointer rounded-lg transition-colors duration-200"
+                        @click="selectedCategory === 'Наплитная посуда, кухонный инвентарь' ? navigateToProducts(item.name) : navigateToProduct(item.name)"
+                      >
+                        <div class="flex items-center gap-3">
+                          <div
+                            class="size-15 shrink-0 rounded-lg bg-main-silver relative"
+                          >
+                            <img
+                              :src="`./assets/images/${item.image}`"
+                              class="size-full object-cover absolute bottom-0"
+                              :alt="item.name"
+                            />
+                          </div>
+                          <span x-text="item.name"></span>
+                        </div>
+                        <svg
+                          width="9"
+                          height="15"
+                          viewBox="0 0 9 15"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                            stroke="#303030"
+                            stroke-width="1.6"
+                          />
+                        </svg>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
               </div>
             </div>
             <!-- Center Products -->
-            <div class="space-y-5 !shrink pl-6 pr-3 pt-6 pb-10">
+            <div class="hidden lg:block space-y-5 flex-1 pl-6 pr-3 pt-6 pb-10">
               <p
                 class="font-medium text-main-dark transition-all duration-300 ease-out"
                 x-text="selectedCategory"
@@ -923,10 +1392,12 @@
               </div>
             </div>
             <!-- Right Filters -->
-            <div class="w-66.5 shrink-0 space-y-6 py-6">
+            <div
+              class="lg:w-66.5 shrink-0 space-y-13 lg:space-y-6 pb-10 pt-13 lg:py-6"
+            >
               <!-- Search By Brands -->
               <div
-                class="space-y-3"
+                class="space-y-6 lg:space-y-3"
                 x-data="{ 
                 showMoreBrands: false,
                 additionalBrands: [
@@ -942,7 +1413,11 @@
                 ]
               }"
               >
-                <p class="font-medium text-main-dark">Поиск по брендам</p>
+                <p
+                  class="text-2xl/7.25 lg:text-lg/5.75 font-medium text-main-dark"
+                >
+                  Поиск по брендам
+                </p>
 
                 <!-- Brands -->
                 <div
@@ -1028,7 +1503,11 @@
 
               <!-- Search By Series -->
               <div class="space-y-3">
-                <p class="font-medium text-main-dark">Поиск по сериям</p>
+                <p
+                  class="text-2xl/7.25 lg:text-lg/5.75 font-medium text-main-dark"
+                >
+                  Поиск по сериям
+                </p>
                 <div class="space-y-3">
                   <div class="space-y-1">
                     <span class="text-main-sm/4.5 text-main-gray"
@@ -1310,7 +1789,11 @@
 
               <!-- Search By Article -->
               <div class="space-y-3">
-                <p class="font-medium text-main-dark">Поиск по сериям</p>
+                <p
+                  class="text-2xl/7.25 lg:text-lg/5.75 font-medium text-main-dark"
+                >
+                  Поиск по сериям
+                </p>
 
                 <div class="relative">
                   <input
@@ -1340,7 +1823,6 @@
             </div>
           </div>
         </div>
-
         <!-- Catalog overlay -->
         <div
           :class="isScrolled ? 'fixed top-0 inset-x-0 bottom-0 w-full hidden lg:block bg-main-black/50 transition-all duration-150 ease-out' : 'fixed top-16 lg:top-21 xl:top-24.5 inset-x-0 bottom-0 w-full hidden lg:block bg-main-black/50 transition-all duration-150 ease-out'"
