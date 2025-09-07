@@ -236,6 +236,12 @@
   .left-0 {
     left: calc(var(--spacing) * 0);
   }
+  .left-1 {
+    left: calc(var(--spacing) * 1);
+  }
+  .left-1\/2 {
+    left: calc(1/2 * 100%);
+  }
   .z-0 {
     z-index: 0;
   }
@@ -347,6 +353,9 @@
   .h-43\.5 {
     height: calc(var(--spacing) * 43.5);
   }
+  .h-50 {
+    height: calc(var(--spacing) * 50);
+  }
   .h-56 {
     height: calc(var(--spacing) * 56);
   }
@@ -373,6 +382,12 @@
   }
   .max-h-\[calc\(100vh-180px\)\] {
     max-height: calc(100vh - 180px);
+  }
+  .min-h-43 {
+    min-height: calc(var(--spacing) * 43);
+  }
+  .min-h-43\.5 {
+    min-height: calc(var(--spacing) * 43.5);
   }
   .w-4 {
     width: calc(var(--spacing) * 4);
@@ -418,6 +433,14 @@
   }
   .border-collapse {
     border-collapse: collapse;
+  }
+  .-translate-x-1 {
+    --tw-translate-x: calc(var(--spacing) * -1);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .-translate-x-1\/2 {
+    --tw-translate-x: calc(calc(1/2 * 100%) * -1);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .-translate-y-1 {
     --tw-translate-y: calc(var(--spacing) * -1);
@@ -474,6 +497,9 @@
   }
   .grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .flex-col {
     flex-direction: column;
@@ -741,6 +767,9 @@
   }
   .pb-10 {
     padding-bottom: calc(var(--spacing) * 10);
+  }
+  .pl-4 {
+    padding-left: calc(var(--spacing) * 4);
   }
   .pl-5 {
     padding-left: calc(var(--spacing) * 5);
@@ -1094,6 +1123,16 @@
       }
     }
   }
+  .xs\:block {
+    @media (width >= 576px) {
+      display: block;
+    }
+  }
+  .xs\:hidden {
+    @media (width >= 576px) {
+      display: none;
+    }
+  }
   .xs\:grid-cols-2 {
     @media (width >= 576px) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1336,6 +1375,11 @@
   .xl\:hidden {
     @media (width >= 1280px) {
       display: none;
+    }
+  }
+  .xl\:h-43\.5 {
+    @media (width >= 1280px) {
+      height: calc(var(--spacing) * 43.5);
     }
   }
   .xl\:h-\[calc\(100vh-98px\)\] {
