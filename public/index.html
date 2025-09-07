@@ -6,14 +6,71 @@
     <title>Document</title>
     <!-- Styles -->
     <link rel="stylesheet" href="./css/styles.css" />
+    <style>
+      /* Custom scrollbar for mobile menu */
+      .mobile-menu-scroll::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .mobile-menu-scroll::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .mobile-menu-scroll::-webkit-scrollbar-thumb {
+        background: linear-gradient(
+          180deg,
+          #ffd700 0%,
+          #ffa500 50%,
+          #ff8c00 100%
+        );
+        border-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .mobile-menu-scroll::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(
+          180deg,
+          #ffe55c 0%,
+          #ffb84d 50%,
+          #ff9f40 100%
+        );
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        transform: scale(1.05);
+      }
+
+      .mobile-menu-scroll::-webkit-scrollbar-thumb:active {
+        background: linear-gradient(
+          180deg,
+          #ffc107 0%,
+          #ff9800 50%,
+          #f57c00 100%
+        );
+      }
+
+      /* Firefox scrollbar */
+      .mobile-menu-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: #ffd700 transparent;
+      }
+    </style>
     <!-- Alpine.js -->
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"
     ></script>
+    <script>
+      document.addEventListener("alpine:init", () => {
+        Alpine.store("mobileMenuOpen", false);
+      });
+    </script>
   </head>
 
-  <body x-data="{ catalogOpen: false }">
+  <body
+    x-data="{ catalogOpen: false }"
+    :class="{ 'overflow-hidden': $store.mobileMenuOpen }"
+  >
     <!-- Header -->
     <header
       class="max-xl:mt-4 mb-6 xl:mb-4"
@@ -238,7 +295,7 @@
 
         <!-- Bottom -->
         <div
-          class="bg-main-yellow max-lg:rounded-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8"
+          :class="$store.mobileMenuOpen ? 'relative z-50 bg-main-yellow max-lg:rounded-t-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8' : 'relative z-50 bg-main-yellow max-lg:rounded-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8'"
         >
           <!-- Logo -->
           <a class="shrink-0 lg:flex items-end" href="#">
@@ -418,7 +475,7 @@
                 <p class="text-main-sm/4.5">Войти</p>
               </a>
 
-              <a href="#" class="transition duration-200 hover:text-main-gray">
+              <a href="#" class="transition duration-200">
                 <svg
                   width="32"
                   height="32"
@@ -463,9 +520,12 @@
 
               <!-- Menu btn -->
               <button
-                class="xl:hidden transition duration-200 hover:text-main-gray"
+                class="xl:hidden transition duration-200"
+                @click="$store.mobileMenuOpen = !$store.mobileMenuOpen"
               >
+                <!-- Hamburger Icon (when menu is closed) -->
                 <svg
+                  x-show="!$store.mobileMenuOpen"
                   width="32"
                   height="32"
                   viewBox="0 0 32 32"
@@ -497,7 +557,167 @@
                     fill="currentColor"
                   />
                 </svg>
+
+                <!-- X Icon (when menu is open) -->
+                <svg
+                  x-show="$store.mobileMenuOpen"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M25 25L16 16L25 7" stroke="#303030" />
+                  <path d="M7 7L16 16L7 25" stroke="#303030" />
+                </svg>
               </button>
+            </div>
+          </div>
+
+          <!-- Mobile Menu -->
+          <div
+            class="absolute inset-x-0 h-[calc(100vh-64px)] top-full z-50 bg-white overflow-auto"
+            x-show="$store.mobileMenuOpen"
+            x-transition:enter="transition-all ease-out duration-300"
+            x-transition:enter-start="opacity-0 transform -translate-y-4"
+            x-transition:enter-end="opacity-100 transform translate-y-0"
+            x-transition:leave="transition-all ease-in duration-250"
+            x-transition:leave-start="opacity-100 transform translate-y-0"
+            x-transition:leave-end="opacity-0 transform -translate-y-4"
+            @click.outside="$store.mobileMenuOpen = false"
+          >
+            <div
+              class="size-full h-[calc(100vh-84px)] flex flex-col justify-between gap-8 bg-main-yellow rounded-b-lg overflow-auto pb-1 px-4 mobile-menu-scroll"
+            >
+              <ul class="divide-y divide-white text-2xl/7.25 font-medium">
+                <li>
+                  <a href="#" class="block py-4">Каталог товаров</a>
+                </li>
+                <li>
+                  <a href="#" class="block py-4">О компании</a>
+                </li>
+                <li>
+                  <a href="#" class="block py-4">Наше производство</a>
+                </li>
+                <li>
+                  <a href="#" class="block py-4">Бренды</a>
+                </li>
+                <li>
+                  <a href="#" class="block py-4">Доставка</a>
+                </li>
+                <li>
+                  <a href="#" class="block py-4">Оплата</a>
+                </li>
+                <li>
+                  <a href="#" class="block py-4">Контакты</a>
+                </li>
+                <li>
+                  <a href="#" class="block py-4">Новинки</a>
+                </li>
+                <li>
+                  <a href="#" class="block py-4">Акции</a>
+                </li>
+                <li>
+                  <a href="#" class="block py-4">Избранное</a>
+                </li>
+                <li>
+                  <a href="#" class="block py-4">Для партнеров</a>
+                </li>
+                <li>
+                  <a href="#" class="block py-4">Личный кабинет</a>
+                </li>
+              </ul>
+
+              <!-- Bottom Contacts -->
+              <div class="space-y-8">
+                <ul class="space-y-4 leading-5.5">
+                  <li>
+                    <a href="tel:+74994305605"
+                      >+7 499 430 5605 (10:00—19:00 пн-пт)</a
+                    >
+                  </li>
+                  <li>
+                    <a href="tel:+880043478743"
+                      >8 800 434 78743 (Бесплатный звонок по России)</a
+                    >
+                  </li>
+                  <li>
+                    Москва, Котельническая набережная 25с1 (10:00—21:00 пн-пт)
+                  </li>
+                  <li>
+                    <a href="mailto:zakaz@restotouch.ru">zakaz@restotouch.ru</a>
+                  </li>
+                </ul>
+
+                <!-- Socials -->
+                <div class="space-y-6">
+                  <p class="font-medium leading-5">Следите за нами</p>
+                  <ul class="flex items-center gap-2">
+                    <!-- Telegram -->
+                    <li>
+                      <a
+                        href="#"
+                        class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
+                      >
+                        <svg
+                          width="21"
+                          height="19"
+                          viewBox="0 0 21 19"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M20.75 0.664441L17.5868 17.9695C17.5868 17.9695 17.1444 19.1696 15.9279 18.5936L11.4272 14.8494L8.53992 17.7058C8.53992 17.7058 8.31417 17.8916 8.06731 17.7752L8.62015 12.4695L8.63883 12.4853L8.65052 12.3771C8.65052 12.3771 16.7464 4.4807 17.0782 4.14465C17.41 3.80861 17.2993 3.73661 17.2993 3.73661C17.3214 3.32863 16.7021 3.73661 16.7021 3.73661L5.97399 11.1291L1.50578 9.49694C1.50578 9.49694 0.820092 9.23297 0.753732 8.65694C0.687373 8.0809 1.52788 7.76884 1.52788 7.76884L19.2901 0.208364C19.2901 0.208364 20.75 -0.487631 20.75 0.664441Z"
+                            fill="#FFE68D"
+                          />
+                        </svg>
+                      </a>
+                    </li>
+                    <!-- Whatsapp -->
+                    <li>
+                      <a
+                        href="#"
+                        class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M17.0856 2.90944C15.3786 1.20723 13.108 0.180898 10.6971 0.0217388C8.28617 -0.137421 5.89933 0.58145 3.98148 2.04436C2.06362 3.50728 0.745597 5.61442 0.273064 7.97306C-0.19947 10.3317 0.205728 12.7809 1.41314 14.8642L0 20L5.2789 18.6209C6.73696 19.4122 8.37082 19.8276 10.0315 19.8292C12.0017 19.8311 13.9282 19.2513 15.5673 18.1631C17.2063 17.0749 18.4843 15.5272 19.2394 13.7159C19.9946 11.9046 20.193 9.91102 19.8096 7.98742C19.4262 6.06381 18.4782 4.29662 17.0856 2.90944ZM10.0417 18.1535C8.55823 18.1551 7.10175 17.7587 5.82555 17.0059L5.5246 16.8279L2.39157 17.6455L3.22899 14.6066L3.03126 14.2954C2.05557 12.7485 1.62402 10.9226 1.80444 9.10496C1.98486 7.28727 2.76703 5.58079 4.02798 4.2538C5.28894 2.92681 6.95717 2.05455 8.77044 1.77415C10.5837 1.49374 12.4392 1.82108 14.0452 2.70472C15.6512 3.58836 16.9166 4.97819 17.6426 6.65571C18.3685 8.33324 18.5138 10.2033 18.0556 11.972C17.5975 13.7407 16.5618 15.3077 15.1114 16.4266C13.661 17.5456 11.8782 18.153 10.0431 18.1535H10.0417ZM14.5806 11.9858C14.332 11.8628 13.1093 11.2623 12.881 11.1812C12.6528 11.1002 12.4871 11.0568 12.3213 11.3042C12.1556 11.5517 11.6787 12.1103 11.5333 12.2752C11.388 12.4402 11.2426 12.4619 10.994 12.3375C10.2605 12.0468 9.58348 11.631 8.99347 11.1089C8.44971 10.6083 7.98331 10.0304 7.60941 9.39401C7.46403 9.14511 7.59342 9.01197 7.71845 8.88752C7.84348 8.76306 7.96706 8.59809 8.09209 8.45338C8.19403 8.3277 8.27772 8.18837 8.3407 8.0395C8.37392 7.97112 8.38934 7.89552 8.38553 7.81966C8.38172 7.74379 8.3588 7.6701 8.31889 7.60536C8.25783 7.48091 7.75916 6.26243 7.55271 5.76607C7.34627 5.2697 7.14564 5.35798 6.99298 5.34495C6.84033 5.33193 6.68186 5.33627 6.51612 5.33627C6.38976 5.33944 6.26544 5.36874 6.15106 5.4223C6.03668 5.47586 5.93474 5.55252 5.85172 5.6474C5.57036 5.91255 5.34752 6.23308 5.19734 6.58859C5.04716 6.94411 4.97295 7.32684 4.97941 7.71245C4.97941 8.93093 5.87207 10.1089 5.9971 10.2739C6.12213 10.4388 7.75189 12.938 10.2481 14.0103C10.7109 14.2091 11.1841 14.383 11.6656 14.5313C12.1732 14.6855 12.7099 14.7192 13.2329 14.6297C13.7112 14.5588 14.7056 14.0306 14.9121 13.4532C15.1185 12.8758 15.12 12.378 15.0575 12.2752C14.9949 12.1725 14.8292 12.1103 14.5806 11.9858Z"
+                            fill="#FFE68D"
+                          />
+                        </svg>
+                      </a>
+                    </li>
+                    <!-- VK -->
+                    <li>
+                      <a
+                        href="#"
+                        class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
+                      >
+                        <svg
+                          width="26"
+                          height="15"
+                          viewBox="0 0 26 15"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M24.9194 1.68432C25.0932 1.14166 24.9194 0.752763 24.093 0.752763H21.358C21.1015 0.735782 20.846 0.797421 20.631 0.928174C20.416 1.05893 20.2534 1.25154 20.1683 1.4763C20.1683 1.4763 18.7833 4.60742 16.8121 6.6478C16.1753 7.23748 15.8861 7.4256 15.5384 7.4256C15.3646 7.4256 15.1125 7.24471 15.1125 6.70206V1.68432C15.1125 1.04037 14.9172 0.752763 14.3311 0.752763H10.0333C9.9462 0.748133 9.85897 0.759584 9.77668 0.78645C9.69439 0.813316 9.61868 0.85506 9.55397 0.909256C9.48926 0.963452 9.43683 1.02902 9.39973 1.10214C9.36263 1.17527 9.34159 1.25449 9.33785 1.33521C9.33785 1.94479 10.3146 2.08588 10.424 3.80248V7.53232C10.424 8.34992 10.2638 8.49825 9.9161 8.49825C8.99012 8.49825 6.73377 5.34543 5.39755 1.73678C5.13382 1.03675 4.87204 0.752763 4.17267 0.752763H1.4377C0.656284 0.752763 0.5 1.09283 0.5 1.4763C0.5 2.14738 1.42794 5.47385 4.81734 9.87297C7.0776 12.872 10.2677 14.5 13.159 14.5C14.8977 14.5 15.1125 14.1382 15.1125 13.5142V11.2441C15.1125 10.5205 15.2766 10.3758 15.8275 10.3758C16.2339 10.3758 16.9293 10.5567 18.5508 12.0038C20.4067 13.7294 20.7114 14.5 21.7546 14.5H24.4896C25.271 14.5 25.6617 14.1382 25.437 13.4147C25.2124 12.6912 24.304 11.671 23.1299 10.4482C22.4911 9.74997 21.5358 9.0011 21.2467 8.62306C20.8403 8.14009 20.9556 7.92484 21.2467 7.49614C21.2467 7.49614 24.5677 3.15491 24.9252 1.67527L24.9194 1.68432Z"
+                            fill="#FFE68D"
+                          />
+                        </svg>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
