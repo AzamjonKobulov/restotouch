@@ -13,10 +13,7 @@
     ></script>
   </head>
 
-  <body
-    x-data="{ catalogOpen: false }"
-    :class="{ 'overflow-hidden': catalogOpen }"
-  >
+  <body x-data="{ catalogOpen: false }">
     <!-- Header -->
     <header
       class="max-xl:mt-4 mb-6 xl:mb-4"
@@ -159,6 +156,12 @@
           { name: 'Декоративные элементы', image: 'catalog-14.png' },
           { name: 'Наборы мебели', image: 'catalog-15.png' }
         ]
+      },
+      isScrolled: false,
+      init() {
+        window.addEventListener('scroll', () => {
+          this.isScrolled = window.scrollY > 0;
+        });
       }
     }"
     >
@@ -1102,7 +1105,7 @@
 
         <!-- Catalog overlay -->
         <div
-          class="fixed top-16 lg:top-21 xl:top-24.5 inset-x-0 bottom-0 w-full hidden lg:block bg-main-black/50"
+          :class="isScrolled ? 'fixed top-0 inset-x-0 bottom-0 w-full hidden lg:block bg-main-black/50 transition-all duration-150 ease-out' : 'fixed top-16 lg:top-21 xl:top-24.5 inset-x-0 bottom-0 w-full hidden lg:block bg-main-black/50 transition-all duration-150 ease-out'"
           x-show="catalogOpen"
           @click="catalogOpen = false"
           x-transition:enter="transition-opacity ease-out duration-300"

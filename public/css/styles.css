@@ -25,10 +25,8 @@
     --font-weight-light: 300;
     --font-weight-medium: 500;
     --tracking-tighter: -0.05em;
-    --tracking-tight: -0.025em;
     --radius-lg: 0.5rem;
     --radius-2xl: 1rem;
-    --radius-3xl: 1.5rem;
     --ease-in: cubic-bezier(0.4, 0, 1, 1);
     --ease-out: cubic-bezier(0, 0, 0.2, 1);
     --default-transition-duration: 150ms;
@@ -226,9 +224,6 @@
   .top-full {
     top: 100%;
   }
-  .right-0 {
-    right: calc(var(--spacing) * 0);
-  }
   .right-2 {
     right: calc(var(--spacing) * 2);
   }
@@ -358,17 +353,8 @@
   .h-56\.25 {
     height: calc(var(--spacing) * 56.25);
   }
-  .h-\[calc\(100vh-120px\)\] {
-    height: calc(100vh - 120px);
-  }
-  .h-\[calc\(100vh-140px\)\] {
-    height: calc(100vh - 140px);
-  }
-  .h-\[calc\(100vh-200px\)\] {
-    height: calc(100vh - 200px);
-  }
-  .h-\[calc\(100vh-400px\)\] {
-    height: calc(100vh - 400px);
+  .h-\[calc\(100vh-64px\)\] {
+    height: calc(100vh - 64px);
   }
   .h-full {
     height: 100%;
@@ -387,9 +373,6 @@
   }
   .max-h-\[calc\(100vh-180px\)\] {
     max-height: calc(100vh - 180px);
-  }
-  .max-h-max {
-    max-height: max-content;
   }
   .w-4 {
     width: calc(var(--spacing) * 4);
@@ -699,12 +682,6 @@
   .px-2\.5 {
     padding-inline: calc(var(--spacing) * 2.5);
   }
-  .px-3 {
-    padding-inline: calc(var(--spacing) * 3);
-  }
-  .px-3\.5 {
-    padding-inline: calc(var(--spacing) * 3.5);
-  }
   .px-4 {
     padding-inline: calc(var(--spacing) * 4);
   }
@@ -911,6 +888,18 @@
     transition-property: transform, translate, scale, rotate;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .duration-50 {
+    --tw-duration: 50ms;
+    transition-duration: 50ms;
+  }
+  .duration-100 {
+    --tw-duration: 100ms;
+    transition-duration: 100ms;
+  }
+  .duration-150 {
+    --tw-duration: 150ms;
+    transition-duration: 150ms;
   }
   .duration-200 {
     --tw-duration: 200ms;
@@ -1236,6 +1225,11 @@
       height: calc(var(--spacing) * 50);
     }
   }
+  .lg\:h-\[calc\(100vh-84px\)\] {
+    @media (width >= 1024px) {
+      height: calc(100vh - 84px);
+    }
+  }
   .lg\:max-w-80 {
     @media (width >= 1024px) {
       max-width: calc(var(--spacing) * 80);
@@ -1342,6 +1336,11 @@
   .xl\:hidden {
     @media (width >= 1280px) {
       display: none;
+    }
+  }
+  .xl\:h-\[calc\(100vh-98px\)\] {
+    @media (width >= 1280px) {
+      height: calc(100vh - 98px);
     }
   }
   .xl\:grid-cols-4 {
