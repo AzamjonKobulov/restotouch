@@ -26,7 +26,6 @@
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --tracking-tighter: -0.05em;
-    --radius-md: 0.375rem;
     --radius-lg: 0.5rem;
     --radius-2xl: 1rem;
     --ease-in: cubic-bezier(0.4, 0, 1, 1);
@@ -291,11 +290,17 @@
     align-items: center;
     justify-content: center;
   }
-  .line-clamp-3 {
+  .\!line-clamp-2 {
+    overflow: hidden !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+  }
+  .line-clamp-2 {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
   }
   .block {
     display: block;
@@ -492,26 +497,11 @@
     --tw-scale-z: 100%;
     scale: var(--tw-scale-x) var(--tw-scale-y);
   }
-  .rotate-45 {
-    rotate: 45deg;
-  }
   .rotate-90 {
     rotate: 90deg;
   }
   .rotate-180 {
     rotate: 180deg;
-  }
-  .rotate-\[40deg\] {
-    rotate: 40deg;
-  }
-  .rotate-\[48deg\] {
-    rotate: 48deg;
-  }
-  .rotate-\[50deg\] {
-    rotate: 50deg;
-  }
-  .rotate-\[60deg\] {
-    rotate: 60deg;
   }
   .transform {
     transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
@@ -759,6 +749,9 @@
   }
   .p-1 {
     padding: calc(var(--spacing) * 1);
+  }
+  .px-1 {
+    padding-inline: calc(var(--spacing) * 1);
   }
   .px-2 {
     padding-inline: calc(var(--spacing) * 2);

@@ -99,6 +99,12 @@
           console.log('Desktop product navigation:', productName);
         }
       },
+      truncateWords(text, maxWords = 4) {
+        if (!text) return '';
+        const words = text.split(' ');
+        if (words.length <= maxWords) return text;
+        return words.slice(0, maxWords).join(' ') + '...';
+      },
       categoryData: {
         'Фарфоровая и керамическая посуда': [
           { name: 'Мелкие столовые тарелки', image: 'catalog-1.png' },
@@ -236,36 +242,36 @@
           { name: 'Воки', image: 'stove-6.png' },
         ],
         'Кухонный инвентарь': [
-          { name: 'Кухонные ножи', image: 'kitchen-1.png' },
-          { name: 'Разделочные доски', image: 'kitchen-2.png' },
-          { name: 'Кухонные принадлежности', image: 'kitchen-3.png' },
-          { name: 'Измерительные приборы', image: 'kitchen-4.png' },
-          { name: 'Терки и измельчители', image: 'kitchen-5.png' },
-          { name: 'Кухонные весы', image: 'kitchen-6.png' },
+          { name: 'Сковороды', image: 'stove-1.png' },
+          { name: 'Кастрюли', image: 'stove-2.png' },
+          { name: 'Сотейники', image: 'stove-3.png' },
+          { name: 'Ковши', image: 'stove-4.png' },
+          { name: 'Грили', image: 'stove-5.png' },
+          { name: 'Воки', image: 'stove-6.png' },
         ],
         'Кондитерский инвентарь': [
-          { name: 'Формы для выпечки', image: 'pastry-1.png' },
-          { name: 'Кондитерские мешки', image: 'pastry-2.png' },
-          { name: 'Насадки для кондитерских мешков', image: 'pastry-3.png' },
-          { name: 'Кондитерские инструменты', image: 'pastry-4.png' },
-          { name: 'Формы для тортов', image: 'pastry-5.png' },
-          { name: 'Кондитерские шпатели', image: 'pastry-6.png' },
+          { name: 'Сковороды', image: 'stove-1.png' },
+          { name: 'Кастрюли', image: 'stove-2.png' },
+          { name: 'Сотейники', image: 'stove-3.png' },
+          { name: 'Ковши', image: 'stove-4.png' },
+          { name: 'Грили', image: 'stove-5.png' },
+          { name: 'Воки', image: 'stove-6.png' },
         ],
         'Ножи и аксессуары': [
-          { name: 'Поварские ножи', image: 'knife-1.png' },
-          { name: 'Ножи для хлеба', image: 'knife-2.png' },
-          { name: 'Ножи для сыра', image: 'knife-3.png' },
-          { name: 'Точилки для ножей', image: 'knife-4.png' },
-          { name: 'Ножны и чехлы', image: 'knife-5.png' },
-          { name: 'Наборы ножей', image: 'knife-6.png' },
+          { name: 'Сковороды', image: 'stove-1.png' },
+          { name: 'Кастрюли', image: 'stove-2.png' },
+          { name: 'Сотейники', image: 'stove-3.png' },
+          { name: 'Ковши', image: 'stove-4.png' },
+          { name: 'Грили', image: 'stove-5.png' },
+          { name: 'Воки', image: 'stove-6.png' },
         ],
         'Инвентарь для пиццы': [
-          { name: 'Лопатки для пиццы', image: 'pizza-1.png' },
-          { name: 'Формы для пиццы', image: 'pizza-2.png' },
-          { name: 'Ножи для пиццы', image: 'pizza-3.png' },
-          { name: 'Печи для пиццы', image: 'pizza-4.png' },
-          { name: 'Камень для пиццы', image: 'pizza-5.png' },
-          { name: 'Аксессуары для пиццы', image: 'pizza-6.png' },
+          { name: 'Сковороды', image: 'stove-1.png' },
+          { name: 'Кастрюли', image: 'stove-2.png' },
+          { name: 'Сотейники', image: 'stove-3.png' },
+          { name: 'Ковши', image: 'stove-4.png' },
+          { name: 'Грили', image: 'stove-5.png' },
+          { name: 'Воки', image: 'stove-6.png' },
         ],
         'Текстиль': [
           { name: 'Салфетки и плейсматы', image: 'textile-1.png' },
@@ -903,7 +909,7 @@
                   </button>
 
                   <h2
-                    class="lg:hidden text-2xl/7.25 font-medium lg:font-normal lg:text-xs xl:text-main-sm/4.5 tracking-tighter"
+                    class="lg:hidden text-2xl/7.25 font-medium lg:font-normal lg:text-xs xl:text-main-sm/4.5 tracking-tighter line-clamp-2"
                     x-text="showProducts ? selectedCategory : 'Каталог'"
                   >
                     Каталог
@@ -1383,7 +1389,7 @@
                               :alt="item.name"
                             />
                           </div>
-                          <span x-text="item.name"></span>
+                          <span x-text="item.name" class="line-clamp-2"></span>
                         </div>
                         <svg
                           width="9"
@@ -1423,14 +1429,14 @@
                   >
                     <a
                       href="#"
-                      class="h-43.5 group relative flex flex-col justify-between bg-main-silver rounded-lg transition-all duration-300 ease-out hover:bg-main-silver/80 overflow-hidden"
+                      class="h-43.5 group relative flex flex-col justify-between bg-main-silver rounded-lg transition-all duration-300 ease-out hover:bg-main-silver/80"
                       x-transition:enter="transition-all ease-out duration-300"
                       x-transition:enter-start="opacity-0 transform scale-95"
                       x-transition:enter-end="opacity-100 transform scale-100"
                     >
                       <p
-                        class="text-center text-xs/3.5 line-clamp-3 group-hover:scale-105 transition-all duration-300 ease-out px-4 py-2"
-                        x-text="item.name"
+                        class="text-center text-xs/3.5 group-hover:scale-105 transition-all duration-300 ease-out px-4 py-2"
+                        x-text="truncateWords(item.name)"
                       ></p>
 
                       <img
@@ -1452,6 +1458,11 @@
                 class="space-y-6 lg:space-y-3"
                 x-data="{ 
                 showMoreBrands: false,
+                selectedBrands: [],
+                brands: [
+                  'TUDOR', 'PORLAND', 'KUNSTWERK', 'P.L. PROFF CUISINE', 'COSY & TRENDY',
+                  'ARIANO DARO', '.L. PROFF CUISINE', 'SUMMA'
+                ],
                 additionalBrands: [
                   'BRAND A', 'BRAND B', 'BRAND C', 'BRAND D', 'BRAND E',
                   'BRAND F', 'BRAND G', 'BRAND H', 'BRAND I', 'BRAND J',
@@ -1462,7 +1473,14 @@
                   'BRAND EE', 'BRAND FF', 'BRAND GG', 'BRAND HH', 'BRAND II',
                   'BRAND JJ', 'BRAND KK', 'BRAND LL', 'BRAND MM', 'BRAND NN',
                   'BRAND OO', 'BRAND PP', 'BRAND QQ', 'BRAND RR', 'BRAND SS'
-                ]
+                ],
+                toggleBrand(brandName) {
+                  if (this.selectedBrands.includes(brandName)) {
+                    this.selectedBrands = this.selectedBrands.filter(b => b !== brandName);
+                  } else {
+                    this.selectedBrands.push(brandName);
+                  }
+                }
               }"
               >
                 <p
@@ -1475,61 +1493,16 @@
                 <div
                   class="flex items-center flex-wrap gap-x-1 gap-y-2 uppercase text-xs xl:text-main-sm/4.5"
                 >
-                  <button
-                    class="bg-main-silver rounded-[5px] hover:bg-main-yellow transition-colors duration-200 py-0.75 px-2"
-                  >
-                    TUDOR
-                  </button>
-                  <button
-                    class="bg-main-silver rounded-[5px] hover:bg-main-yellow transition-colors duration-200 py-0.75 px-2"
-                  >
-                    PORLAND
-                  </button>
-                  <button
-                    class="bg-main-silver rounded-[5px] hover:bg-main-yellow transition-colors duration-200 py-0.75 px-2"
-                  >
-                    KUNSTWERK
-                  </button>
-                  <button
-                    class="bg-main-silver rounded-[5px] hover:bg-main-yellow transition-colors duration-200 py-0.75 px-2"
-                  >
-                    P.L. PROFF CUISINE
-                  </button>
-                  <button
-                    class="bg-main-silver rounded-[5px] hover:bg-main-yellow transition-colors duration-200 py-0.75 px-2"
-                  >
-                    COSY & TRENDY
-                  </button>
-                  <button
-                    class="bg-main-silver rounded-[5px] hover:bg-main-yellow transition-colors duration-200 py-0.75 px-2"
-                  >
-                    ARIANO DARO
-                  </button>
-                  <button
-                    class="bg-main-silver rounded-[5px] hover:bg-main-yellow transition-colors duration-200 py-0.75 px-2"
-                  >
-                    .L. PROFF CUISINE
-                  </button>
-                  <button
-                    class="bg-main-silver rounded-[5px] hover:bg-main-yellow transition-colors duration-200 py-0.75 px-2"
-                  >
-                    .L. PROFF CUISINE
-                  </button>
-                  <button
-                    class="bg-main-silver rounded-[5px] hover:bg-main-yellow transition-colors duration-200 py-0.75 px-2"
-                  >
-                    SUMMA
-                  </button>
-                  <button
-                    class="bg-main-silver rounded-[5px] hover:bg-main-yellow transition-colors duration-200 py-0.75 px-2"
-                  >
-                    SUMMA
-                  </button>
-                  <button
-                    class="bg-main-silver rounded-[5px] hover:bg-main-yellow transition-colors duration-200 py-0.75 px-2"
-                  >
-                    SUMMA
-                  </button>
+                  <!-- Main brands -->
+                  <template x-for="brand in brands" :key="brand">
+                    <button
+                      :class="selectedBrands.includes(brand) ? 'bg-main-yellow' : 'bg-main-silver hover:bg-main-yellow'"
+                      class="rounded-[5px] transition-colors duration-200 py-0.75 px-2"
+                      @click="toggleBrand(brand)"
+                      x-text="brand"
+                    ></button>
+                  </template>
+
                   <!-- Additional hidden brands -->
                   <template x-for="brand in additionalBrands" :key="brand">
                     <button
@@ -1540,7 +1513,9 @@
                       x-transition:leave="transition-all ease-in duration-200"
                       x-transition:leave-start="opacity-100 transform scale-100"
                       x-transition:leave-end="opacity-0 transform scale-95"
-                      class="bg-main-silver rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-0.75 px-2"
+                      :class="selectedBrands.includes(brand) ? 'bg-main-yellow' : 'bg-main-silver hover:bg-main-yellow'"
+                      class="rounded-[5px] transition-colors duration-200 py-0.75 px-2"
+                      @click="toggleBrand(brand)"
                       x-text="brand"
                     ></button>
                   </template>
