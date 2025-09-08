@@ -97,6 +97,7 @@
         } else {
           // Desktop navigation logic (original behavior)
           console.log('Desktop product navigation:', productName);
+          this.checkScrollbar();
         }
       },
       truncateWords(text, maxWords = 4) {
@@ -104,6 +105,21 @@
         const words = text.split(' ');
         if (words.length <= maxWords) return text;
         return words.slice(0, maxWords).join(' ') + '...';
+      },
+      checkScrollbar() {
+        this.$nextTick(() => {
+          const scrollContainer = this.$el.querySelector('.custom-scroll');
+          if (scrollContainer) {
+            const hasScrollbar = scrollContainer.scrollHeight > scrollContainer.clientHeight;
+            if (hasScrollbar) {
+              scrollContainer.classList.remove('no-scrollbar');
+              scrollContainer.classList.add('has-scrollbar');
+            } else {
+              scrollContainer.classList.remove('has-scrollbar');
+              scrollContainer.classList.add('no-scrollbar');
+            }
+          }
+        });
       },
       categoryData: {
         'Фарфоровая и керамическая посуда': [
@@ -288,6 +304,9 @@
       },
       isScrolled: false,
       init() {
+        // Check scrollbar on initial load
+        this.checkScrollbar();
+        
         window.addEventListener('scroll', () => {
           const scrollY = window.scrollY;
           const width = window.innerWidth;
@@ -1422,17 +1441,15 @@
               >
                 <div
                   class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 transition-all duration-300 ease-out"
+                  :key="selectedCategory"
                 >
                   <template
-                    x-for="item in categoryData[selectedCategory]"
+                    x-for="(item, index) in categoryData[selectedCategory]"
                     :key="item.name"
                   >
                     <a
                       href="#"
-                      class="h-43.5 group relative flex flex-col justify-between bg-main-silver rounded-lg transition-all duration-300 ease-out hover:bg-main-silver/80"
-                      x-transition:enter="transition-all ease-out duration-300"
-                      x-transition:enter-start="opacity-0 transform scale-95"
-                      x-transition:enter-end="opacity-100 transform scale-100"
+                      class="h-43.5 group relative flex flex-col justify-between bg-main-silver rounded-lg transition-all duration-300 ease-out hover:bg-main-silver/80 hover:shadow-lg hover:-translate-y-1"
                     >
                       <p
                         class="text-center text-xs/3.5 group-hover:scale-105 transition-all duration-300 ease-out px-4 py-2"
@@ -1442,7 +1459,7 @@
                       <img
                         :src="`./assets/images/${item.image}`"
                         :alt="item.name"
-                        class="absolute left-1/2 -translate-x-1/2 bottom-0 transition-all duration-300 ease-out group-hover:scale-105"
+                        class="absolute left-1/2 -translate-x-1/2 bottom-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:-translate-y-2"
                       />
                     </a>
                   </template>

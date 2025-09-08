@@ -103,6 +103,20 @@
 }
 
 /* Scrollbar: custom-scroll */
+.custom-scroll {
+  contain: layout style paint;
+}
+
+/* Reserve space when scrollbar is not needed */
+.custom-scroll.no-scrollbar {
+  padding-right: 15px;
+}
+
+/* Remove reserved space when scrollbar is visible */
+.custom-scroll.has-scrollbar {
+  padding-right: 0;
+}
+
 .custom-scroll::-webkit-scrollbar {
   width: 15px;
   background-color: transparent;
@@ -157,4 +171,10 @@
 
 .catalog-mobile-scroll::-webkit-scrollbar-thumb {
   background-color: #ffe68d;
+}
+
+/* Optimize scroll performance */
+.custom-scroll * {
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
