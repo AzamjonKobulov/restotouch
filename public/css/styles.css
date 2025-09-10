@@ -955,6 +955,9 @@
     --tw-tracking: var(--tracking-tighter);
     letter-spacing: var(--tracking-tighter);
   }
+  .whitespace-nowrap {
+    white-space: nowrap;
+  }
   .text-gray-500 {
     color: var(--color-gray-500);
   }
