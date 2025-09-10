@@ -1,4 +1,57 @@
-@import url("https://fonts.cdnfonts.com/css/trial-rooftop");
+@font-face {
+  font-family: "Rooftop Wide";
+  src: url("/public/assets/fonts/rooftop/Rooftop-WideMedium.eot");
+  src: url("/public/assets/fonts/rooftop/Rooftop-WideMedium.eot?#iefix")
+      format("embedded-opentype"),
+    url("/public/assets/fonts/rooftop/Rooftop-WideMedium.woff2") format("woff2"),
+    url("/public/assets/fonts/rooftop/Rooftop-WideMedium.woff") format("woff"),
+    url("/public/assets/fonts/rooftop/Rooftop-WideMedium.ttf")
+      format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rooftop Compact Book";
+  src: url("/public/assets/fonts/rooftop/Rooftop-CompactBook.eot");
+  src: url("/public/assets/fonts/rooftop/Rooftop-CompactBook.eot?#iefix")
+      format("embedded-opentype"),
+    url("/public/assets/fonts/rooftop/Rooftop-CompactBook.woff2")
+      format("woff2"),
+    url("/public/assets/fonts/rooftop/Rooftop-CompactBook.woff") format("woff"),
+    url("/public/assets/fonts/rooftop/Rooftop-CompactBook.ttf")
+      format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rooftop";
+  src: url("/public/assets/fonts/rooftop/Rooftop-Regular.eot");
+  src: url("/public/assets/fonts/rooftop/Rooftop-Regular.eot?#iefix")
+      format("embedded-opentype"),
+    url("/public/assets/fonts/rooftop/Rooftop-Regular.woff2") format("woff2"),
+    url("/public/assets/fonts/rooftop/Rooftop-Regular.woff") format("woff"),
+    url("/public/assets/fonts/rooftop/Rooftop-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rooftop";
+  src: url("/public/assets/fonts/rooftop/Rooftop-Medium.eot");
+  src: url("/public/assets/fonts/rooftop/Rooftop-Medium.eot?#iefix")
+      format("embedded-opentype"),
+    url("/public/assets/fonts/rooftop/Rooftop-Medium.woff2") format("woff2"),
+    url("/public/assets/fonts/rooftop/Rooftop-Medium.woff") format("woff"),
+    url("/public/assets/fonts/rooftop/Rooftop-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
 
 @import "tailwindcss";
 
@@ -12,7 +65,9 @@
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1440px;
 
-  --font-rooftop: "TRIAL Rooftop";
+  --font-rooftop: "Rooftop";
+  --font-rooftop-compact-book: "Rooftop Compact Book";
+  --font-rooftop-wide: "Rooftop Wide";
   --color-main-black: #303030;
   --color-main-gray: #898989;
   --color-main-gray-100: #e5e5e5;
@@ -33,7 +88,7 @@
   }
 
   body {
-    @apply font-rooftop font-[450] text-main-black tracking-[0%] overflow-x-hidden;
+    @apply font-rooftop-compact-book font-[450] text-main-black tracking-[0%] overflow-x-hidden;
   }
 
   button {

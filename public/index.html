@@ -407,7 +407,7 @@
             />
           </a>
           <div class="w-full flex items-center gap-4 lg:gap-8.25">
-            <!-- Каталог  -->
+            <!-- Каталог -->
             <div class="w-full flex items-center gap-3.25">
               <button
                 class="max-lg:hidden bg-white lg:h-10.25 border border-transparent flex items-center gap-2 rounded-lg px-4 py-2 transition duration-200 hover:border-main-gray"
@@ -611,7 +611,7 @@
 
               <!-- Menu btn -->
               <button
-                class="xl:hidden transition duration-200"
+                class="xl:hidden transition duration-200 max-3xs:-ml-3"
                 @click="
                   if ($store.mobileMenuOpen || catalogOpen) {
                     $store.mobileMenuOpen = false;
@@ -687,7 +687,9 @@
             <div
               class="size-full h-[calc(100vh-84px)] flex flex-col justify-between gap-8 bg-main-yellow rounded-b-lg overflow-auto pb-10 px-4 custom-scroll"
             >
-              <ul class="divide-y divide-white text-2xl/7.25 font-medium">
+              <ul
+                class="divide-y divide-white text-2xl/7.25 font-medium font-rooftop"
+              >
                 <li>
                   <a
                     href="#"
@@ -809,7 +811,9 @@
 
                 <!-- Socials -->
                 <div class="space-y-6">
-                  <p class="font-medium leading-5">Следите за нами</p>
+                  <p class="font-rooftop-wide font-medium leading-5">
+                    Следите за нами
+                  </p>
                   <ul class="flex items-center gap-2">
                     <!-- Telegram -->
                     <li>
@@ -896,12 +900,12 @@
           @click.outside="catalogOpen = false"
         >
           <div
-            class="catalog-mobile-scroll overflow-auto h-[calc(100vh-64px)] lg:h-auto w-full grid lg:flex !items-stretch bg-white rounded-b-lg px-4 lg:px-6 relative"
+            class="catalog-mobile-scroll overflow-auto h-[calc(100vh-64px)] lg:h-auto w-full grid lg:flex !items-stretch bg-white rounded-b-lg lg:px-6 relative"
           >
             <!-- Left Categories -->
             <div class="lg:border-r border-main-gray/20 lg:pt-6 lg:pr-1">
               <div
-                class="lg:w-66.5 shrink-0 h-full font-medium lg:font-normal text-lg/5.75 lg:text-xs xl:text-main-sm/4.5 tracking-tighter"
+                class="lg:w-66.5 shrink-0 h-full font-rooftop font-medium lg:font-normal text-lg/5.75 lg:text-xs xl:text-main-sm/4.5"
               >
                 <div
                   class="flex lg:hidden items-center gap-3 border-b border-main-gray-200 mb-4 py-4"
@@ -928,7 +932,7 @@
                   </button>
 
                   <h2
-                    class="lg:hidden text-2xl/7.25 font-medium lg:font-normal lg:text-xs xl:text-main-sm/4.5 tracking-tighter line-clamp-2"
+                    class="lg:hidden text-2xl/7.25 font-rooftop-wide font-medium lg:font-normal lg:text-xs xl:text-main-sm/4.5 tracking-tighter line-clamp-2"
                     x-text="showProducts ? selectedCategory : 'Каталог'"
                   >
                     Каталог
@@ -967,7 +971,7 @@
                       viewBox="0 0 9 15"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      class="lg:hidden"
+                      class="shrink-0 lg:hidden"
                     >
                       <path
                         d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
@@ -1000,7 +1004,7 @@
                       viewBox="0 0 9 15"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      class="lg:hidden"
+                      class="shrink-0 lg:hidden"
                     >
                       <path
                         d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
@@ -1032,7 +1036,7 @@
                       viewBox="0 0 9 15"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      class="lg:hidden"
+                      class="shrink-0 lg:hidden"
                     >
                       <path
                         d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
@@ -1065,7 +1069,7 @@
                       viewBox="0 0 9 15"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      class="lg:hidden"
+                      class="shrink-0 lg:hidden"
                     >
                       <path
                         d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
@@ -1097,7 +1101,7 @@
                       viewBox="0 0 9 15"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      class="lg:hidden"
+                      class="shrink-0 lg:hidden"
                     >
                       <path
                         d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
@@ -1129,7 +1133,7 @@
                       viewBox="0 0 9 15"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      class="lg:hidden"
+                      class="shrink-0 lg:hidden"
                     >
                       <path
                         d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
@@ -1161,7 +1165,7 @@
                       viewBox="0 0 9 15"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      class="lg:hidden"
+                      class="shrink-0 lg:hidden"
                     >
                       <path
                         d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
@@ -1193,7 +1197,7 @@
                       viewBox="0 0 9 15"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      class="lg:hidden"
+                      class="shrink-0 lg:hidden"
                     >
                       <path
                         d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
@@ -1225,7 +1229,7 @@
                       viewBox="0 0 9 15"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      class="lg:hidden"
+                      class="shrink-0 lg:hidden"
                     >
                       <path
                         d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
@@ -1257,7 +1261,7 @@
                       viewBox="0 0 9 15"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      class="lg:hidden"
+                      class="shrink-0 lg:hidden"
                     >
                       <path
                         d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
@@ -1432,7 +1436,7 @@
             <!-- Center Products -->
             <div class="hidden lg:block space-y-5 flex-1 pl-6 pr-3 pt-6 pb-10">
               <p
-                class="font-medium text-main-dark transition-all duration-300 ease-out"
+                class="font-rooftop-wide font-medium text-main-dark transition-all duration-300 ease-out"
                 x-text="selectedCategory"
               ></p>
 
@@ -1501,7 +1505,7 @@
               }"
               >
                 <p
-                  class="text-2xl/7.25 lg:text-lg/5.75 font-medium text-main-dark"
+                  class="text-2xl/7.25 lg:text-lg/5.75 font-rooftop-wide font-medium text-main-dark"
                 >
                   Поиск по брендам
                 </p>
@@ -1548,7 +1552,7 @@
               <!-- Search By Series -->
               <div class="space-y-3">
                 <p
-                  class="text-2xl/7.25 lg:text-lg/5.75 font-medium text-main-dark"
+                  class="text-2xl/7.25 lg:text-lg/5.75 font-rooftop-wide font-medium text-main-dark"
                 >
                   Поиск по сериям
                 </p>
@@ -1576,7 +1580,7 @@
                             @click="brandsOpen = true"
                             :readonly="!brandsOpen"
                             class="w-full h-12 text-sm/4.75 outline-none pl-5 pr-10 py-3.5 bg-transparent"
-                            :class="brandsOpen ? 'cursor-text placeholder:text-gray-400' : 'font-medium cursor-pointer placeholder:text-main-black'"
+                            :class="brandsOpen ? 'cursor-text placeholder:text-gray-400' : ' font-rooftop-wide font-medium cursor-pointer placeholder:text-main-black'"
                           />
                           <div
                             class="absolute h-full top-0 right-5 flex items-center gap-2"
@@ -1703,7 +1707,7 @@
                           @click="seriesOpen = true"
                           :readonly="!seriesOpen"
                           class="w-full h-12 text-sm/4.75 outline-none pl-5 pr-10 py-3.5 bg-transparent"
-                          :class="seriesOpen ? 'cursor-text placeholder:text-gray-400' : 'font-medium cursor-pointer placeholder:text-main-gray'"
+                          :class="seriesOpen ? 'cursor-text placeholder:text-gray-400' : ' font-rooftop-wide font-medium cursor-pointer placeholder:text-main-gray'"
                         />
                         <div
                           class="absolute h-full top-0 right-5 flex items-center gap-2"
@@ -1834,7 +1838,7 @@
               <!-- Search By Article -->
               <div class="space-y-3">
                 <p
-                  class="text-2xl/7.25 lg:text-lg/5.75 font-medium text-main-dark"
+                  class="text-2xl/7.25 lg:text-lg/5.75 font-rooftop-wide font-medium text-main-dark"
                 >
                   Поиск по сериям
                 </p>
@@ -1913,7 +1917,9 @@
 
       <!-- Articles -->
       <section class="mb-16 lg:mb-24" x-data>
-        <h1 class="text-2xl/7.25 font-medium mb-6 lg:mb-8">Статьи</h1>
+        <h1 class="text-2xl/7.25 font-rooftop-wide font-medium mb-6 lg:mb-8">
+          Статьи
+        </h1>
 
         <!-- Grid -->
         <div
@@ -2121,7 +2127,7 @@
             <!-- 3 -->
             <a
               href="#"
-              class="shrink-0 size-10 lg:size-8 flex items-center justify-center bg-transparent rounded-full transition duration-200 hover:text-main-gray"
+              class="max-3xs:hidden shrink-0 size-10 lg:size-8 flex items-center justify-center bg-transparent rounded-full transition duration-200 hover:text-main-gray"
             >
               <span class="text-main-base/5">3</span>
             </a>
@@ -2192,7 +2198,7 @@
             </svg>
           </div>
           <span
-            class="font-medium text-2xl/7.25 transition duration-200 group-hover:text-main-gray"
+            class="font-rooftop-wide font-medium text-2xl/7.25 transition duration-200 group-hover:text-main-gray"
           >
             Наверх
           </span>
@@ -2250,7 +2256,11 @@
                 @click="open = !open"
                 class="max-md:cursor-pointer w-full flex items-center gap-3"
               >
-                <h3 class="font-medium text-lg/5.75 lg:text-base/5">О нас</h3>
+                <h3
+                  class="font-rooftop-wide font-medium text-lg/5.75 lg:text-base/5"
+                >
+                  О нас
+                </h3>
                 <svg
                   :class="open ? 'rotate-180' : ''"
                   class="md:hidden w-4 h-4 transition-transform duration-500"
@@ -2317,7 +2327,11 @@
                 @click="open = !open"
                 class="max-md:cursor-pointer w-full flex items-center gap-3"
               >
-                <h3 class="font-medium text-lg/5.75 lg:text-base/5">Каталог</h3>
+                <h3
+                  class="font-rooftop-wide font-medium text-lg/5.75 lg:text-base/5"
+                >
+                  Каталог
+                </h3>
                 <svg
                   :class="open ? 'rotate-180' : ''"
                   class="md:hidden w-4 h-4 transition-transform duration-500"
@@ -2381,7 +2395,11 @@
           <!-- 4 -->
           <div class="w-full lg:max-w-87.5">
             <div class="mb-6 lg:mb-8">
-              <h3 class="font-medium text-lg/5.75 lg:text-base/5">Контакты</h3>
+              <h3
+                class="font-rooftop-wide font-medium text-lg/5.75 lg:text-base/5"
+              >
+                Контакты
+              </h3>
             </div>
             <div
               class="leading-5.5 lg:text-main-sm/4.5 w-full max-w-65 flex flex-col gap-4.5 lg:gap-3 mb-10 md:mb-16 lg:mb-21"
