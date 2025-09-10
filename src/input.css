@@ -1,11 +1,11 @@
 @font-face {
   font-family: "Rooftop Wide";
-  src: url("/assets/fonts/rooftop/Rooftop-WideMedium.eot");
-  src: url("/assets/fonts/rooftop/Rooftop-WideMedium.eot?#iefix")
+  src: url("../assets/fonts/rooftop/Rooftop-WideMedium.eot");
+  src: url("../assets/fonts/rooftop/Rooftop-WideMedium.eot?#iefix")
       format("embedded-opentype"),
-    url("/assets/fonts/rooftop/Rooftop-WideMedium.woff2") format("woff2"),
-    url("/assets/fonts/rooftop/Rooftop-WideMedium.woff") format("woff"),
-    url("/assets/fonts/rooftop/Rooftop-WideMedium.ttf") format("truetype");
+    url("../assets/fonts/rooftop/Rooftop-WideMedium.woff2") format("woff2"),
+    url("../assets/fonts/rooftop/Rooftop-WideMedium.woff") format("woff"),
+    url("../assets/fonts/rooftop/Rooftop-WideMedium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -13,12 +13,12 @@
 
 @font-face {
   font-family: "Rooftop Compact Book";
-  src: url("/assets/fonts/rooftop/Rooftop-CompactBook.eot");
-  src: url("/assets/fonts/rooftop/Rooftop-CompactBook.eot?#iefix")
+  src: url("../assets/fonts/rooftop/Rooftop-CompactBook.eot");
+  src: url("../assets/fonts/rooftop/Rooftop-CompactBook.eot?#iefix")
       format("embedded-opentype"),
-    url("/assets/fonts/rooftop/Rooftop-CompactBook.woff2") format("woff2"),
-    url("/assets/fonts/rooftop/Rooftop-CompactBook.woff") format("woff"),
-    url("/assets/fonts/rooftop/Rooftop-CompactBook.ttf") format("truetype");
+    url("../assets/fonts/rooftop/Rooftop-CompactBook.woff2") format("woff2"),
+    url("../assets/fonts/rooftop/Rooftop-CompactBook.woff") format("woff"),
+    url("../assets/fonts/rooftop/Rooftop-CompactBook.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -26,12 +26,12 @@
 
 @font-face {
   font-family: "Rooftop";
-  src: url("/assets/fonts/rooftop/Rooftop-Regular.eot");
-  src: url("/assets/fonts/rooftop/Rooftop-Regular.eot?#iefix")
+  src: url("../assets/fonts/rooftop/Rooftop-Regular.eot");
+  src: url("../assets/fonts/rooftop/Rooftop-Regular.eot?#iefix")
       format("embedded-opentype"),
-    url("/assets/fonts/rooftop/Rooftop-Regular.woff2") format("woff2"),
-    url("/assets/fonts/rooftop/Rooftop-Regular.woff") format("woff"),
-    url("/assets/fonts/rooftop/Rooftop-Regular.ttf") format("truetype");
+    url("../assets/fonts/rooftop/Rooftop-Regular.woff2") format("woff2"),
+    url("../assets/fonts/rooftop/Rooftop-Regular.woff") format("woff"),
+    url("../assets/fonts/rooftop/Rooftop-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -39,12 +39,12 @@
 
 @font-face {
   font-family: "Rooftop";
-  src: url("/assets/fonts/rooftop/Rooftop-Medium.eot");
-  src: url("/assets/fonts/rooftop/Rooftop-Medium.eot?#iefix")
+  src: url("../assets/fonts/rooftop/Rooftop-Medium.eot");
+  src: url("../assets/fonts/rooftop/Rooftop-Medium.eot?#iefix")
       format("embedded-opentype"),
-    url("/assets/fonts/rooftop/Rooftop-Medium.woff2") format("woff2"),
-    url("/assets/fonts/rooftop/Rooftop-Medium.woff") format("woff"),
-    url("/assets/fonts/rooftop/Rooftop-Medium.ttf") format("truetype");
+    url("../assets/fonts/rooftop/Rooftop-Medium.woff2") format("woff2"),
+    url("../assets/fonts/rooftop/Rooftop-Medium.woff") format("woff"),
+    url("../assets/fonts/rooftop/Rooftop-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
