@@ -2969,6 +2969,9 @@
                           item.hasIndicator = this.getSelectedByFilterCategory(item.name).length > 0;
                         });
                       },
+                      getActiveFilterCount() {
+                        return this.filterItems.filter(item => item.hasIndicator).length;
+                      },
                       resetFilterCategory() {
                         if (this.currentFilterCategory) {
                           const categoryName = this.currentFilterCategory.name;
@@ -3240,9 +3243,10 @@
                     >
                       <img src="./assets/svg/filters.svg" alt="Filter" />
                       <span
+                        x-show="getActiveFilterCount() > 0"
+                        x-text="getActiveFilterCount()"
                         class="absolute top-0.5 right-0.5 flex-center bg-main-black text-white text-main-sm/4.5 rounded-full px-1.25"
-                        >4</span
-                      >
+                      ></span>
                     </button>
 
                     <!-- Filter Modal Mobile -->
