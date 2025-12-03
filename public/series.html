@@ -2826,16 +2826,417 @@
                         'Ножи десертные',
                         'Ножи десертные'
                       ],
-                      initialVisibleCount: 5
+                      initialVisibleCount: 5,
+                      sortModalOpen: false,
+                      selectedSort: 'name-asc',
+                      dragStartY: 0,
+                      dragCurrentY: 0,
+                      isDragging: false,
+                      filterModalOpen: false,
+                      filterDragStartY: 0,
+                      filterDragCurrentY: 0,
+                      filterIsDragging: false,
+                      withDiscount: false,
+                      inStock: false,
+                      filterItems: [
+                        { 
+                          name: 'Производитель', 
+                          hasIndicator: false,
+                          items: [
+                            { name: 'Производитель 1', count: 245 },
+                            { name: 'Производитель 2', count: 189 }
+                          ]
+                        },
+                        { 
+                          name: 'Серия', 
+                          hasIndicator: false,
+                          items: [
+                            { name: 'Серия 1', count: 245 },
+                            { name: 'Серия 2', count: 189 }
+                          ]
+                        },
+                        { 
+                          name: 'Материал', 
+                          hasIndicator: false,
+                          items: [
+                            { name: 'Нержавеющая сталь', count: 456 },
+                            { name: 'Пластик', count: 234 },
+                            { name: 'Керамика', count: 278 }
+                          ]
+                        },
+                        { 
+                          name: 'Цвет', 
+                          hasIndicator: false,
+                          items: [
+                            { name: 'Белый', count: 523 },
+                            { name: 'Черный', count: 456 },
+                            { name: 'Серый', count: 345 }
+                          ]
+                        },
+                        { 
+                          name: 'Диаметр', 
+                          hasIndicator: false,
+                          items: [
+                            { name: '20 см', count: 123 },
+                            { name: '25 см', count: 189 }
+                          ]
+                        },
+                        { 
+                          name: 'Страна', 
+                          hasIndicator: false,
+                          items: [
+                            { name: 'США', count: 245 },
+                            { name: 'Китай', count: 189 },
+                            { name: 'Япония', count: 112 },
+                            { name: 'Германия', count: 134 },
+                            { name: 'Испания', count: 87 },
+                            { name: 'Италия', count: 156 },
+                            { name: 'Норвегия', count: 98 },
+                            { name: 'Швеция', count: 76 },
+                            { name: 'Финляндия', count: 54 },
+                            { name: 'Южная корея', count: 123 },
+                            { name: 'Латвия', count: 45 },
+                            { name: 'Литва', count: 67 },
+                            { name: 'Эстония', count: 34 },
+                            { name: 'Мексика', count: 89 },
+                            { name: 'Перу', count: 23 },
+                            { name: 'Австралия', count: 156 }
+                          ]
+                        },
+                        { 
+                          name: 'Объем', 
+                          hasIndicator: false,
+                          items: [
+                            { name: '100 мл', count: 123 },
+                            { name: '200 мл', count: 189 }
+                          ]
+                        },
+                        { 
+                          name: 'Размер', 
+                          hasIndicator: false,
+                          items: [
+                            { name: 'Маленький', count: 234 },
+                            { name: 'Средний', count: 345 }
+                          ]
+                        },
+                        { 
+                          name: 'Кратность товара', 
+                          hasIndicator: false,
+                          items: [
+                            { name: '1', count: 123 },
+                            { name: '2', count: 189 }
+                          ]
+                        },
+                        { 
+                          name: 'Мойка в П/М', 
+                          hasIndicator: false,
+                          items: [
+                            { name: 'Да', count: 234 },
+                            { name: 'Нет', count: 345 }
+                          ]
+                        }
+                      ],
+                      filterItemsModalOpen: false,
+                      currentFilterCategory: null,
+                      selectedFilterItems: [],
+                      openFilterItemsModal(filterItem) {
+                        this.currentFilterCategory = filterItem;
+                        this.filterItemsModalOpen = true;
+                      },
+                      closeFilterItemsModal() {
+                        this.filterItemsModalOpen = false;
+                        this.currentFilterCategory = null;
+                      },
+                      toggleFilterItem(categoryName, itemName) {
+                        const key = `${categoryName}:${itemName}`;
+                        const index = this.selectedFilterItems.findIndex(item => item.key === key);
+                        if (index > -1) {
+                          this.selectedFilterItems.splice(index, 1);
+                        } else {
+                          this.selectedFilterItems.push({ key, categoryName, itemName });
+                        }
+                        this.updateFilterIndicators();
+                      },
+                      isFilterItemSelected(categoryName, itemName) {
+                        const key = `${categoryName}:${itemName}`;
+                        return this.selectedFilterItems.some(item => item.key === key);
+                      },
+                      getSelectedByFilterCategory(categoryName) {
+                        return this.selectedFilterItems.filter(item => item.categoryName === categoryName);
+                      },
+                      updateFilterIndicators() {
+                        this.filterItems.forEach(item => {
+                          item.hasIndicator = this.getSelectedByFilterCategory(item.name).length > 0;
+                        });
+                      },
+                      resetFilterCategory() {
+                        if (this.currentFilterCategory) {
+                          const categoryName = this.currentFilterCategory.name;
+                          // Create a new array to ensure reactivity
+                          const filtered = this.selectedFilterItems.filter(item => item.categoryName !== categoryName);
+                          this.selectedFilterItems = [...filtered];
+                          // Force update indicators
+                          this.updateFilterIndicators();
+                        }
+                      },
+                      resetAllFilters() {
+                        // Reset mobile filter selections
+                        this.selectedFilterItems = [];
+                        this.updateFilterIndicators();
+                        // Reset toggles
+                        this.withDiscount = false;
+                        this.inStock = false;
+                      },
+                      init() {
+                        this.updateFilterIndicators();
+                        this.toggleBodyScroll();
+                      },
+                      toggleBodyScroll() {
+                        const isModalOpen = this.filterModalOpen || this.sortModalOpen;
+                        if (isModalOpen) {
+                          document.body.style.overflow = 'hidden';
+                        } else {
+                          document.body.style.overflow = '';
+                        }
+                      }
                     }"
+                    x-effect="toggleBodyScroll()"
+                    @destroy.window="document.body.style.overflow = ''"
                   >
+                    <!-- Sorting Modal Open Button -->
                     <button
+                      @click="sortModalOpen = true"
                       class="lg:hidden shrink-0 bg-main-silver rounded-lg hover:bg-main-yellow smooth p-2.5"
                     >
                       <img src="./assets/svg/filter-arrow.svg" alt="Filter" />
                     </button>
 
+                    <!-- Sorting Modal -->
+                    <div
+                      x-show="sortModalOpen"
+                      x-transition
+                      @click.self="sortModalOpen = false"
+                      class="lg:hidden fixed inset-0 z-50 bg-black/50 flex items-end"
+                    >
+                      <div
+                        class="w-full bg-white rounded-t-2xl"
+                        :class="{ 'transition-transform duration-200': !isDragging }"
+                        :style="isDragging ? `transform: translateY(${Math.max(0, dragCurrentY - dragStartY)}px)` : ''"
+                        @touchstart.prevent="
+                          const handle = event.target.closest('.drag-handle') || event.target.closest('.drag-handle-container');
+                          if (handle) {
+                            isDragging = true;
+                            dragStartY = event.touches[0].clientY;
+                            dragCurrentY = event.touches[0].clientY;
+                          }
+                        "
+                        @touchmove.prevent="
+                          if (isDragging) {
+                            dragCurrentY = event.touches[0].clientY;
+                          }
+                        "
+                        @touchend.prevent="
+                          if (isDragging) {
+                            const dragDistance = dragCurrentY - dragStartY;
+                            if (dragDistance > 150) {
+                              sortModalOpen = false;
+                            }
+                            isDragging = false;
+                            dragStartY = 0;
+                            dragCurrentY = 0;
+                          }
+                        "
+                      >
+                        <div class="flex-center drag-handle-container">
+                          <button
+                            class="drag-handle mx-auto w-9 h-1 bg-main-gray/15 rounded-full mt-2 cursor-grab active:cursor-grabbing touch-none"
+                          ></button>
+                        </div>
+
+                        <div class="flex-between px-4 py-6.5">
+                          <button @click="sortModalOpen = false">
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 20 20"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M1 10C0.723858 10 0.5 10.2239 0.5 10.5C0.5 10.7761 0.723858 11 1 11V10.5V10ZM1 10.5V11H19V10.5V10H1V10.5Z"
+                                fill="#303030"
+                              />
+                              <path
+                                d="M6.85355 5.35355C7.04882 5.15829 7.04882 4.84171 6.85355 4.64645C6.65829 4.45118 6.34171 4.45118 6.14645 4.64645L6.5 5L6.85355 5.35355ZM1 10.5L1.35355 10.8536L6.85355 5.35355L6.5 5L6.14645 4.64645L0.646447 10.1464L1 10.5Z"
+                                fill="#303030"
+                              />
+                              <path
+                                d="M6.85355 15.6464C7.04882 15.8417 7.04882 16.1583 6.85355 16.3536C6.65829 16.5488 6.34171 16.5488 6.14645 16.3536L6.5 16L6.85355 15.6464ZM6.5 16L6.14645 16.3536L0.646447 10.8536L1 10.5L1.35355 10.1464L6.85355 15.6464L6.5 16Z"
+                                fill="#303030"
+                              />
+                            </svg>
+                          </button>
+                          <p class="font-rooftop-wide font-medium leading-5">
+                            Сортировка
+                          </p>
+                          <button @click="sortModalOpen = false">
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M18.75 18.75L12 12L18.75 5.25"
+                                stroke="#303030"
+                              />
+                              <path
+                                d="M5.25 5.25L12 12L5.25 18.75"
+                                stroke="#303030"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+
+                        <ul class="space-y-6 text-xl/7 px-4 pt-1.5 pb-6">
+                          <li>
+                            <label class="flex-between">
+                              <span>Названия (А-Я)</span>
+                              <div
+                                class="size-6 shrink-0 flex-center border border-main-black rounded-md"
+                              >
+                                <input
+                                  type="radio"
+                                  class="sr-only peer"
+                                  name="sort"
+                                  value="name-asc"
+                                  x-model="selectedSort"
+                                />
+                                <span
+                                  class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
+                                ></span>
+                              </div>
+                            </label>
+                          </li>
+                          <li>
+                            <label class="flex-between">
+                              <span>Названия (Я-А)</span>
+                              <div
+                                class="size-6 shrink-0 flex-center border border-main-black rounded-md"
+                              >
+                                <input
+                                  type="radio"
+                                  class="sr-only peer"
+                                  name="sort"
+                                  value="name-desc"
+                                  x-model="selectedSort"
+                                />
+                                <span
+                                  class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
+                                ></span>
+                              </div>
+                            </label>
+                          </li>
+                          <li>
+                            <label class="flex-between">
+                              <span>Цена (низкая > высокая)</span>
+                              <div
+                                class="size-6 shrink-0 flex-center border border-main-black rounded-md"
+                              >
+                                <input
+                                  type="radio"
+                                  class="sr-only peer"
+                                  name="sort"
+                                  value="price-asc"
+                                  x-model="selectedSort"
+                                />
+                                <span
+                                  class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
+                                ></span>
+                              </div>
+                            </label>
+                          </li>
+                          <li>
+                            <label class="flex-between">
+                              <span>Цена (высокая > низкая)</span>
+                              <div
+                                class="size-6 shrink-0 flex-center border border-main-black rounded-md"
+                              >
+                                <input
+                                  type="radio"
+                                  class="sr-only peer"
+                                  name="sort"
+                                  value="price-desc"
+                                  x-model="selectedSort"
+                                />
+                                <span
+                                  class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
+                                ></span>
+                              </div>
+                            </label>
+                          </li>
+                          <li>
+                            <label class="flex-between">
+                              <span>Модель (А > Я)</span>
+                              <div
+                                class="size-6 shrink-0 flex-center border border-main-black rounded-md"
+                              >
+                                <input
+                                  type="radio"
+                                  class="sr-only peer"
+                                  name="sort"
+                                  value="model-asc"
+                                  x-model="selectedSort"
+                                />
+                                <span
+                                  class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
+                                ></span>
+                              </div>
+                            </label>
+                          </li>
+                          <li>
+                            <label class="flex-between">
+                              <span>Модель (Я > А)</span>
+                              <div
+                                class="size-6 shrink-0 flex-center border border-main-black rounded-md"
+                              >
+                                <input
+                                  type="radio"
+                                  class="sr-only peer"
+                                  name="sort"
+                                  value="model-desc"
+                                  x-model="selectedSort"
+                                />
+                                <span
+                                  class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
+                                ></span>
+                              </div>
+                            </label>
+                          </li>
+                        </ul>
+
+                        <!-- Buttons -->
+                        <div class="space-y-3 px-4 py-6">
+                          <button
+                            @click="filterModalOpen = false"
+                            class="h-10 block w-full bg-main-yellow text-main-base/5 rounded-lg"
+                          >
+                            Применить
+                          </button>
+                          <button
+                            @click="resetAllFilters()"
+                            class="h-10 block w-full font-rooftop font-medium text-base-sm/3.25 uppercase bg-main-silver rounded-lg"
+                          >
+                            сбросить
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Filter Modal Open Button -->
                     <button
+                      @click="filterModalOpen = true"
                       class="lg:hidden shrink-0 relative bg-main-silver rounded-lg hover:bg-main-yellow smooth p-2.5"
                     >
                       <img src="./assets/svg/filters.svg" alt="Filter" />
@@ -2844,6 +3245,279 @@
                         >4</span
                       >
                     </button>
+
+                    <!-- Filter Modal Mobile -->
+                    <div
+                      x-show="filterModalOpen"
+                      x-transition
+                      @click.self="filterModalOpen = false"
+                      class="lg:hidden fixed inset-0 z-50 bg-black/50 flex items-end"
+                    >
+                      <div
+                        class="w-full bg-white rounded-t-2xl max-h-[90vh] flex flex-col"
+                        :class="{ 'transition-transform duration-200': !filterIsDragging }"
+                        :style="filterIsDragging ? `transform: translateY(${Math.max(0, filterDragCurrentY - filterDragStartY)}px)` : ''"
+                        @touchstart.prevent="
+                        const handle = event.target.closest('.filter-drag-handle') || event.target.closest('.filter-drag-handle-container');
+                        if (handle) {
+                          filterIsDragging = true;
+                          filterDragStartY = event.touches[0].clientY;
+                          filterDragCurrentY = event.touches[0].clientY;
+                        }
+                      "
+                        @touchmove.prevent="
+                        if (filterIsDragging) {
+                          filterDragCurrentY = event.touches[0].clientY;
+                        }
+                      "
+                        @touchend.prevent="
+                        if (filterIsDragging) {
+                          const dragDistance = filterDragCurrentY - filterDragStartY;
+                          if (dragDistance > 150) {
+                            filterModalOpen = false;
+                          }
+                          filterIsDragging = false;
+                          filterDragStartY = 0;
+                          filterDragCurrentY = 0;
+                        }
+                      "
+                      >
+                        <div class="flex-center filter-drag-handle-container">
+                          <button
+                            class="filter-drag-handle mx-auto w-9 h-1 bg-main-gray/15 rounded-full mt-2 cursor-grab active:cursor-grabbing touch-none"
+                          ></button>
+                        </div>
+
+                        <div class="flex-between px-4 py-6.5">
+                          <button
+                            x-show="filterItemsModalOpen"
+                            @click="closeFilterItemsModal()"
+                          >
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 20 20"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M1 10C0.723858 10 0.5 10.2239 0.5 10.5C0.5 10.7761 0.723858 11 1 11V10.5V10ZM1 10.5V11H19V10.5V10H1V10.5Z"
+                                fill="#303030"
+                              />
+                              <path
+                                d="M6.85355 5.35355C7.04882 5.15829 7.04882 4.84171 6.85355 4.64645C6.65829 4.45118 6.34171 4.45118 6.14645 4.64645L6.5 5L6.85355 5.35355ZM1 10.5L1.35355 10.8536L6.85355 5.35355L6.5 5L6.14645 4.64645L0.646447 10.1464L1 10.5Z"
+                                fill="#303030"
+                              />
+                              <path
+                                d="M6.85355 15.6464C7.04882 15.8417 7.04882 16.1583 6.85355 16.3536C6.65829 16.5488 6.34171 16.5488 6.14645 16.3536L6.5 16L6.85355 15.6464ZM6.5 16L6.14645 16.3536L0.646447 10.8536L1 10.5L1.35355 10.1464L6.85355 15.6464L6.5 16Z"
+                                fill="#303030"
+                              />
+                            </svg>
+                          </button>
+                          <div x-show="!filterItemsModalOpen"></div>
+                          <p class="font-rooftop-wide font-medium leading-5">
+                            <span x-show="!filterItemsModalOpen">Фильтр</span>
+                            <span
+                              x-show="filterItemsModalOpen"
+                              x-text="currentFilterCategory ? currentFilterCategory.name : ''"
+                            ></span>
+                          </p>
+                          <button @click="filterModalOpen = false">
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M18.75 18.75L12 12L18.75 5.25"
+                                stroke="#303030"
+                              />
+                              <path
+                                d="M5.25 5.25L12 12L5.25 18.75"
+                                stroke="#303030"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+
+                        <!-- First Level Content -->
+                        <div
+                          x-show="!filterItemsModalOpen"
+                          x-transition:enter="transition ease-out duration-300"
+                          x-transition:enter-start="opacity-0 transform translate-x-4"
+                          x-transition:enter-end="opacity-100 transform translate-x-0"
+                          x-transition:leave="transition ease-in duration-200"
+                          x-transition:leave-start="opacity-100 transform translate-x-0"
+                          x-transition:leave-end="opacity-0 transform -translate-x-4"
+                          class="flex-1 overflow-y-auto"
+                        >
+                          <div class="px-4 pt-3">
+                            <div class="text-xl/7">Цена</div>
+                            <div class="grid grid-cols-2 gap-3 mt-1">
+                              <input
+                                type="number"
+                                class="bg-white border border-main-silver rounded-lg outline-none focus:ring ring-main-yellow py-1.75 pl-3 pr-1 w-full"
+                                placeholder="от 0"
+                              />
+                              <input
+                                type="number"
+                                class="bg-white border border-main-silver rounded-lg outline-none focus:ring ring-main-yellow py-1.75 pl-3 pr-1 w-full"
+                                placeholder="до 0"
+                              />
+                            </div>
+                          </div>
+                          <ul class="space-y-6 text-xl/7 px-4 py-6">
+                            <template
+                              x-for="(item, index) in filterItems"
+                              :key="index"
+                            >
+                              <li
+                                @click="openFilterItemsModal(item)"
+                                class="flex-between cursor-pointer"
+                              >
+                                <span x-text="item.name"></span>
+                                <div class="flex items-center">
+                                  <span
+                                    x-show="item.hasIndicator"
+                                    class="size-3 shrink-0 bg-main-status-green rounded-full"
+                                  ></span>
+                                  <img
+                                    src="./assets/svg/angle-right-mobile-filter.svg"
+                                    alt="Angle"
+                                    class="shrink-0"
+                                  />
+                                </div>
+                              </li>
+                            </template>
+                          </ul>
+                          <div
+                            x-show="!filterItemsModalOpen"
+                            class="text-xl/7 px-4 pb-4"
+                          >
+                            <div class="flex-between py-3.5">
+                              <span>Cо скидкой</span>
+                              <!-- Toggle -->
+                              <label
+                                class="relative inline-block w-10 h-6 cursor-pointer"
+                              >
+                                <input
+                                  type="checkbox"
+                                  class="sr-only peer"
+                                  x-model="withDiscount"
+                                />
+                                <div
+                                  class="w-10 h-6 border border-main-gray rounded-full peer-checked:bg-main-black peer-checked:border-main-black smooth"
+                                ></div>
+                                <div
+                                  class="absolute top-0.5 left-0.5 w-5 h-5 bg-main-gray rounded-full shadow-sm peer-checked:bg-white peer-checked:translate-x-4 transition-all duration-200"
+                                ></div>
+                              </label>
+                            </div>
+                            <div class="flex-between py-3.5">
+                              <span>В наличие</span>
+                              <!-- Toggle -->
+                              <label
+                                class="relative inline-block w-10 h-6 cursor-pointer"
+                              >
+                                <input
+                                  type="checkbox"
+                                  class="sr-only peer"
+                                  x-model="inStock"
+                                />
+                                <div
+                                  class="w-10 h-6 border border-main-gray rounded-full peer-checked:bg-main-black peer-checked:border-main-black smooth"
+                                ></div>
+                                <div
+                                  class="absolute top-0.5 left-0.5 w-5 h-5 bg-main-gray rounded-full shadow-sm peer-checked:bg-white peer-checked:translate-x-4 transition-all duration-200"
+                                ></div>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Second Level Content -->
+                        <div
+                          x-show="filterItemsModalOpen"
+                          x-transition:enter="transition ease-out duration-300"
+                          x-transition:enter-start="opacity-0 transform translate-x-4"
+                          x-transition:enter-end="opacity-100 transform translate-x-0"
+                          x-transition:leave="transition ease-in duration-200"
+                          x-transition:leave-start="opacity-100 transform translate-x-0"
+                          x-transition:leave-end="opacity-0 transform -translate-x-4"
+                          class="flex flex-col flex-1 overflow-hidden"
+                        >
+                          <ul
+                            class="space-y-4 text-xl/7 px-4 pt-1.5 pb-6 overflow-y-auto flex-1"
+                          >
+                            <template x-if="currentFilterCategory">
+                              <template
+                                x-for="(item, index) in currentFilterCategory.items"
+                                :key="index"
+                              >
+                                <li>
+                                  <label
+                                    class="flex-between cursor-pointer py-2"
+                                  >
+                                    <span x-text="item.name"></span>
+                                    <div
+                                      class="size-6 shrink-0 flex-center border border-main-black rounded-md"
+                                    >
+                                      <input
+                                        type="checkbox"
+                                        class="sr-only peer"
+                                        :checked="isFilterItemSelected(currentFilterCategory.name, item.name)"
+                                        @change="toggleFilterItem(currentFilterCategory.name, item.name)"
+                                      />
+                                      <span
+                                        class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
+                                      ></span>
+                                    </div>
+                                  </label>
+                                </li>
+                              </template>
+                            </template>
+                          </ul>
+
+                          <!-- Buttons -->
+                          <div
+                            class="space-y-3 px-4 py-6 border-t border-main-gray/15"
+                          >
+                            <button
+                              @click="closeFilterItemsModal()"
+                              class="h-10 block w-full bg-main-yellow text-main-base/5 rounded-lg font-medium"
+                            >
+                              ПРИМЕНИТЬ
+                            </button>
+                            <button
+                              @click="resetFilterCategory(); $nextTick(() => { updateFilterIndicators(); })"
+                              class="h-10 block w-full font-rooftop font-medium text-base-sm/3.25 uppercase bg-main-silver rounded-lg"
+                            >
+                              СБРОСИТЬ
+                            </button>
+                          </div>
+                        </div>
+                        <!-- First Level Buttons -->
+                        <div
+                          x-show="!filterItemsModalOpen"
+                          class="space-y-3 px-4 py-6"
+                        >
+                          <button
+                            @click="filterModalOpen = false"
+                            class="h-10 block w-full bg-main-yellow text-main-base/5 rounded-lg"
+                          >
+                            Применить
+                          </button>
+                          <button
+                            @click="resetAllFilters()"
+                            class="h-10 block w-full font-rooftop font-medium text-base-sm/3.25 uppercase bg-main-silver rounded-lg"
+                          >
+                            сбросить
+                          </button>
+                        </div>
+                      </div>
+                    </div>
 
                     <template
                       x-for="(button, index) in filterButtons"
