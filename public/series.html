@@ -3022,39 +3022,38 @@
                         class="w-full bg-white rounded-t-2xl"
                         :class="{ 'transition-transform duration-200': !isDragging }"
                         :style="isDragging ? `transform: translateY(${Math.max(0, dragCurrentY - dragStartY)}px)` : ''"
-                        @touchstart.prevent="
-                          const handle = event.target.closest('.drag-handle') || event.target.closest('.drag-handle-container');
-                          if (handle) {
+                      >
+                        <div
+                          class="flex-center drag-handle-container"
+                          @touchstart.prevent="
                             isDragging = true;
                             dragStartY = event.touches[0].clientY;
                             dragCurrentY = event.touches[0].clientY;
-                          }
-                        "
-                        @touchmove.prevent="
-                          if (isDragging) {
-                            dragCurrentY = event.touches[0].clientY;
-                          }
-                        "
-                        @touchend.prevent="
-                          if (isDragging) {
-                            const dragDistance = dragCurrentY - dragStartY;
-                            if (dragDistance > 150) {
-                              sortModalOpen = false;
+                          "
+                          @touchmove.prevent="
+                            if (isDragging) {
+                              dragCurrentY = event.touches[0].clientY;
                             }
-                            isDragging = false;
-                            dragStartY = 0;
-                            dragCurrentY = 0;
-                          }
-                        "
-                      >
-                        <div class="flex-center drag-handle-container">
+                          "
+                          @touchend.prevent="
+                            if (isDragging) {
+                              const dragDistance = dragCurrentY - dragStartY;
+                              if (dragDistance > 150) {
+                                sortModalOpen = false;
+                              }
+                              isDragging = false;
+                              dragStartY = 0;
+                              dragCurrentY = 0;
+                            }
+                          "
+                        >
                           <button
                             class="drag-handle mx-auto w-9 h-1 bg-main-gray/15 rounded-full mt-2 cursor-grab active:cursor-grabbing touch-none"
                           ></button>
                         </div>
 
                         <div class="flex-between px-4 py-6.5">
-                          <button @click="sortModalOpen = false">
+                          <button @click.stop="sortModalOpen = false">
                             <svg
                               width="20"
                               height="20"
@@ -3079,7 +3078,7 @@
                           <p class="font-rooftop-wide font-medium leading-5">
                             Сортировка
                           </p>
-                          <button @click="sortModalOpen = false">
+                          <button @click.stop="sortModalOpen = false">
                             <svg
                               width="24"
                               height="24"
@@ -3101,7 +3100,7 @@
 
                         <ul class="space-y-6 text-xl/7 px-4 pt-1.5 pb-6">
                           <li>
-                            <label class="flex-between">
+                            <label class="flex-between" @click.stop>
                               <span>Названия (А-Я)</span>
                               <div
                                 class="size-6 shrink-0 flex-center border border-main-black rounded-md"
@@ -3120,7 +3119,7 @@
                             </label>
                           </li>
                           <li>
-                            <label class="flex-between">
+                            <label class="flex-between" @click.stop>
                               <span>Названия (Я-А)</span>
                               <div
                                 class="size-6 shrink-0 flex-center border border-main-black rounded-md"
@@ -3139,7 +3138,7 @@
                             </label>
                           </li>
                           <li>
-                            <label class="flex-between">
+                            <label class="flex-between" @click.stop>
                               <span>Цена (низкая > высокая)</span>
                               <div
                                 class="size-6 shrink-0 flex-center border border-main-black rounded-md"
@@ -3158,7 +3157,7 @@
                             </label>
                           </li>
                           <li>
-                            <label class="flex-between">
+                            <label class="flex-between" @click.stop>
                               <span>Цена (высокая > низкая)</span>
                               <div
                                 class="size-6 shrink-0 flex-center border border-main-black rounded-md"
@@ -3177,7 +3176,7 @@
                             </label>
                           </li>
                           <li>
-                            <label class="flex-between">
+                            <label class="flex-between" @click.stop>
                               <span>Модель (А > Я)</span>
                               <div
                                 class="size-6 shrink-0 flex-center border border-main-black rounded-md"
@@ -3196,7 +3195,7 @@
                             </label>
                           </li>
                           <li>
-                            <label class="flex-between">
+                            <label class="flex-between" @click.stop>
                               <span>Модель (Я > А)</span>
                               <div
                                 class="size-6 shrink-0 flex-center border border-main-black rounded-md"
@@ -3219,13 +3218,13 @@
                         <!-- Buttons -->
                         <div class="space-y-3 px-4 py-6">
                           <button
-                            @click="filterModalOpen = false"
+                            @click.stop="filterModalOpen = false"
                             class="h-10 block w-full bg-main-yellow text-main-base/5 rounded-lg"
                           >
                             Применить
                           </button>
                           <button
-                            @click="resetAllFilters()"
+                            @click.stop="resetAllFilters()"
                             class="h-10 block w-full font-rooftop font-medium text-base-sm/3.25 uppercase bg-main-silver rounded-lg"
                           >
                             сбросить
@@ -3257,32 +3256,31 @@
                         class="w-full bg-white rounded-t-2xl max-h-[90vh] flex flex-col"
                         :class="{ 'transition-transform duration-200': !filterIsDragging }"
                         :style="filterIsDragging ? `transform: translateY(${Math.max(0, filterDragCurrentY - filterDragStartY)}px)` : ''"
-                        @touchstart.prevent="
-                        const handle = event.target.closest('.filter-drag-handle') || event.target.closest('.filter-drag-handle-container');
-                        if (handle) {
-                          filterIsDragging = true;
-                          filterDragStartY = event.touches[0].clientY;
-                          filterDragCurrentY = event.touches[0].clientY;
-                        }
-                      "
-                        @touchmove.prevent="
-                        if (filterIsDragging) {
-                          filterDragCurrentY = event.touches[0].clientY;
-                        }
-                      "
-                        @touchend.prevent="
-                        if (filterIsDragging) {
-                          const dragDistance = filterDragCurrentY - filterDragStartY;
-                          if (dragDistance > 150) {
-                            filterModalOpen = false;
-                          }
-                          filterIsDragging = false;
-                          filterDragStartY = 0;
-                          filterDragCurrentY = 0;
-                        }
-                      "
                       >
-                        <div class="flex-center filter-drag-handle-container">
+                        <div
+                          class="flex-center filter-drag-handle-container"
+                          @touchstart.prevent="
+                            filterIsDragging = true;
+                            filterDragStartY = event.touches[0].clientY;
+                            filterDragCurrentY = event.touches[0].clientY;
+                          "
+                          @touchmove.prevent="
+                            if (filterIsDragging) {
+                              filterDragCurrentY = event.touches[0].clientY;
+                            }
+                          "
+                          @touchend.prevent="
+                            if (filterIsDragging) {
+                              const dragDistance = filterDragCurrentY - filterDragStartY;
+                              if (dragDistance > 150) {
+                                filterModalOpen = false;
+                              }
+                              filterIsDragging = false;
+                              filterDragStartY = 0;
+                              filterDragCurrentY = 0;
+                            }
+                          "
+                        >
                           <button
                             class="filter-drag-handle mx-auto w-9 h-1 bg-main-gray/15 rounded-full mt-2 cursor-grab active:cursor-grabbing touch-none"
                           ></button>
@@ -3291,7 +3289,7 @@
                         <div class="flex-between px-4 py-6.5">
                           <button
                             x-show="filterItemsModalOpen"
-                            @click="closeFilterItemsModal()"
+                            @click.stop="closeFilterItemsModal()"
                           >
                             <svg
                               width="20"
@@ -3322,7 +3320,7 @@
                               x-text="currentFilterCategory ? currentFilterCategory.name : ''"
                             ></span>
                           </p>
-                          <button @click="filterModalOpen = false">
+                          <button @click.stop="filterModalOpen = false">
                             <svg
                               width="24"
                               height="24"
@@ -3374,7 +3372,7 @@
                               :key="index"
                             >
                               <li
-                                @click="openFilterItemsModal(item)"
+                                @click.stop="openFilterItemsModal(item)"
                                 class="flex-between cursor-pointer"
                               >
                                 <span x-text="item.name"></span>
@@ -3459,6 +3457,7 @@
                                 <li>
                                   <label
                                     class="flex-between cursor-pointer py-2"
+                                    @click.stop
                                   >
                                     <span x-text="item.name"></span>
                                     <div
@@ -3468,7 +3467,7 @@
                                         type="checkbox"
                                         class="sr-only peer"
                                         :checked="isFilterItemSelected(currentFilterCategory.name, item.name)"
-                                        @change="toggleFilterItem(currentFilterCategory.name, item.name)"
+                                        @change.stop="toggleFilterItem(currentFilterCategory.name, item.name)"
                                       />
                                       <span
                                         class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
@@ -3485,13 +3484,13 @@
                             class="space-y-3 px-4 py-6 border-t border-main-gray/15"
                           >
                             <button
-                              @click="closeFilterItemsModal()"
+                              @click.stop="closeFilterItemsModal()"
                               class="h-10 block w-full bg-main-yellow text-main-base/5 rounded-lg font-medium"
                             >
                               ПРИМЕНИТЬ
                             </button>
                             <button
-                              @click="resetFilterCategory(); $nextTick(() => { updateFilterIndicators(); })"
+                              @click.stop="resetFilterCategory(); $nextTick(() => { updateFilterIndicators(); })"
                               class="h-10 block w-full font-rooftop font-medium text-base-sm/3.25 uppercase bg-main-silver rounded-lg"
                             >
                               СБРОСИТЬ
@@ -3504,13 +3503,13 @@
                           class="space-y-3 px-4 py-6"
                         >
                           <button
-                            @click="filterModalOpen = false"
+                            @click.stop="filterModalOpen = false"
                             class="h-10 block w-full bg-main-yellow text-main-base/5 rounded-lg"
                           >
                             Применить
                           </button>
                           <button
-                            @click="resetAllFilters()"
+                            @click.stop="resetAllFilters()"
                             class="h-10 block w-full font-rooftop font-medium text-base-sm/3.25 uppercase bg-main-silver rounded-lg"
                           >
                             сбросить
