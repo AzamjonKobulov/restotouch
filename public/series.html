@@ -4096,9 +4096,7 @@
                   }"
                 >
                   <template x-for="(item, index) in series" :key="index">
-                    <div
-                      class="border border-main-silver rounded-lg sm:rounded-2xl"
-                    >
+                    <div class="border border-main-silver rounded-2xl">
                       <!-- Slider -->
                       <div
                         class="swiper series-swiper h-55 sm:h-74 relative rounded-lg sm:rounded-2xl overflow-hidden"
@@ -4209,9 +4207,9 @@
                         </div>
 
                         <!-- Count Button & Add To Cart Button -->
-                        <div class="grid grid-cols-2 gap-2">
+                        <div class="flex items-center xs:justify-between gap-2">
                           <div
-                            class="h-8 grid grid-cols-3 bg-main-gray/15 rounded-lg hover:bg-main-yellow"
+                            class="h-10 xs:h-8 w-2/3 xs:w-full grid grid-cols-3 bg-main-gray/15 rounded-lg hover:bg-main-yellow"
                             x-init="if (typeof item.quantity === 'undefined') item.quantity = 1"
                           >
                             <button
@@ -4236,7 +4234,7 @@
                               </svg>
                             </button>
                             <span
-                              class="h-8 w-9 text-rooftop font-medium py-1.25 flex items-center justify-center"
+                              class="h-8 w-9 text-rooftop font-medium py-1.25 flex items-center justify-center mt-1"
                               x-text="item.quantity"
                             ></span>
                             <button
@@ -4270,9 +4268,30 @@
                           </div>
 
                           <button
-                            class="h-8 uppercase text-xs/3 font-medium font-rooftop whitespace-nowrap border border-main-black rounded-lg hover:bg-main-black hover:text-white smooth px-2.5"
+                            class="size-10 xs:h-8 xs:w-full flex-center uppercase text-xs/3 font-medium font-rooftop whitespace-nowrap bg-main-yellow xs:bg-transparent border border-main-black rounded-lg hover:bg-main-black hover:text-white smooth xs:px-2.5"
                           >
-                            в корзину
+                            <span class="hidden xs:block">в корзину</span>
+                            <svg
+                              width="32"
+                              height="32"
+                              viewBox="0 0 32 32"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="xs:hidden"
+                            >
+                              <rect
+                                x="6.00049"
+                                y="9"
+                                width="20.0008"
+                                height="16"
+                                stroke="#303030"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="M12.0005 12V9C12.0005 6.79086 13.7914 5 16.0007 5C18.2099 5 20.0008 6.79086 20.0008 9V12"
+                                stroke="#303030"
+                              />
+                            </svg>
                           </button>
                         </div>
                       </div>
@@ -4510,9 +4529,7 @@
           }"
           >
             <template x-for="(item, index) in products" :key="index">
-              <div
-                class="w-50.5 lg:w-59 border border-main-silver rounded-lg sm:rounded-2xl"
-              >
+              <div class="w-50.5 lg:w-59 border border-main-silver rounded-2xl">
                 <!-- Slider -->
                 <div
                   class="swiper series-swiper h-55 sm:h-74 relative rounded-lg sm:rounded-2xl overflow-hidden"
@@ -4614,9 +4631,9 @@
                   </div>
 
                   <!-- Count Button & Add To Cart Button -->
-                  <div class="grid grid-cols-2 gap-2">
+                  <div class="flex items-center xs:justify-between gap-2">
                     <div
-                      class="h-8 grid grid-cols-3 bg-main-gray/15 rounded-lg hover:bg-main-yellow"
+                      class="h-10 xs:h-8 w-2/3 xs:w-full grid grid-cols-3 bg-main-gray/15 rounded-lg hover:bg-main-yellow"
                       x-init="if (typeof item.quantity === 'undefined') item.quantity = 1"
                     >
                       <button
@@ -4641,7 +4658,7 @@
                         </svg>
                       </button>
                       <span
-                        class="h-8 w-9 text-rooftop font-medium py-1.25 flex items-center justify-center"
+                        class="h-8 w-9 text-rooftop font-medium py-1.25 flex items-center justify-center mt-1"
                         x-text="item.quantity"
                       ></span>
                       <button
@@ -4675,9 +4692,30 @@
                     </div>
 
                     <button
-                      class="h-8 uppercase text-xs/3 font-medium font-rooftop whitespace-nowrap border border-main-black rounded-lg hover:bg-main-black hover:text-white smooth px-2.5"
+                      class="size-10 xs:h-8 xs:w-full flex-center uppercase text-xs/3 font-medium font-rooftop whitespace-nowrap bg-main-yellow xs:bg-transparent border border-main-black rounded-lg hover:bg-main-black hover:text-white smooth xs:px-2.5"
                     >
-                      в корзину
+                      <span class="hidden xs:block">в корзину</span>
+                      <svg
+                        width="32"
+                        height="32"
+                        viewBox="0 0 32 32"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="xs:hidden"
+                      >
+                        <rect
+                          x="6.00049"
+                          y="9"
+                          width="20.0008"
+                          height="16"
+                          stroke="#303030"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M12.0005 12V9C12.0005 6.79086 13.7914 5 16.0007 5C18.2099 5 20.0008 6.79086 20.0008 9V12"
+                          stroke="#303030"
+                        />
+                      </svg>
                     </button>
                   </div>
                 </div>
