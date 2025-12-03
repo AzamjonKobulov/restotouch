@@ -657,6 +657,9 @@
   .max-h-\[calc\(100vh-180px\)\] {
     max-height: calc(100vh - 180px);
   }
+  .\!w-auto {
+    width: auto !important;
+  }
   .w-2 {
     width: calc(var(--spacing) * 2);
   }
@@ -1069,6 +1072,9 @@
   }
   .overflow-hidden {
     overflow: hidden;
+  }
+  .overflow-visible {
+    overflow: visible;
   }
   .overflow-x-auto {
     overflow-x: auto;
@@ -2407,6 +2413,11 @@
       flex: 1;
     }
   }
+  .lg\:cursor-grab {
+    @media (width >= 1024px) {
+      cursor: grab;
+    }
+  }
   .lg\:grid-cols-1 {
     @media (width >= 1024px) {
       grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -2430,6 +2441,11 @@
   .lg\:flex-wrap {
     @media (width >= 1024px) {
       flex-wrap: wrap;
+    }
+  }
+  .lg\:gap-0 {
+    @media (width >= 1024px) {
+      gap: calc(var(--spacing) * 0);
     }
   }
   .lg\:gap-3 {
@@ -2524,6 +2540,11 @@
   .lg\:gap-y-10 {
     @media (width >= 1024px) {
       row-gap: calc(var(--spacing) * 10);
+    }
+  }
+  .lg\:overflow-hidden {
+    @media (width >= 1024px) {
+      overflow: hidden;
     }
   }
   .lg\:border-r {
@@ -2663,6 +2684,13 @@
             background-color: color-mix(in oklab, var(--color-main-silver) 50%, transparent);
           }
         }
+      }
+    }
+  }
+  .lg\:active\:cursor-grabbing {
+    @media (width >= 1024px) {
+      &:active {
+        cursor: grabbing;
       }
     }
   }

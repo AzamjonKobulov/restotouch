@@ -2812,6 +2812,7 @@
                     class="flex items-center gap-2 whitespace-nowrap overflow-x-auto scroll-none text-sm/4.75 lg:flex-wrap px-4 lg:px-0"
                     x-data="{
                       showMore: false,
+                      isDesktop: window.innerWidth >= 1024,
                       filterButtons: [
                         'Ножи десертные',
                         'Ножи десертные',
@@ -2827,6 +2828,11 @@
                         'Ножи десертные'
                       ],
                       initialVisibleCount: 5,
+                      init() {
+                        window.addEventListener('resize', () => {
+                          this.isDesktop = window.innerWidth >= 1024;
+                        });
+                      },
                       sortModalOpen: false,
                       selectedSort: 'name-asc',
                       dragStartY: 0,
@@ -3020,6 +3026,7 @@
                       x-transition
                       @click.self="sortModalOpen = false"
                       class="lg:hidden fixed inset-0 z-50 bg-black/50 flex items-end"
+                      style="display: none"
                     >
                       <div
                         class="w-full bg-white rounded-t-2xl"
@@ -3255,6 +3262,7 @@
                       x-transition
                       @click.self="filterModalOpen = false"
                       class="lg:hidden fixed inset-0 z-50 bg-black/50 flex items-end"
+                      style="display: none"
                     >
                       <div
                         class="w-full bg-white rounded-t-2xl max-h-[90vh] flex flex-col"
@@ -3527,7 +3535,7 @@
                       :key="index"
                     >
                       <button
-                        x-show="index < initialVisibleCount || showMore"
+                        x-show="index < initialVisibleCount || showMore || !isDesktop"
                         x-transition
                         class="w-max h-10 lg:h-8 bg-main-silver rounded-full hover:bg-main-yellow smooth p-2"
                         x-text="button"
@@ -3535,7 +3543,7 @@
                     </template>
 
                     <button
-                      x-show="filterButtons.length > initialVisibleCount"
+                      x-show="filterButtons.length > initialVisibleCount && isDesktop"
                       @click="showMore = !showMore"
                       class="w-max h-10 lg:h-8 bg-main-yellow rounded-full hover:bg-main-yellow p-2"
                     >
@@ -4096,7 +4104,9 @@
                   }"
                 >
                   <template x-for="(item, index) in series" :key="index">
-                    <div class="border border-main-silver rounded-2xl">
+                    <div
+                      class="border border-main-silver rounded-2xl overflow-hidden"
+                    >
                       <!-- Slider -->
                       <div
                         class="swiper series-swiper h-55 sm:h-74 relative rounded-lg sm:rounded-2xl overflow-hidden"
@@ -4529,7 +4539,9 @@
           }"
           >
             <template x-for="(item, index) in products" :key="index">
-              <div class="w-50.5 lg:w-59 border border-main-silver rounded-2xl">
+              <div
+                class="w-50.5 lg:w-59 border border-main-silver rounded-2xl overflow-hidden"
+              >
                 <!-- Slider -->
                 <div
                   class="swiper series-swiper h-55 sm:h-74 relative rounded-lg sm:rounded-2xl overflow-hidden"
