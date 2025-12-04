@@ -211,6 +211,18 @@
   display: none;
 }
 
+.series-buttons-swiper {
+  overflow: visible;
+}
+
+.series-buttons-swiper .swiper-wrapper {
+  align-items: center;
+}
+
+.series-buttons-swiper .swiper-slide {
+  width: auto !important;
+}
+
 @media (max-width: 1024px) {
   /* Scrollbar: custom-scroll */
   .custom-scroll::-webkit-scrollbar {
