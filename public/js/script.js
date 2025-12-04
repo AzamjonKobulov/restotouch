@@ -6,14 +6,13 @@ document.addEventListener("DOMContentLoaded", function () {
       freeMode: true,
       slidesPerView: "auto",
       spaceBetween: 16,
-      slidesPerView: 5.5,
       grabCursor: true,
       scrollbar: {
         hide: true,
       },
       breakpoints: {
         1024: {
-          spaceBetween: 32,
+          spaceBetween: 24,
         },
       },
     });
