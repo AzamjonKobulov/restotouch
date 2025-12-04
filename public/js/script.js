@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
       freeMode: true,
       slidesPerView: "auto",
       spaceBetween: 16,
+      slidesPerView: 5.5,
       grabCursor: true,
       scrollbar: {
         hide: true,
