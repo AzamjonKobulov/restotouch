@@ -21,6 +21,7 @@
     <script>
       document.addEventListener("alpine:init", () => {
         Alpine.store("mobileMenuOpen", false);
+        Alpine.store("selectedSort", "name-asc");
       });
     </script>
   </head>
@@ -373,7 +374,7 @@
                   />
                 </svg>
               </div>
-              <span class=""> Заказать звонок </span>
+              <span class="text-main-sm/4.5"> Заказать звонок </span>
             </a>
 
             <div class="text-main-sm/[1.125rem] flex items-center gap-2">
@@ -385,7 +386,7 @@
             <div class="text-main-sm/[1.125rem] flex items-center gap-2">
               <a href="tel:+880043478743"> 8 800 434 78743 </a>
 
-              <p class="text-main-gray">(с 10:00 до 19:00 пн-пт)</p>
+              <p class="text-main-gray">(Бесплатный звонок по России)</p>
             </div>
           </div>
         </div>
@@ -402,13 +403,8 @@
               alt="Logo Desk"
             />
             <img
-              class="hidden xs:block lg:hidden h-3"
+              class="lg:hidden h-3"
               src="./assets/svg/logo-mobile.svg"
-              alt="Logo Mob"
-            />
-            <img
-              class="xs:hidden"
-              src="./assets/svg/logo-mobile-2.svg"
               alt="Logo Mob"
             />
           </a>
@@ -2019,10 +2015,51 @@
       <section class="mb-16 lg:mb-24">
         <!-- List -->
         <div
+          x-data="{
+            isDown: false,
+            lastX: 0,
+            hasMoved: false,
+            handleMouseDown(e) {
+              this.isDown = true;
+              this.hasMoved = false;
+              const rect = $el.getBoundingClientRect();
+              this.lastX = e.clientX - rect.left;
+            },
+            handleMouseMove(e) {
+              if (!this.isDown) return;
+              const rect = $el.getBoundingClientRect();
+              const currentX = e.clientX - rect.left;
+              const deltaX = currentX - this.lastX;
+              
+              if (Math.abs(deltaX) > 1) {
+                if (!this.hasMoved) {
+                  this.hasMoved = true;
+                }
+                e.preventDefault();
+                $el.scrollLeft -= deltaX;
+                this.lastX = currentX;
+              }
+            },
+            handleMouseUp(e) {
+              if (this.isDown && this.hasMoved) {
+                e.preventDefault();
+                e.stopPropagation();
+              }
+              this.isDown = false;
+            },
+            handleMouseLeave() {
+              this.isDown = false;
+            }
+          }"
+          @mousedown="handleMouseDown($event)"
+          @mousemove="handleMouseMove($event)"
+          @mouseup="handleMouseUp($event)"
+          @mouseleave="handleMouseLeave()"
+          :style="{ cursor: isDown ? 'grabbing' : 'grab', userSelect: isDown ? 'none' : '' }"
           class="container-base flex items-center gap-4 lg:gap-8 overflow-auto scroll-none mb-3 md:mb-6 lg:mb-8.5"
         >
           <button
-            class="w-min h-12.5 shrink-0 group flex items-center rounded overflow-hidden"
+            class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
           >
             <div
               class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
@@ -2036,7 +2073,7 @@
             </div>
           </button>
           <button
-            class="w-min h-12.5 shrink-0 group flex items-center rounded overflow-hidden"
+            class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
           >
             <div
               class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
@@ -2050,7 +2087,7 @@
             </div>
           </button>
           <button
-            class="w-min h-12.5 shrink-0 group flex items-center rounded overflow-hidden"
+            class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
           >
             <div
               class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
@@ -2064,7 +2101,7 @@
             </div>
           </button>
           <button
-            class="w-min h-12.5 shrink-0 group flex items-center rounded overflow-hidden"
+            class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
           >
             <div
               class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
@@ -2078,7 +2115,7 @@
             </div>
           </button>
           <button
-            class="w-min h-12.5 shrink-0 group flex items-center rounded overflow-hidden"
+            class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
           >
             <div
               class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
@@ -2092,7 +2129,7 @@
             </div>
           </button>
           <button
-            class="w-min h-12.5 shrink-0 group flex items-center rounded overflow-hidden"
+            class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
           >
             <div
               class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
@@ -2106,7 +2143,7 @@
             </div>
           </button>
           <button
-            class="w-min h-12.5 shrink-0 group flex items-center rounded overflow-hidden"
+            class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
           >
             <div
               class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
@@ -2120,7 +2157,7 @@
             </div>
           </button>
           <button
-            class="w-min h-12.5 shrink-0 group flex items-center rounded overflow-hidden"
+            class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
           >
             <div
               class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
@@ -2138,7 +2175,7 @@
         <div
           class="container-base flex items-start gap-10 2xl:gap-14 px-0 lg:px-4"
         >
-          <!-- Filter -->
+          <!-- Filter Desktop -->
           <div
             class="w-70 2xl:w-85 shrink-0 hidden lg:block bg-main-silver rounded-2xl p-4"
             x-data="{
@@ -2638,8 +2675,8 @@
                 class="space-y-6 sm:space-y-7.5 -mt-2 sm:mt-0"
                 x-data="{ activeTab: 'series' }"
               >
-                <!-- Tabs -->
-                <div class="px-4 lg:px-0">
+                <!-- Tabs Desktop -->
+                <div class="hidden lg:block px-4 lg:px-0">
                   <div
                     class="flex items-center text-main-sm/4.5 sm:text-base/5.25 border border-main-black rounded-full p-1"
                   >
@@ -2670,14 +2707,29 @@
                         <span>Сортировать по</span>
                         <div
                           class="relative"
-                          x-data="{ open: false, selected: 'Возрастанию рейтинга' }"
+                          x-data="{ 
+                            open: false,
+                            getSortLabel(value) {
+                              const labels = {
+                                'name-asc': 'Названия (А-Я)',
+                                'name-desc': 'Названия (Я-А)',
+                                'price-asc': 'Цена (низкая > высокая)',
+                                'price-desc': 'Цена (высокая > низкая)',
+                                'model-asc': 'Модель (А > Я)',
+                                'model-desc': 'Модель (Я > А)'
+                              };
+                              return labels[value] || 'Названия (А-Я)';
+                            }
+                          }"
                           @click.outside="open = false"
                         >
                           <button
                             @click="open = !open"
                             class="group flex items-center gap-2 border border-main-black rounded-lg hover:bg-main-black hover:text-white smooth py-1.25 px-2.5"
                           >
-                            <span x-text="selected"></span>
+                            <span
+                              x-text="getSortLabel($store.selectedSort)"
+                            ></span>
                             <svg
                               width="14"
                               height="14"
@@ -2700,37 +2752,135 @@
                             x-transition:leave="transition ease-in duration-150"
                             x-transition:leave-start="opacity-100 scale-100"
                             x-transition:leave-end="opacity-0 scale-95"
-                            class="absolute top-full left-0 mt-1 bg-white border border-main-black rounded-lg shadow-lg z-50 min-w-full"
+                            class="absolute w-50 top-full left-0 mt-1 bg-white border border-main-black rounded-lg shadow-lg z-50"
                             style="display: none"
                           >
-                            <button
-                              @click="selected = 'Возрастанию рейтинга'; open = false"
-                              class="w-full text-left px-3 py-2 hover:bg-main-silver smooth rounded-t-lg"
-                              :class="{ 'bg-main-yellow': selected === 'Возрастанию рейтинга' }"
+                            <label
+                              @click.stop="$store.selectedSort = 'name-asc'; open = false"
+                              class="flex-between w-full text-left px-3 py-2 hover:bg-main-silver smooth rounded-t-lg cursor-pointer"
                             >
-                              Возрастанию рейтинга
-                            </button>
-                            <button
-                              @click="selected = 'Убыванию рейтинга'; open = false"
-                              class="w-full text-left px-3 py-2 hover:bg-main-silver smooth"
-                              :class="{ 'bg-main-yellow': selected === 'Убыванию рейтинга' }"
+                              <span>Названия (А-Я)</span>
+                              <div
+                                class="size-6 shrink-0 flex-center border border-main-black rounded-md"
+                              >
+                                <input
+                                  type="radio"
+                                  class="sr-only peer"
+                                  name="sort-desktop"
+                                  value="name-asc"
+                                  :checked="$store.selectedSort === 'name-asc'"
+                                  @change="$store.selectedSort = 'name-asc'; open = false"
+                                />
+                                <span
+                                  class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
+                                ></span>
+                              </div>
+                            </label>
+                            <label
+                              @click.stop="$store.selectedSort = 'name-desc'; open = false"
+                              class="flex-between w-full text-left px-3 py-2 hover:bg-main-silver smooth cursor-pointer"
                             >
-                              Убыванию рейтинга
-                            </button>
-                            <button
-                              @click="selected = 'Цене: от низкой к высокой'; open = false"
-                              class="w-full text-left px-3 py-2 hover:bg-main-silver smooth"
-                              :class="{ 'bg-main-yellow': selected === 'Цене: от низкой к высокой' }"
+                              <span>Названия (Я-А)</span>
+                              <div
+                                class="size-6 shrink-0 flex-center border border-main-black rounded-md"
+                              >
+                                <input
+                                  type="radio"
+                                  class="sr-only peer"
+                                  name="sort-desktop"
+                                  value="name-desc"
+                                  :checked="$store.selectedSort === 'name-desc'"
+                                  @change="$store.selectedSort = 'name-desc'; open = false"
+                                />
+                                <span
+                                  class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
+                                ></span>
+                              </div>
+                            </label>
+                            <label
+                              @click.stop="$store.selectedSort = 'price-asc'; open = false"
+                              class="flex-between w-full text-left px-3 py-2 hover:bg-main-silver smooth cursor-pointer"
                             >
-                              Цене: от низкой к высокой
-                            </button>
-                            <button
-                              @click="selected = 'Цене: от высокой к низкой'; open = false"
-                              class="w-full text-left px-3 py-2 hover:bg-main-silver smooth rounded-b-lg"
-                              :class="{ 'bg-main-yellow': selected === 'Цене: от высокой к низкой' }"
+                              <span>Цена (низкая > высокая)</span>
+                              <div
+                                class="size-6 shrink-0 flex-center border border-main-black rounded-md"
+                              >
+                                <input
+                                  type="radio"
+                                  class="sr-only peer"
+                                  name="sort-desktop"
+                                  value="price-asc"
+                                  :checked="$store.selectedSort === 'price-asc'"
+                                  @change="$store.selectedSort = 'price-asc'; open = false"
+                                />
+                                <span
+                                  class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
+                                ></span>
+                              </div>
+                            </label>
+                            <label
+                              @click.stop="$store.selectedSort = 'price-desc'; open = false"
+                              class="flex-between w-full text-left px-3 py-2 hover:bg-main-silver smooth cursor-pointer"
                             >
-                              Цене: от высокой к низкой
-                            </button>
+                              <span>Цена (высокая > низкая)</span>
+                              <div
+                                class="size-6 shrink-0 flex-center border border-main-black rounded-md"
+                              >
+                                <input
+                                  type="radio"
+                                  class="sr-only peer"
+                                  name="sort-desktop"
+                                  value="price-desc"
+                                  :checked="$store.selectedSort === 'price-desc'"
+                                  @change="$store.selectedSort = 'price-desc'; open = false"
+                                />
+                                <span
+                                  class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
+                                ></span>
+                              </div>
+                            </label>
+                            <label
+                              @click.stop="$store.selectedSort = 'model-asc'; open = false"
+                              class="flex-between w-full text-left px-3 py-2 hover:bg-main-silver smooth cursor-pointer"
+                            >
+                              <span>Модель (А > Я)</span>
+                              <div
+                                class="size-6 shrink-0 flex-center border border-main-black rounded-md"
+                              >
+                                <input
+                                  type="radio"
+                                  class="sr-only peer"
+                                  name="sort-desktop"
+                                  value="model-asc"
+                                  :checked="$store.selectedSort === 'model-asc'"
+                                  @change="$store.selectedSort = 'model-asc'; open = false"
+                                />
+                                <span
+                                  class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
+                                ></span>
+                              </div>
+                            </label>
+                            <label
+                              @click.stop="$store.selectedSort = 'model-desc'; open = false"
+                              class="flex-between w-full text-left px-3 py-2 hover:bg-main-silver smooth rounded-b-lg cursor-pointer"
+                            >
+                              <span>Модель (Я > А)</span>
+                              <div
+                                class="size-6 shrink-0 flex-center border border-main-black rounded-md"
+                              >
+                                <input
+                                  type="radio"
+                                  class="sr-only peer"
+                                  name="sort-desktop"
+                                  value="model-desc"
+                                  :checked="$store.selectedSort === 'model-desc'"
+                                  @change="$store.selectedSort = 'model-desc'; open = false"
+                                />
+                                <span
+                                  class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
+                                ></span>
+                              </div>
+                            </label>
                           </div>
                         </div>
                       </div>
@@ -2834,7 +2984,6 @@
                         });
                       },
                       sortModalOpen: false,
-                      selectedSort: 'name-asc',
                       dragStartY: 0,
                       dragCurrentY: 0,
                       isDragging: false,
@@ -3120,7 +3269,7 @@
                                   class="sr-only peer"
                                   name="sort"
                                   value="name-asc"
-                                  x-model="selectedSort"
+                                  x-model="$store.selectedSort"
                                 />
                                 <span
                                   class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
@@ -3139,7 +3288,7 @@
                                   class="sr-only peer"
                                   name="sort"
                                   value="name-desc"
-                                  x-model="selectedSort"
+                                  x-model="$store.selectedSort"
                                 />
                                 <span
                                   class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
@@ -3158,7 +3307,7 @@
                                   class="sr-only peer"
                                   name="sort"
                                   value="price-asc"
-                                  x-model="selectedSort"
+                                  x-model="$store.selectedSort"
                                 />
                                 <span
                                   class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
@@ -3177,7 +3326,7 @@
                                   class="sr-only peer"
                                   name="sort"
                                   value="price-desc"
-                                  x-model="selectedSort"
+                                  x-model="$store.selectedSort"
                                 />
                                 <span
                                   class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
@@ -3196,7 +3345,7 @@
                                   class="sr-only peer"
                                   name="sort"
                                   value="model-asc"
-                                  x-model="selectedSort"
+                                  x-model="$store.selectedSort"
                                 />
                                 <span
                                   class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
@@ -3215,7 +3364,7 @@
                                   class="sr-only peer"
                                   name="sort"
                                   value="model-desc"
-                                  x-model="selectedSort"
+                                  x-model="$store.selectedSort"
                                 />
                                 <span
                                   class="size-3.5 shrink-0 bg-main-black rounded opacity-0 peer-checked:opacity-100 smooth"
@@ -3550,6 +3699,28 @@
                       <span
                         x-text="showMore ? 'Скрыть' : 'Смотреть еще'"
                       ></span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Tabs Mobile -->
+                <div class="lg:hidden px-4 lg:px-0">
+                  <div
+                    class="flex items-center text-main-sm/4.5 sm:text-base/5.25 border border-main-black rounded-full p-1"
+                  >
+                    <button
+                      @click="activeTab = 'series'"
+                      class="w-full font-medium font-rooftop leading-5.25 rounded-full hover:text-main-black smooth py-1.75 sm:py-3 transition-all"
+                      :class="activeTab === 'series' ? 'bg-main-light-blue text-main-black' : 'bg-transparent text-main-gray'"
+                    >
+                      Серии
+                    </button>
+                    <button
+                      @click="activeTab = 'products'"
+                      class="w-full font-medium font-rooftop leading-5.25 rounded-full hover:text-main-black smooth py-1.75 sm:py-3 transition-all"
+                      :class="activeTab === 'products' ? 'bg-main-light-blue text-main-black' : 'bg-transparent text-main-gray'"
+                    >
+                      Товары
                     </button>
                   </div>
                 </div>
@@ -4540,7 +4711,7 @@
           >
             <template x-for="(item, index) in products" :key="index">
               <div
-                class="w-50.5 lg:w-59 border border-main-silver rounded-2xl overflow-hidden"
+                class="w-50.5 lg:w-59 shrink-0 border border-main-silver rounded-2xl overflow-hidden"
               >
                 <!-- Slider -->
                 <div
@@ -5098,17 +5269,18 @@
       <div class="container-base py-6 lg:py-9">
         <div class="flex max-lg:flex-col gap-10 lg:gap-9">
           <!-- 1 -->
-          <div class="w-full lg:max-w-80 lg:pt-6">
+          <div class="w-full lg:max-w-80 pt-8 lg:pt-0">
             <a href="#" class="block shrink-0 mb-6">
               <img
-                class="h-22 lg:h-26.25"
-                src="./assets/svg/footer-logo.png"
+                class="h-21.75 w-63.25 lg:size-auto"
+                src="./assets/svg/footer-logo.svg"
                 alt="Img"
               />
             </a>
             <p class="leading-5.5 lg:text-main-sm/4.5 mb-10 lg:mb-8">
-              Оснащение HoReCa в одно касание.Интернет-магазин посуды, предметов
-              сервировки, инвентаря и текстиля для кафе, ресторанови отелей
+              Оснащение HoReCa в одно касание. <br />
+              Интернет-магазин посуды, предметов сервировки, инвентаря и
+              текстиля для кафе, ресторанови отелей
             </p>
 
             <div>
@@ -5300,9 +5472,7 @@
               <p>zakaz@restotouch.ru</p>
             </div>
 
-            <div
-              class="leading-5.5 lg:text-main-sm/4.5 w-full flex flex-col gap-4.5 lg:gap-3"
-            >
+            <div class="text-main-sm/4.5 w-full flex flex-col gap-4.5 lg:gap-3">
               <p>
                 Информация, размещенная на сайте https:// restotouch.ru/
                 является ознакомительной и не является публичной офертой,
