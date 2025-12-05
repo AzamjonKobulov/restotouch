@@ -1,23 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Initialize series buttons swiper with freeMode
-  const seriesButtonsSwiper = document.querySelector(".series-buttons-swiper");
-  if (seriesButtonsSwiper) {
-    new Swiper(seriesButtonsSwiper, {
-      freeMode: true,
-      slidesPerView: "auto",
-      spaceBetween: 16,
-      grabCursor: true,
-      scrollbar: {
-        hide: true,
-      },
-      breakpoints: {
-        1024: {
-          spaceBetween: 24,
-        },
-      },
-    });
-  }
-
   // Initialize all swipers on the page
   const swipers = document.querySelectorAll(".series-swiper");
 

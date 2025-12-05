@@ -2014,201 +2014,66 @@
       <!-- Series/Products -->
       <section class="pb-12 lg:pb-16">
         <!-- List Slider -->
-        <div class="container-base mb-3 md:mb-6 lg:mb-8.5 overflow-hidden">
-          <div class="swiper series-buttons-swiper !overflow-visible">
+        <div
+          class="container-base mb-3 md:mb-6 lg:mb-8.5 overflow-hidden"
+          x-data="{
+            seriesItems: [
+              { name: 'Глубокие тарелки', image: './assets/images/catalog-6.png' },
+              { name: 'Тарелки для пицыы', image: './assets/images/catalog-2.png' },
+              { name: 'Тарелки с вертикальным бортом', image: './assets/images/catalog-3.png' },
+              { name: 'Тарелки для пасты', image: './assets/images/catalog-4.png' },
+              { name: 'Блюда', image: './assets/images/catalog-5.png' },
+              { name: 'Чайники', image: './assets/images/catalog-12.png' },
+              { name: 'Сахарницы', image: './assets/images/metal-7.png' },
+              { name: 'Фарфоровая и керамическая', image: './assets/images/catalog-6.png' },
+              { name: 'Тарелки с вертикальным бортом', image: './assets/images/catalog-3.png' },
+              { name: 'Тарелки для пасты', image: './assets/images/catalog-4.png' },
+              { name: 'Блюда', image: './assets/images/catalog-5.png' },
+              { name: 'Чайники', image: './assets/images/catalog-12.png' }
+            ],
+            init() {
+              this.$nextTick(() => {
+                const seriesButtonsSwiper = document.querySelector('.series-buttons-swiper');
+                if (seriesButtonsSwiper) {
+                  new Swiper(seriesButtonsSwiper, {
+                    freeMode: true,
+                    slidesPerView: 'auto',
+                    spaceBetween: 16,
+                    grabCursor: true,
+                    scrollbar: {
+                      hide: true,
+                    },
+                    breakpoints: {
+                      1024: {
+                        spaceBetween: 32,
+                      },
+                    },
+                  });
+                }
+              });
+            }
+          }"
+        >
+          <div class="swiper series-buttons-swiper">
             <div class="swiper-wrapper">
-              <div class="swiper-slide !w-auto">
-                <button
-                  class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
-                >
-                  <div
-                    class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
+              <template x-for="(item, index) in seriesItems" :key="index">
+                <div class="swiper-slide !w-auto">
+                  <button
+                    class="max-w-min h-12.5 shrink-0 group flex items-center rounded overflow-hidden"
                   >
-                    <img src="./assets/images/catalog-6.png" alt="Series" />
-                  </div>
-                  <div
-                    class="h-full flex-1 flex items-center bg-main-black text-white text-xs/[13px] text-start group-hover:bg-main-silver group-hover:text-main-black smooth py-3 pl-2.5 pr-7"
-                  >
-                    Глубокие тарелки
-                  </div>
-                </button>
-              </div>
-              <div class="swiper-slide !w-auto">
-                <button
-                  class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
-                >
-                  <div
-                    class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
-                  >
-                    <img src="./assets/images/catalog-2.png" alt="Series" />
-                  </div>
-                  <div
-                    class="h-full flex-1 flex items-center bg-main-black text-white text-xs/[13px] text-start group-hover:bg-main-silver group-hover:text-main-black smooth py-3 pl-2.5 pr-7"
-                  >
-                    Тарелки для пицыы
-                  </div>
-                </button>
-              </div>
-              <div class="swiper-slide !w-auto">
-                <button
-                  class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
-                >
-                  <div
-                    class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
-                  >
-                    <img src="./assets/images/catalog-3.png" alt="Series" />
-                  </div>
-                  <div
-                    class="h-full flex-1 flex items-center bg-main-black text-white text-xs/[13px] text-start group-hover:bg-main-silver group-hover:text-main-black smooth py-3 pl-2.5 pr-7"
-                  >
-                    Тарелки с вертикальным бортом
-                  </div>
-                </button>
-              </div>
-              <div class="swiper-slide !w-auto">
-                <button
-                  class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
-                >
-                  <div
-                    class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
-                  >
-                    <img src="./assets/images/catalog-4.png" alt="Series" />
-                  </div>
-                  <div
-                    class="h-full flex-1 flex items-center bg-main-black text-white text-xs/[13px] text-start group-hover:bg-main-silver group-hover:text-main-black smooth py-3 pl-2.5 pr-7"
-                  >
-                    Тарелки для пасты
-                  </div>
-                </button>
-              </div>
-              <div class="swiper-slide !w-auto">
-                <button
-                  class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
-                >
-                  <div
-                    class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
-                  >
-                    <img src="./assets/images/catalog-5.png" alt="Series" />
-                  </div>
-                  <div
-                    class="h-full flex-1 flex items-center bg-main-black text-white text-xs/[13px] text-start group-hover:bg-main-silver group-hover:text-main-black smooth py-3 pl-2.5 pr-7"
-                  >
-                    Блюда
-                  </div>
-                </button>
-              </div>
-              <div class="swiper-slide !w-auto">
-                <button
-                  class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
-                >
-                  <div
-                    class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
-                  >
-                    <img src="./assets/images/catalog-12.png" alt="Series" />
-                  </div>
-                  <div
-                    class="h-full flex-1 flex items-center bg-main-black text-white text-xs/[13px] text-start group-hover:bg-main-silver group-hover:text-main-black smooth py-3 pl-2.5 pr-7"
-                  >
-                    Чайники
-                  </div>
-                </button>
-              </div>
-              <div class="swiper-slide !w-auto">
-                <button
-                  class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
-                >
-                  <div
-                    class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
-                  >
-                    <img src="./assets/images/metal-7.png" alt="Series" />
-                  </div>
-                  <div
-                    class="h-full flex-1 flex items-center bg-main-black text-white text-xs/[13px] text-start group-hover:bg-main-silver group-hover:text-main-black smooth py-3 pl-2.5 pr-7"
-                  >
-                    Сахарницы
-                  </div>
-                </button>
-              </div>
-              <div class="swiper-slide !w-auto">
-                <button
-                  class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
-                >
-                  <div
-                    class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
-                  >
-                    <img src="./assets/images/catalog-6.png" alt="Series" />
-                  </div>
-                  <div
-                    class="h-full flex-1 flex items-center bg-main-black text-white text-xs/[13px] text-start group-hover:bg-main-silver group-hover:text-main-black smooth py-3 pl-2.5 pr-7"
-                  >
-                    Фарфоровая и керамическая
-                  </div>
-                </button>
-              </div>
-              <div class="swiper-slide !w-auto">
-                <button
-                  class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
-                >
-                  <div
-                    class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
-                  >
-                    <img src="./assets/images/catalog-3.png" alt="Series" />
-                  </div>
-                  <div
-                    class="h-full flex-1 flex items-center bg-main-black text-white text-xs/[13px] text-start group-hover:bg-main-silver group-hover:text-main-black smooth py-3 pl-2.5 pr-7"
-                  >
-                    Тарелки с вертикальным бортом
-                  </div>
-                </button>
-              </div>
-              <div class="swiper-slide !w-auto">
-                <button
-                  class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
-                >
-                  <div
-                    class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
-                  >
-                    <img src="./assets/images/catalog-4.png" alt="Series" />
-                  </div>
-                  <div
-                    class="h-full flex-1 flex items-center bg-main-black text-white text-xs/[13px] text-start group-hover:bg-main-silver group-hover:text-main-black smooth py-3 pl-2.5 pr-7"
-                  >
-                    Тарелки для пасты
-                  </div>
-                </button>
-              </div>
-              <div class="swiper-slide !w-auto">
-                <button
-                  class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
-                >
-                  <div
-                    class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
-                  >
-                    <img src="./assets/images/catalog-5.png" alt="Series" />
-                  </div>
-                  <div
-                    class="h-full flex-1 flex items-center bg-main-black text-white text-xs/[13px] text-start group-hover:bg-main-silver group-hover:text-main-black smooth py-3 pl-2.5 pr-7"
-                  >
-                    Блюда
-                  </div>
-                </button>
-              </div>
-              <div class="swiper-slide !w-auto">
-                <button
-                  class="max-w-45 h-12.5 shrink-0 group flex items-center line-clamp-3 rounded overflow-hidden"
-                >
-                  <div
-                    class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
-                  >
-                    <img src="./assets/images/catalog-12.png" alt="Series" />
-                  </div>
-                  <div
-                    class="h-full flex-1 flex items-center bg-main-black text-white text-xs/[13px] text-start group-hover:bg-main-silver group-hover:text-main-black smooth py-3 pl-2.5 pr-7"
-                  >
-                    Чайники
-                  </div>
-                </button>
-              </div>
+                    <div
+                      class="size-12.5 shrink-0 bg-main-silver rounded overflow-hidden"
+                    >
+                      <img :src="item.image" :alt="item.name" />
+                    </div>
+                    <div
+                      class="h-full flex-1 flex items-center bg-main-black text-white text-xs/[13px] text-start group-hover:bg-main-silver group-hover:text-main-black smooth py-1.25 pl-2.5 pr-7"
+                    >
+                      <span x-text="item.name"></span>
+                    </div>
+                  </button>
+                </div>
+              </template>
             </div>
           </div>
         </div>
@@ -5539,9 +5404,9 @@
               <p class="whitespace-nowrap">
                 +7 495 185 20 69 (10:00—19:00 пн-пт) 
               </p>
-              <p>
-                115172, Москва, Котельническая набережная 25с1 (10:00—19:00
-                пн-пт
+              <p class="whitespace-nowrap">
+                115172, Москва, Котельническая <br />
+                набережная 25с1 (10:00—19:00 пн-пт
               </p>
 
               <p>zakaz@restotouch.ru</p>
