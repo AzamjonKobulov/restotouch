@@ -455,12 +455,6 @@
     align-items: center;
     justify-content: center;
   }
-  .\!line-clamp-2 {
-    overflow: hidden !important;
-    display: -webkit-box !important;
-    -webkit-box-orient: vertical !important;
-    -webkit-line-clamp: 2 !important;
-  }
   .line-clamp-2 {
     overflow: hidden;
     display: -webkit-box;
@@ -496,6 +490,10 @@
   }
   .aspect-video {
     aspect-ratio: var(--aspect-video);
+  }
+  .\!size-10 {
+    width: calc(var(--spacing) * 10) !important;
+    height: calc(var(--spacing) * 10) !important;
   }
   .size-1 {
     width: calc(var(--spacing) * 1);
@@ -714,12 +712,6 @@
   .w-max {
     width: max-content;
   }
-  .max-w-40 {
-    max-width: calc(var(--spacing) * 40);
-  }
-  .max-w-45 {
-    max-width: calc(var(--spacing) * 45);
-  }
   .max-w-55 {
     max-width: calc(var(--spacing) * 55);
   }
@@ -747,17 +739,11 @@
   .max-w-189\.25 {
     max-width: calc(var(--spacing) * 189.25);
   }
-  .max-w-fit {
-    max-width: fit-content;
-  }
   .max-w-min {
     max-width: min-content;
   }
   .min-w-25 {
     min-width: calc(var(--spacing) * 25);
-  }
-  .min-w-40 {
-    min-width: calc(var(--spacing) * 40);
   }
   .min-w-full {
     min-width: 100%;
@@ -888,9 +874,6 @@
   }
   .items-start {
     align-items: flex-start;
-  }
-  .items-stretch {
-    align-items: stretch;
   }
   .justify-between {
     justify-content: space-between;
@@ -1077,9 +1060,6 @@
     :where(& > :not(:last-child)) {
       border-color: var(--color-white);
     }
-  }
-  .\!overflow-visible {
-    overflow: visible !important;
   }
   .overflow-auto {
     overflow: auto;
@@ -2100,11 +2080,6 @@
       margin-top: calc(var(--spacing) * 0);
     }
   }
-  .sm\:hidden {
-    @media (width >= 640px) {
-      display: none;
-    }
-  }
   .sm\:h-74 {
     @media (width >= 640px) {
       height: calc(var(--spacing) * 74);
@@ -2295,6 +2270,12 @@
   .lg\:aspect-auto {
     @media (width >= 1024px) {
       aspect-ratio: auto;
+    }
+  }
+  .lg\:\!size-8 {
+    @media (width >= 1024px) {
+      width: calc(var(--spacing) * 8) !important;
+      height: calc(var(--spacing) * 8) !important;
     }
   }
   .lg\:size-8 {

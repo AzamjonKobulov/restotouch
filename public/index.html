@@ -6,6 +6,7 @@
     <title>Document</title>
     <!-- Styles -->
     <link rel="stylesheet" href="./css/styles.css" />
+    <script defer src="./assets/js/loader.js"></script>
 
     <!-- Alpine.js -->
     <script
@@ -22,6 +23,18 @@
     x-data="{ catalogOpen: false }"
     :class="{ 'overflow-hidden': $store.mobileMenuOpen || (catalogOpen && window.innerWidth < 1024) }"
   >
+    <div id="page-loader" aria-hidden="true">
+      <div class="page-loader__spinner" aria-label="Loading"></div>
+    </div>
+    <script>
+      (() => {
+        const loader = document.getElementById("page-loader");
+        const hide = () => loader && loader.classList.add("page-loader--hide");
+        // Hide ASAP on load, with fallback
+        window.addEventListener("load", hide);
+        setTimeout(hide, 4000);
+      })();
+    </script>
     <!-- Header -->
     <header
       class="max-xl:mt-4 mb-6 xl:mb-4"
