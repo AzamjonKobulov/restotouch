@@ -3681,7 +3681,6 @@
                 <div
                   id="series"
                   x-show="activeTab === 'series'"
-                  x-transition
                   class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-x-3.5 gap-y-8 pb-6 px-4 lg:px-0"
                   x-data="{
                     series: [
@@ -4016,7 +4015,6 @@
                 <div
                   id="products"
                   x-show="activeTab === 'products'"
-                  x-transition
                   class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-x-3.5 gap-y-8 pb-6 px-4 lg:px-0"
                   x-data="{
                     series: [
@@ -4312,7 +4310,7 @@
 
                       <div class="space-y-4 mt-4 px-2 pb-2">
                         <p
-                          class="font-rooftop text-main-sm/4.5 tracking-[0%] line-clamp-3"
+                          class="text-main-sm/4.5 tracking-[0%] line-clamp-3"
                           x-text="item.name"
                         ></p>
                         <div class="space-y-2">
@@ -4342,13 +4340,14 @@
                         <!-- Count Button & Add To Cart Button -->
                         <div class="flex items-center xs:justify-between gap-2">
                           <div
-                            class="h-10 xs:h-8 w-2/3 xs:w-full grid grid-cols-3 bg-main-gray/15 rounded-lg hover:bg-main-yellow"
-                            x-init="if (typeof item.quantity === 'undefined') item.quantity = 1"
+                            class="h-10 xs:h-8 w-2/3 xs:w-full grid grid-cols-3 rounded-lg hover:bg-main-yellow transition-colors"
+                            :class="item.quantity > 0 ? 'bg-main-yellow' : 'bg-main-gray/15'"
+                            x-init="if (typeof item.quantity === 'undefined') item.quantity = 0"
                           >
                             <button
-                              @click="if (item.quantity > 1) item.quantity--"
+                              @click="if (item.quantity > 0) item.quantity--"
                               class="size-8 flex-center hover:opacity-70 smooth"
-                              :class="{ 'opacity-50 cursor-not-allowed': item.quantity <= 1 }"
+                              :class="{ 'opacity-50 cursor-not-allowed': item.quantity <= 0 }"
                             >
                               <svg
                                 width="32"
@@ -4401,7 +4400,8 @@
                           </div>
 
                           <button
-                            class="size-10 xs:h-8 xs:w-full flex-center uppercase text-xs/3 font-medium font-rooftop whitespace-nowrap bg-main-yellow xs:bg-transparent border border-main-black rounded-lg hover:bg-main-black hover:text-white smooth xs:px-2.5"
+                            class="size-10 xs:h-8 xs:w-full flex-center uppercase text-xs/3 font-medium font-rooftop whitespace-nowrap border border-main-black rounded-lg smooth xs:px-2.5 transition-colors"
+                            :class="item.quantity > 0 ? 'bg-main-black text-white hover:bg-main-gray' : 'bg-main-yellow xs:bg-transparent xs:hover:bg-main-black hover:text-white'"
                           >
                             <span class="hidden xs:block">в корзину</span>
                             <svg

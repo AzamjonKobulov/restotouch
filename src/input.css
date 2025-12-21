@@ -66,6 +66,7 @@
   --font-rooftop-compact-book: "Rooftop Compact Book";
   --font-rooftop-wide: "Rooftop Wide";
   --color-main-black: #303030;
+  --color-main-gray-dark: #575756;
   --color-main-gray: #898989;
   --color-main-gray-100: #e5e5e5;
   --color-main-gray-200: #e1e1e1;
@@ -88,6 +89,8 @@
     rgba(249, 249, 249, 0) 0%,
     #f9f9f9 100%
   );
+
+  --shadow-tab-scoll-btn: 0px 0px 20px 0px #30303033;
 }
 
 @layer base {

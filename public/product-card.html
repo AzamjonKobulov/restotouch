@@ -1,0 +1,3828 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- Global loader + x-cloak helper -->
+    <style>
+      [x-cloak] {
+        display: none !important;
+      }
+      #page-loader {
+        position: fixed;
+        inset: 0;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 200ms ease, visibility 200ms ease;
+      }
+      #page-loader.page-loader--hide {
+        opacity: 0;
+        visibility: hidden;
+      }
+      .page-loader__spinner {
+        width: 48px;
+        height: 48px;
+        border: 4px solid #c6e7ff;
+        border-top-color: #303030;
+        border-radius: 50%;
+        animation: page-loader-spin 0.9s linear infinite;
+      }
+      @keyframes page-loader-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      /* Custom Swiper styles to match existing design */
+      .product-mobile-swiper {
+        overflow: visible;
+      }
+      .product-mobile-swiper .swiper-wrapper {
+        padding-left: 0;
+        padding-right: 0;
+      }
+      .product-mobile-swiper .swiper-slide {
+        width: 87.5% !important;
+        flex-shrink: 0;
+      }
+      @media (min-width: 640px) {
+        .product-mobile-swiper .swiper {
+          --swiper-navigation-size: 0;
+        }
+      }
+    </style>
+    <!-- Styles -->
+    <link rel="stylesheet" href="./css/styles.css" />
+
+    <!-- Swiper CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <!-- Alpine.js -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"
+    ></script>
+    <script>
+      document.addEventListener("alpine:init", () => {
+        Alpine.store("mobileMenuOpen", false);
+      });
+    </script>
+  </head>
+  <body
+    x-data="{ catalogOpen: false }"
+    :class="{ 'overflow-hidden': $store.mobileMenuOpen || (catalogOpen && window.innerWidth < 1024) }"
+  >
+    <div id="page-loader" aria-hidden="true">
+      <div class="page-loader__spinner"></div>
+    </div>
+    <script>
+      (() => {
+        const loader = document.getElementById("page-loader");
+        const hide = () => loader && loader.classList.add("page-loader--hide");
+        window.addEventListener("load", hide);
+        // Fallback in case onload is delayed
+        setTimeout(hide, 4000);
+      })();
+    </script>
+    <!-- Header -->
+    <header
+      class="max-xl:mt-4 mb-6 xl:mb-4"
+      x-data="{ 
+      selectedCategory: 'Фарфоровая и керамическая посуда',
+      showProducts: false,
+      navigationStack: [],
+      navigateToCategory(category) {
+        this.navigationStack.push({ type: 'category', name: category });
+        this.selectedCategory = category;
+        this.showProducts = true;
+      },
+      navigateToProducts(category) {
+        // Check if we're on mobile/tablet (under 1024px)
+        if (window.innerWidth < 1024) {
+          // Mobile navigation logic
+          if (this.navigationStack.length === 0) {
+            this.navigationStack.push({ type: 'categories' });
+          }
+          this.navigationStack.push({ type: 'products', name: category });
+          this.selectedCategory = category;
+          this.showProducts = true;
+        } else {
+          // Desktop navigation logic (original behavior)
+          this.selectedCategory = category;
+          this.showProducts = false; // Desktop doesn't use showProducts
+        }
+      },
+      goBack() {
+        // Check if we're on mobile/tablet (under 1024px)
+        if (window.innerWidth < 1024) {
+          // Mobile back button logic
+          if (this.navigationStack.length > 0) {
+            this.navigationStack.pop();
+          }
+          
+          if (this.navigationStack.length === 0) {
+            // Back to mobile menu
+            this.catalogOpen = false;
+            this.$store.mobileMenuOpen = true;
+          } else {
+            // Back to previous level - check what the previous level was
+            const previousLevel = this.navigationStack[this.navigationStack.length - 1];
+            if (previousLevel.type === 'products') {
+              this.showProducts = true;
+              this.selectedCategory = previousLevel.name;
+            } else if (previousLevel.type === 'categories') {
+              this.showProducts = false;
+            } else {
+              this.showProducts = false;
+            }
+          }
+        } else {
+          // Desktop back button logic (original behavior)
+          this.catalogOpen = false;
+          this.$store.mobileMenuOpen = true;
+        }
+      },
+      navigateToProduct(productName) {
+        console.log('navigateToProduct called with:', productName);
+        console.log('Window width:', window.innerWidth);
+        // Check if we're on mobile/tablet (under 1024px)
+        if (window.innerWidth < 1024) {
+          // Mobile navigation logic - close catalog and reset to main level
+          console.log('Closing catalog and resetting to main level');
+          this.catalogOpen = false;
+          this.$store.mobileMenuOpen = false;
+          this.showProducts = false;
+          this.selectedCategory = 'Фарфоровая и керамическая посуда';
+          this.navigationStack = [];
+          // You can add navigation to product page here
+          console.log('Navigated to product:', productName);
+        } else {
+          // Desktop navigation logic (original behavior)
+          console.log('Desktop product navigation:', productName);
+          this.checkScrollbar();
+        }
+      },
+      truncateWords(text, maxWords = 4) {
+        if (!text) return '';
+        const words = text.split(' ');
+        if (words.length <= maxWords) return text;
+        return words.slice(0, maxWords).join(' ') + '...';
+      },
+      checkScrollbar() {
+        this.$nextTick(() => {
+          const scrollContainer = this.$el.querySelector('.custom-scroll');
+          if (scrollContainer) {
+            const hasScrollbar = scrollContainer.scrollHeight > scrollContainer.clientHeight;
+            if (hasScrollbar) {
+              scrollContainer.classList.remove('no-scrollbar');
+              scrollContainer.classList.add('has-scrollbar');
+            } else {
+              scrollContainer.classList.remove('has-scrollbar');
+              scrollContainer.classList.add('no-scrollbar');
+            }
+          }
+        });
+      },
+      categoryData: {
+        'Фарфоровая и керамическая посуда': [
+          { name: 'Мелкие столовые тарелки', image: 'catalog-1.png' },
+          { name: 'Тарелки для пиццы', image: 'catalog-2.png' },
+          { name: 'Тарелки с вертикальным бортом', image: 'catalog-3.png' },
+          { name: 'Тарелки для пасты', image: 'catalog-4.png' },
+          { name: 'Блюда', image: 'catalog-5.png' },
+          { name: 'Глубокие тарелки', image: 'catalog-6.png' },
+          { name: 'Салатники', image: 'catalog-7.png' },
+          { name: 'Миски и суповые', image: 'catalog-8.png' },
+          { name: 'Молочники', image: 'catalog-9.png' },
+          { name: 'Сахарницы', image: 'catalog-10.png' },
+          { name: 'Чайники', image: 'catalog-11.png' },
+          { name: 'Чашки и блюдца', image: 'catalog-12.png' },
+          { name: 'Кружки', image: 'catalog-13.png' },
+          { name: 'Солонки и перечницы', image: 'catalog-14.png' },
+          { name: 'Десертные тарелки', image: 'catalog-15.png' }
+        ],
+        'Бокалы и барное стекло': [
+          { name: 'Бокалы для вина', image: 'glass-1.png' },
+          { name: 'Бокалы для игристого вина', image: 'glass-2.png' },
+          { name: 'Барные бокалы', image: 'glass-3.png' },
+          { name: 'Бокалы и стаканы для пива', image: 'glass-4.png' },
+          { name: 'Бокалы из цветного стекла', image: 'glass-5.png' },
+          { name: 'Стаканы и кружки Тики', image: 'glass-6.png' },
+          { name: 'Cтаканы для воды', image: 'glass-7.png' },
+          { name: 'Бокалы для крепкого алкоголя', image: 'glass-9.png' },
+          { name: 'Чайная посуда из стекла', image: 'glass-10.png' },
+          { name: 'Наборы', image: 'glass-11.png' },
+          { name: 'Кувшины графины штоф', image: 'glass-12.png' },
+          { name: 'Стаканы из хрустального стекла', image: 'glass-13.png' },
+          { name: 'Креманки', image: 'glass-14.png' },
+          { name: 'Френч-прессы', image: 'glass-15.png' },
+        ],
+        'Столовые приборы': [
+          { name: 'Стейковые приборы', image: 'cutlery-1.png' },
+          { name: 'Ножи столовые', image: 'cutlery-2.png' },
+          { name: 'Ножи десертные', image: 'cutlery-3.png' },
+          { name: 'Ножи стейковые', image: 'cutlery-4.png' },
+          { name: 'Ножи для рыбы', image: 'cutlery-5.png' },
+          { name: 'Вилки десертные', image: 'cutlery-6.png' },
+          { name: 'Вилки для рыбы', image: 'cutlery-7.png' },
+          { name: 'Вилки столовые', image: 'cutlery-8.png' },
+          { name: 'Набор столовых приборов', image: 'cutlery-9.png' },
+          { name: 'Ложки столовые', image: 'cutlery-10.png' },
+          { name: 'Ложки десертные', image: 'cutlery-11.png' },
+          { name: 'Чайные ложки', image: 'cutlery-12.png' },
+          { name: 'Ложки кофейные', image: 'cutlery-13.png' },
+          { name: 'Специальные', image: 'cutlery-14.png' },
+          { name: 'Приборы с деревянной ручкой', image: 'cutlery-15.png' },
+          { name: 'Подставки и емкости для столовых приборов', image: 'cutlery-16.png' }  
+        ],
+        'Деревянная посуда': [
+          { name: 'Доски', image: 'wooden-1.png' },
+          { name: 'Доски со стоком', image: 'wooden-2.png' },
+          { name: 'Планшеты', image: 'wooden-3.png' },
+          { name: 'Ящики', image: 'wooden-4.png' },
+          { name: 'Для подачи и сервировки', image: 'wooden-5.png' },
+        ],
+        'Металлическая посуда': [
+          { name: 'Ведерки для охлаждения', image: 'metal-1.png' },
+          { name: 'Для морепродуктов', image: 'metal-2.png' },
+          { name: 'Емкости для подачи', image: 'metal-3.png' },
+          { name: 'Кастрюли', image: 'metal-4.png' },
+          { name: 'Подносы металлические', image: 'metal-5.png' },
+          { name: 'Салфетницы', image: 'metal-6.png' },
+          { name: 'Сахарницы', image: 'metal-7.png' },
+          { name: 'Сковородки для подачи', image: 'metal-8.png' },
+          { name: 'Сотейники для подачи', image: 'metal-9.png' },
+          { name: 'Соусники', image: 'metal-10.png' },
+          { name: 'Стаканы и кружки', image: 'metal-11.png' },
+          { name: 'Тарелки', image: 'metal-12.png' },
+          { name: 'Салатники', image: 'metal-13.png' },
+        ],
+        'Барный инвентарь': [
+          { name: 'Джиггеры', image: 'bar-1.png' },
+          { name: 'Направляющие для бокалов', image: 'bar-2.png' },
+          { name: 'Мадлеры', image: 'bar-3.png' },
+          { name: 'Аксессуары для сервировки стола', image: 'bar-4.png' },
+          { name: 'Сквизеры, пинцеты', image: 'bar-5.png' },
+          { name: 'Декорации', image: 'bar-6.png' },
+          { name: 'Стрейнеры', image: 'bar-7.png' },
+          { name: 'Шейкеры, смесительные стаканы', image: 'bar-8.png' },
+          { name: 'Барные ложки', image: 'bar-9.png' },
+          { name: 'Инвентарь бариста', image: 'bar-10.png' },
+          { name: 'Прочее', image: 'bar-11.png' },
+          { name: 'Бутылки для флейринга', image: 'bar-12.png' },
+        ],
+        'Сервировка стола и прочее': [
+          { name: 'Лампы и светильники', image: 'table-1.png' },
+          { name: 'Ведерки для льда', image: 'table-2.png' },
+          { name: 'Мельница для специй', image: 'table-3.png' },
+          { name: 'Салфетницы для ресторана', image: 'table-4.png' },
+          { name: 'Хлебницы', image: 'table-5.png' },
+          { name: 'Бутылки для масла', image: 'table-6.png' },
+          { name: 'Боксы для приборов и органащйеров', image: 'table-7.png' },
+          { name: 'Подставки для сумок', image: 'table-8.png' },
+          { name: 'Вазы для сервировки', image: 'table-9.png' },
+          { name: 'Подставки под зубачистки', image: 'table-10.png' },
+          { name: 'Сервировка стола и прочее', image: 'table-11.png' },
+          { name: 'Бараканчики, клоши, крышки для блюд', image: 'table-12.png' },
+          { name: 'Менажи', image: 'table-13.png' },
+          { name: 'Наборы для специй', image: 'table-14.png' },
+          { name: 'Пепельницы', image: 'table-15.png' },
+          { name: 'Подсвечники и свечи', image: 'table-16.png' },
+          { name: 'Посуда чугунная порционная для подачи и запекания', image: 'table-17.png' },
+          { name: 'Фуршетная посуда для подачи из пластика', image: 'table-18.png' },
+          { name: 'Френч-прессы', image: 'table-19.png' },
+          { name: 'Блюда для подачи', image: 'table-20.png' },
+          { name: 'Наборы для Саджа, Фондю', image: 'table-21.png' },
+          { name: 'Подносы', image: 'table-22.png' },
+          { name: 'Барный инвентарь диспенсеры', image: 'table-23.png' }
+        ],
+        'Мебель и декор': [
+          { name: 'Лампы и светильники', image: 'decor-1.png' },
+          { name: 'Ведерки для льда', image: 'decor-1.png' },
+          { name: 'Мельница для специй', image: 'decor-1.png' },
+          { name: 'Салфетницы для ресторана', image: 'decor-1.png' },
+          { name: 'Хлебницы', image: 'decor-1.png' },
+          { name: 'Бутылки для масла', image: 'decor-1.png' },
+        ],
+        'Наплитная посуда, кухонный инвентарь': [
+          { name: 'Наплитная посуда', image: 'stove-1.png' },
+          { name: 'Кухонный инвентарь', image: 'stove-2.png' },
+          { name: 'Кондитерский инвентарь', image: 'stove-3.png' },
+          { name: 'Ножи и аксессуары', image: 'stove-4.png' },
+          { name: 'Инвентарь для пиццы', image: 'stove-5.png' },
+        ],
+        'Наплитная посуда': [
+          { name: 'Сковороды', image: 'stove-1.png' },
+          { name: 'Кастрюли', image: 'stove-2.png' },
+          { name: 'Сотейники', image: 'stove-3.png' },
+          { name: 'Ковши', image: 'stove-4.png' },
+          { name: 'Грили', image: 'stove-5.png' },
+          { name: 'Воки', image: 'stove-6.png' },
+        ],
+        'Кухонный инвентарь': [
+          { name: 'Сковороды', image: 'stove-1.png' },
+          { name: 'Кастрюли', image: 'stove-2.png' },
+          { name: 'Сотейники', image: 'stove-3.png' },
+          { name: 'Ковши', image: 'stove-4.png' },
+          { name: 'Грили', image: 'stove-5.png' },
+          { name: 'Воки', image: 'stove-6.png' },
+        ],
+        'Кондитерский инвентарь': [
+          { name: 'Сковороды', image: 'stove-1.png' },
+          { name: 'Кастрюли', image: 'stove-2.png' },
+          { name: 'Сотейники', image: 'stove-3.png' },
+          { name: 'Ковши', image: 'stove-4.png' },
+          { name: 'Грили', image: 'stove-5.png' },
+          { name: 'Воки', image: 'stove-6.png' },
+        ],
+        'Ножи и аксессуары': [
+          { name: 'Сковороды', image: 'stove-1.png' },
+          { name: 'Кастрюли', image: 'stove-2.png' },
+          { name: 'Сотейники', image: 'stove-3.png' },
+          { name: 'Ковши', image: 'stove-4.png' },
+          { name: 'Грили', image: 'stove-5.png' },
+          { name: 'Воки', image: 'stove-6.png' },
+        ],
+        'Инвентарь для пиццы': [
+          { name: 'Сковороды', image: 'stove-1.png' },
+          { name: 'Кастрюли', image: 'stove-2.png' },
+          { name: 'Сотейники', image: 'stove-3.png' },
+          { name: 'Ковши', image: 'stove-4.png' },
+          { name: 'Грили', image: 'stove-5.png' },
+          { name: 'Воки', image: 'stove-6.png' },
+        ],
+        'Текстиль': [
+          { name: 'Салфетки и плейсматы', image: 'textile-1.png' },
+          { name: 'Скатерти и дорожки', image: 'textile-2.png' },
+        ],
+        'Стеклянная посуда': [
+          { name: 'Тарелки', image: 'glassware-1.png' },
+          { name: 'Салатники', image: 'glassware-2.png' },
+          { name: 'Блюда', image: 'glassware-3.png' },
+          { name: 'Соусники', image: 'glassware-4.png' },
+          { name: 'Чайники', image: 'glassware-5.png' },
+          { name: 'Чашки', image: 'glassware-6.png' },
+        ],
+      },
+      isScrolled: false,
+      init() {
+        // Check scrollbar on initial load
+        this.checkScrollbar();
+        
+        window.addEventListener('scroll', () => {
+          const scrollY = window.scrollY;
+          const width = window.innerWidth;
+          
+          // Only apply scroll detection on lg and above screens (overlay is hidden under lg)
+          if (width >= 1024) {
+            if (width >= 1280) { // xl and above
+              this.isScrolled = scrollY > 98;
+            } else { // lg
+              this.isScrolled = scrollY > 84;
+            }
+          } else {
+            // Under lg - overlay is hidden, so no need to track scroll
+            this.isScrolled = false;
+          }
+        });
+      }
+    }"
+    >
+      <nav class="container-base relative">
+        <!-- Top -->
+        <div class="max-xl:hidden flex items-center justify-between gap-5 py-1">
+          <div class="flex items-center gap-2.25">
+            <svg
+              width="11"
+              height="16"
+              viewBox="0 0 11 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.6875 1C8.34537 1 10.5 3.15463 10.5 5.8125C10.5 6.42947 10.2101 7.34458 9.71484 8.42676C9.22854 9.48945 8.57593 10.6466 7.91699 11.7227C7.25925 12.7967 6.60104 13.7814 6.10645 14.498C5.94915 14.7259 5.80598 14.9253 5.6875 15.0928C5.56902 14.9253 5.42585 14.7259 5.26855 14.498C4.77396 13.7814 4.11575 12.7967 3.45801 11.7227C2.79907 10.6466 2.14646 9.48945 1.66016 8.42676C1.16493 7.34458 0.875 6.42947 0.875 5.8125C0.875 3.15463 3.02963 1 5.6875 1Z"
+                stroke="#898989"
+              />
+              <circle cx="5.68752" cy="5.81289" r="2.39773" stroke="#898989" />
+            </svg>
+            <p class="text-main-gray text-sm leading-4.75">
+              Москва, Котельническая набережная 25с1.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-9">
+            <a href="#" class="flex items-center gap-1">
+              <div
+                class="shrink-0 size-5 flex items-center justify-center bg-main-yellow rounded-full"
+              >
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 15 15"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3.36621 1.39648L5.62891 3.66016L5.98242 4.01367L5.62891 4.36719L4.38281 5.61426C4.31718 5.68006 4.28039 5.76921 4.28027 5.8623C4.28027 5.95558 4.31705 6.04542 4.38281 6.11133L6.63867 8.36719L8.89355 10.623L8.94629 10.666C9.00344 10.7042 9.07099 10.7246 9.14062 10.7246C9.23314 10.7246 9.32203 10.6884 9.3877 10.623L10.6338 9.37598L10.9873 9.02246L11.3408 9.37598L13.6035 11.6406L13.957 11.9932L13.6035 12.3467L12.4375 13.5137C11.637 14.3147 10.4304 14.2675 9.15625 13.7207C7.86466 13.1663 6.33382 12.04 4.65527 10.3613L4.61426 10.3203C2.93351 8.63851 1.81281 7.1135 1.2666 5.82715C0.727088 4.55647 0.694336 3.36132 1.49121 2.56348H1.49219L3.0127 1.04297L3.36621 1.39648Z"
+                    stroke="#303030"
+                    stroke-miterlimit="10"
+                  />
+                </svg>
+              </div>
+              <span class="text-main-sm/4.5"> Заказать звонок </span>
+            </a>
+
+            <div class="text-main-sm/[1.125rem] flex items-center gap-2">
+              <a href="tel:+74951852069"> +7 495 185 20 69 </a>
+
+              <p class="text-main-gray">(с 10:00 до 19:00 пн-пт)</p>
+            </div>
+
+            <div class="text-main-sm/[1.125rem] flex items-center gap-2">
+              <a href="tel:+880043478743"> 8 800 434 78743 </a>
+
+              <p class="text-main-gray">(Бесплатный звонок по России)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom -->
+        <div
+          :class="$store.mobileMenuOpen ? 'relative z-50 bg-main-yellow max-lg:rounded-t-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8' : 'relative z-50 bg-main-yellow max-lg:rounded-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8'"
+        >
+          <!-- Logo -->
+          <a class="shrink-0 lg:flex items-end" href="#">
+            <img
+              class="max-lg:hidden h-13.5"
+              src="./assets/svg/logo-desktop.svg"
+              alt="Logo Desk"
+            />
+            <img
+              class="lg:hidden h-3"
+              src="./assets/svg/logo-mobile.svg"
+              alt="Logo Mob"
+            />
+          </a>
+          <div class="w-full flex items-center gap-4 lg:gap-8.25">
+            <!-- Каталог -->
+            <div class="w-full flex items-center gap-3.25">
+              <button
+                class="max-lg:hidden bg-white lg:h-10.25 border border-transparent flex items-center gap-2 rounded-lg px-4 py-2 transition duration-200 hover:border-main-gray"
+                @click="catalogOpen = !catalogOpen"
+              >
+                <!-- Hamburger Menu Icon (when catalog is closed) -->
+                <svg
+                  x-show="!catalogOpen"
+                  width="15"
+                  height="10"
+                  viewBox="0 0 12 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g clip-path="url(#clip0_12695_94292)">
+                    <path
+                      d="M0.269531 8.64062H11.9995"
+                      stroke="#303030"
+                      stroke-miterlimit="10"
+                    />
+                    <path
+                      d="M0.269531 5H11.9995"
+                      stroke="#303030"
+                      stroke-miterlimit="10"
+                    />
+                    <path
+                      d="M0.269531 1.35156H11.9995"
+                      stroke="#303030"
+                      stroke-miterlimit="10"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_12695_94292">
+                      <rect
+                        width="11.73"
+                        height="8.29"
+                        fill="white"
+                        transform="translate(0.269531 0.851562)"
+                      />
+                    </clipPath>
+                  </defs>
+                </svg>
+
+                <!-- X Icon (when catalog is open) -->
+                <svg
+                  x-show="catalogOpen"
+                  width="15"
+                  height="16"
+                  viewBox="0 0 15 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M14 14.75L7.25 8L14 1.25" stroke="#303030" />
+                  <path d="M0.5 1.25L7.25 8L0.499999 14.75" stroke="#303030" />
+                </svg>
+
+                <span class="text-main-lg leading-6"> Каталог </span>
+              </button>
+
+              <div class="relative max-w-153.25 w-full min-w-25">
+                <input
+                  class="relative z-0 max-w-153.25 w-full bg-white border border-transparent rounded-lg focus:border-main-gray placeholder:text-main-gray-400/50 max-md:placeholder:font-light lg:text-lg/6.25 outline-none lg:h-10.25 py-1 lg:py-2 px-2.5 lg:px-4"
+                  type="text"
+                  name="search"
+                  id="search"
+                  placeholder="Поиск"
+                />
+
+                <div
+                  class="absolute z-10 top-1/2 -translate-y-1/2 right-2 lg:right-4 size-6 flex items-center justify-center"
+                >
+                  <svg
+                    class="max-md:hidden"
+                    width="17"
+                    height="17"
+                    viewBox="0 0 17 17"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M11.25 11.25L16.5 16.5" stroke="#303030" />
+                    <circle cx="7.125" cy="7.125" r="5.875" stroke="#303030" />
+                  </svg>
+
+                  <svg
+                    class="md:hidden"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 17 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M10.2536 11.0375C11.1355 10.1559 11.5765 9.09587 11.5765 7.85753C11.5765 6.6192 11.1355 5.5592 10.2536 4.67753C9.37326 3.79753 8.31374 3.35753 7.07498 3.35753C5.83456 3.35753 4.77419 3.79753 3.89389 4.67753C3.01359 5.5592 2.57344 6.6192 2.57344 7.85753C2.57344 9.09587 3.01359 10.1559 3.89389 11.0375C4.77419 11.9175 5.83456 12.3575 7.07498 12.3575C8.31374 12.3575 9.37326 11.9175 10.2536 11.0375ZM16.7208 16.215C16.7208 16.5634 16.5932 16.8642 16.3381 17.1175C16.0831 17.3725 15.7813 17.5 15.4328 17.5C15.071 17.5 14.7701 17.3725 14.53 17.1175L11.0838 13.6825C9.88344 14.5125 8.54715 14.9275 7.07498 14.9275C6.11632 14.9275 5.20017 14.7417 4.32654 14.37C3.45124 13.9984 2.69765 13.4967 2.06577 12.865C1.43222 12.2317 0.929545 11.4784 0.557752 10.605C0.185958 9.73003 6.10352e-05 8.8142 6.10352e-05 7.85753C6.10352e-05 6.8992 0.185958 5.98337 0.557752 5.11003C0.929545 4.2367 1.43222 3.48337 2.06577 2.85003C2.69765 2.2167 3.45124 1.7142 4.32654 1.34253C5.20017 0.970868 6.11632 0.785034 7.07498 0.785034C8.03197 0.785034 8.94729 0.970868 9.82092 1.34253C10.6962 1.7142 11.4498 2.2167 12.0817 2.85003C12.7152 3.48337 13.2179 4.2367 13.5897 5.11003C13.9615 5.98337 14.1474 6.8992 14.1474 7.85753C14.1474 9.33087 13.7323 10.6667 12.902 11.865L16.3481 15.31C16.5966 15.5584 16.7208 15.86 16.7208 16.215Z"
+                      fill="#333333"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Links -->
+            <div class="flex items-center gap-5 xl:gap-8 py-2">
+              <a
+                href="#"
+                class="max-lg:hidden flex flex-col items-center text-center transition duration-200 hover:text-main-gray"
+              >
+                <svg
+                  width="33"
+                  height="32"
+                  viewBox="0 0 33 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g clip-path="url(#clip0_14314_306)">
+                    <path
+                      d="M22.5003 6.5C24.5537 6.5001 26.2596 7.6367 27.1155 9.34863C27.9694 11.0564 27.9922 13.3755 26.5716 15.7432C25.0894 18.2134 22.5186 20.6691 20.2855 22.5244C19.1745 23.4474 18.1572 24.2132 17.4183 24.748C17.0489 25.0154 16.7489 25.225 16.5423 25.3672C16.5283 25.3768 16.5144 25.3855 16.5013 25.3945C16.4872 25.3848 16.4724 25.3747 16.4573 25.3643C16.2492 25.2197 15.9471 25.0073 15.5755 24.7363C14.8322 24.1943 13.8101 23.42 12.6956 22.4912C10.4544 20.6235 7.88387 18.1675 6.42902 15.7432C5.00829 13.3754 5.03117 11.0564 5.88507 9.34863C6.74114 7.63671 8.4468 6.5 10.5003 6.5C13.2803 6.50009 14.6521 7.85883 16.1468 9.35352L16.5032 9.70996L16.8538 9.35352C18.3486 7.85882 19.7203 6.5 22.5003 6.5Z"
+                      stroke="currentColor"
+                    />
+                    <path
+                      d="M31.1666 122.48C26.6874 122.48 22.2082 120.986 17.7293 118.001C-60.6721 63.4959 -175.657 -55.9721 -183.871 -150.052C-186.855 -182.907 -177.152 -209.787 -155.496 -231.437C-134.589 -252.344 -110.693 -262.052 -83.8134 -260.557C-30.7973 -257.573 16.9893 -210.531 30.4266 -192.609C44.6146 -210.531 92.4 -256.823 145.411 -260.557C172.291 -262.052 196.932 -252.344 217.093 -231.437C238.744 -209.787 248.453 -182.156 245.468 -150.052C237.254 -55.9734 122.271 63.4946 43.868 118.001C40.1232 120.986 35.6439 122.48 31.1649 122.48H31.1666ZM-89.0467 -244.88C-109.953 -244.88 -128.62 -236.666 -145.047 -220.24C-163.713 -201.573 -171.927 -178.428 -168.943 -150.802C-164.464 -97.0423 -100.249 17.9444 26.684 106.051C29.6684 108.291 33.4027 108.291 36.3922 106.051C163.324 17.9471 226.792 -97.0423 232.019 -150.802C234.258 -178.428 226.79 -202.324 208.123 -220.24C190.202 -238.161 170.044 -246.376 147.644 -244.88C100.603 -241.895 55.8055 -197.838 43.8575 -182.906C37.8835 -175.437 25.1909 -175.437 19.9615 -182.906C8.01367 -197.838 -36.0384 -241.89 -83.8251 -244.88H-89.0439H-89.0467Z"
+                      fill="currentColor"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_14314_306">
+                      <rect
+                        x="0.5"
+                        width="32"
+                        height="32"
+                        rx="8"
+                        fill="white"
+                      />
+                    </clipPath>
+                  </defs>
+                </svg>
+                <p class="text-main-sm/4.5">Избранное</p>
+              </a>
+
+              <a
+                href="#"
+                class="max-lg:hidden flex flex-col items-center text-center transition duration-200 hover:text-main-gray"
+              >
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="16" cy="7" r="4.5" stroke="currentColor" />
+                  <path
+                    d="M16 13.5C20.6944 13.5 24.5 17.3056 24.5 22V29.5H7.5V22C7.5 17.3056 11.3056 13.5 16 13.5Z"
+                    stroke="currentColor"
+                  />
+                </svg>
+                <p class="text-main-sm/4.5">Войти</p>
+              </a>
+
+              <a href="#" class="transition duration-200">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 34 36"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    x="6.00024"
+                    y="9"
+                    width="20.0008"
+                    height="16"
+                    stroke="currentColor"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M12.0005 12V9C12.0005 6.79086 13.7915 5 16.0007 5C18.2099 5 20.0009 6.79086 20.0009 9V12"
+                    stroke="currentColor"
+                  />
+                  <rect
+                    x="18.5"
+                    y="18.5"
+                    width="15"
+                    height="17"
+                    rx="4.5"
+                    fill="#FFE68D"
+                  />
+                  <rect
+                    x="18.5"
+                    y="18.5"
+                    width="15"
+                    height="17"
+                    rx="4.5"
+                    stroke="currentColor"
+                  />
+                  <path
+                    d="M25.9961 32.16C24.6308 32.16 23.5908 31.728 22.8761 30.864C22.1615 29.9893 21.8041 28.7147 21.8041 27.04V25.76C21.8041 24.0853 22.1615 22.816 22.8761 21.952C23.5908 21.0773 24.6308 20.64 25.9961 20.64C27.3615 20.64 28.4015 21.0773 29.1161 21.952C29.8415 22.816 30.2041 24.0853 30.2041 25.76V27.04C30.2041 28.7147 29.8415 29.9893 29.1161 30.864C28.4015 31.728 27.3615 32.16 25.9961 32.16ZM25.9961 30.928C27.7775 30.928 28.6681 29.6427 28.6681 27.072V25.728C28.6681 23.168 27.7775 21.888 25.9961 21.888C24.2148 21.888 23.3241 23.168 23.3241 25.728V27.072C23.3241 29.6427 24.2148 30.928 25.9961 30.928Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+
+              <!-- Menu btn -->
+              <button
+                class="xl:hidden transition duration-200 max-3xs:-ml-3"
+                @click="
+                  if ($store.mobileMenuOpen || catalogOpen) {
+                    $store.mobileMenuOpen = false;
+                    catalogOpen = false;
+                  } else {
+                    $store.mobileMenuOpen = true;
+                  }
+                "
+              >
+                <!-- Hamburger Icon (when both menu and catalog are closed) -->
+                <svg
+                  x-show="!$store.mobileMenuOpen && !catalogOpen"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    x="6"
+                    y="9"
+                    width="20"
+                    height="3"
+                    rx="1.5"
+                    fill="currentColor"
+                  />
+                  <rect
+                    x="6"
+                    y="20"
+                    width="20"
+                    height="3"
+                    rx="1.5"
+                    fill="currentColor"
+                  />
+                  <rect
+                    x="6"
+                    y="14.5"
+                    width="20"
+                    height="3"
+                    rx="1.5"
+                    fill="currentColor"
+                  />
+                </svg>
+
+                <!-- X Icon (when menu or catalog is open) -->
+                <svg
+                  x-show="$store.mobileMenuOpen || catalogOpen"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M25 25L16 16L25 7" stroke="#303030" />
+                  <path d="M7 7L16 16L7 25" stroke="#303030" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Mobile Menu -->
+          <div
+            class="absolute inset-x-0 h-[calc(100vh-64px)] top-full z-50 lg:hidden bg-white overflow-auto"
+            x-show="$store.mobileMenuOpen"
+            x-transition:enter="transition-all ease-out duration-300"
+            x-transition:enter-start="opacity-0 transform -translate-y-4"
+            x-transition:enter-end="opacity-100 transform translate-y-0"
+            x-transition:leave="transition-all ease-in duration-250"
+            x-transition:leave-start="opacity-100 transform translate-y-0"
+            x-transition:leave-end="opacity-0 transform -translate-y-4"
+            @click.outside="$store.mobileMenuOpen = false"
+          >
+            <div
+              class="size-full h-[calc(100vh-84px)] flex flex-col justify-between gap-8 bg-main-yellow rounded-b-lg overflow-auto pb-10 px-4 custom-scroll"
+            >
+              <ul
+                class="divide-y divide-white text-2xl/7.25 font-medium font-rooftop"
+              >
+                <li>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="catalogOpen = true; $store.mobileMenuOpen = false"
+                    >Каталог товаров</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >О компании</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Наше производство</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Бренды</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Доставка</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Оплата</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Контакты</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Новинки</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Акции</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Избранное</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Для партнеров</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block py-4"
+                    @click="$store.mobileMenuOpen = false"
+                    >Личный кабинет</a
+                  >
+                </li>
+              </ul>
+
+              <!-- Bottom Contacts -->
+              <div class="space-y-8">
+                <ul class="space-y-4 leading-5.5">
+                  <li>
+                    <a href="tel:+74994305605"
+                      >+7 499 430 5605 (10:00—19:00 пн-пт)</a
+                    >
+                  </li>
+                  <li>
+                    <a href="tel:+880043478743"
+                      >8 800 434 78743 (Бесплатный звонок по России)</a
+                    >
+                  </li>
+                  <li>
+                    Москва, Котельническая набережная 25с1 (10:00—21:00 пн-пт)
+                  </li>
+                  <li>
+                    <a href="mailto:zakaz@restotouch.ru">zakaz@restotouch.ru</a>
+                  </li>
+                </ul>
+
+                <!-- Socials -->
+                <div class="space-y-6">
+                  <p class="font-rooftop-wide font-medium leading-5">
+                    Следите за нами
+                  </p>
+                  <ul class="flex items-center gap-2">
+                    <!-- Telegram -->
+                    <li>
+                      <a
+                        href="#"
+                        class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
+                        @click="$store.mobileMenuOpen = false"
+                      >
+                        <svg
+                          width="21"
+                          height="19"
+                          viewBox="0 0 21 19"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M20.75 0.664441L17.5868 17.9695C17.5868 17.9695 17.1444 19.1696 15.9279 18.5936L11.4272 14.8494L8.53992 17.7058C8.53992 17.7058 8.31417 17.8916 8.06731 17.7752L8.62015 12.4695L8.63883 12.4853L8.65052 12.3771C8.65052 12.3771 16.7464 4.4807 17.0782 4.14465C17.41 3.80861 17.2993 3.73661 17.2993 3.73661C17.3214 3.32863 16.7021 3.73661 16.7021 3.73661L5.97399 11.1291L1.50578 9.49694C1.50578 9.49694 0.820092 9.23297 0.753732 8.65694C0.687373 8.0809 1.52788 7.76884 1.52788 7.76884L19.2901 0.208364C19.2901 0.208364 20.75 -0.487631 20.75 0.664441Z"
+                            fill="#FFE68D"
+                          />
+                        </svg>
+                      </a>
+                    </li>
+                    <!-- Whatsapp -->
+                    <li>
+                      <a
+                        href="#"
+                        class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
+                        @click="$store.mobileMenuOpen = false"
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M17.0856 2.90944C15.3786 1.20723 13.108 0.180898 10.6971 0.0217388C8.28617 -0.137421 5.89933 0.58145 3.98148 2.04436C2.06362 3.50728 0.745597 5.61442 0.273064 7.97306C-0.19947 10.3317 0.205728 12.7809 1.41314 14.8642L0 20L5.2789 18.6209C6.73696 19.4122 8.37082 19.8276 10.0315 19.8292C12.0017 19.8311 13.9282 19.2513 15.5673 18.1631C17.2063 17.0749 18.4843 15.5272 19.2394 13.7159C19.9946 11.9046 20.193 9.91102 19.8096 7.98742C19.4262 6.06381 18.4782 4.29662 17.0856 2.90944ZM10.0417 18.1535C8.55823 18.1551 7.10175 17.7587 5.82555 17.0059L5.5246 16.8279L2.39157 17.6455L3.22899 14.6066L3.03126 14.2954C2.05557 12.7485 1.62402 10.9226 1.80444 9.10496C1.98486 7.28727 2.76703 5.58079 4.02798 4.2538C5.28894 2.92681 6.95717 2.05455 8.77044 1.77415C10.5837 1.49374 12.4392 1.82108 14.0452 2.70472C15.6512 3.58836 16.9166 4.97819 17.6426 6.65571C18.3685 8.33324 18.5138 10.2033 18.0556 11.972C17.5975 13.7407 16.5618 15.3077 15.1114 16.4266C13.661 17.5456 11.8782 18.153 10.0431 18.1535H10.0417ZM14.5806 11.9858C14.332 11.8628 13.1093 11.2623 12.881 11.1812C12.6528 11.1002 12.4871 11.0568 12.3213 11.3042C12.1556 11.5517 11.6787 12.1103 11.5333 12.2752C11.388 12.4402 11.2426 12.4619 10.994 12.3375C10.2605 12.0468 9.58348 11.631 8.99347 11.1089C8.44971 10.6083 7.98331 10.0304 7.60941 9.39401C7.46403 9.14511 7.59342 9.01197 7.71845 8.88752C7.84348 8.76306 7.96706 8.59809 8.09209 8.45338C8.19403 8.3277 8.27772 8.18837 8.3407 8.0395C8.37392 7.97112 8.38934 7.89552 8.38553 7.81966C8.38172 7.74379 8.3588 7.6701 8.31889 7.60536C8.25783 7.48091 7.75916 6.26243 7.55271 5.76607C7.34627 5.2697 7.14564 5.35798 6.99298 5.34495C6.84033 5.33193 6.68186 5.33627 6.51612 5.33627C6.38976 5.33944 6.26544 5.36874 6.15106 5.4223C6.03668 5.47586 5.93474 5.55252 5.85172 5.6474C5.57036 5.91255 5.34752 6.23308 5.19734 6.58859C5.04716 6.94411 4.97295 7.32684 4.97941 7.71245C4.97941 8.93093 5.87207 10.1089 5.9971 10.2739C6.12213 10.4388 7.75189 12.938 10.2481 14.0103C10.7109 14.2091 11.1841 14.383 11.6656 14.5313C12.1732 14.6855 12.7099 14.7192 13.2329 14.6297C13.7112 14.5588 14.7056 14.0306 14.9121 13.4532C15.1185 12.8758 15.12 12.378 15.0575 12.2752C14.9949 12.1725 14.8292 12.1103 14.5806 11.9858Z"
+                            fill="#FFE68D"
+                          />
+                        </svg>
+                      </a>
+                    </li>
+                    <!-- VK -->
+                    <li>
+                      <a
+                        href="#"
+                        class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
+                        @click="$store.mobileMenuOpen = false"
+                      >
+                        <svg
+                          width="26"
+                          height="15"
+                          viewBox="0 0 26 15"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M24.9194 1.68432C25.0932 1.14166 24.9194 0.752763 24.093 0.752763H21.358C21.1015 0.735782 20.846 0.797421 20.631 0.928174C20.416 1.05893 20.2534 1.25154 20.1683 1.4763C20.1683 1.4763 18.7833 4.60742 16.8121 6.6478C16.1753 7.23748 15.8861 7.4256 15.5384 7.4256C15.3646 7.4256 15.1125 7.24471 15.1125 6.70206V1.68432C15.1125 1.04037 14.9172 0.752763 14.3311 0.752763H10.0333C9.9462 0.748133 9.85897 0.759584 9.77668 0.78645C9.69439 0.813316 9.61868 0.85506 9.55397 0.909256C9.48926 0.963452 9.43683 1.02902 9.39973 1.10214C9.36263 1.17527 9.34159 1.25449 9.33785 1.33521C9.33785 1.94479 10.3146 2.08588 10.424 3.80248V7.53232C10.424 8.34992 10.2638 8.49825 9.9161 8.49825C8.99012 8.49825 6.73377 5.34543 5.39755 1.73678C5.13382 1.03675 4.87204 0.752763 4.17267 0.752763H1.4377C0.656284 0.752763 0.5 1.09283 0.5 1.4763C0.5 2.14738 1.42794 5.47385 4.81734 9.87297C7.0776 12.872 10.2677 14.5 13.159 14.5C14.8977 14.5 15.1125 14.1382 15.1125 13.5142V11.2441C15.1125 10.5205 15.2766 10.3758 15.8275 10.3758C16.2339 10.3758 16.9293 10.5567 18.5508 12.0038C20.4067 13.7294 20.7114 14.5 21.7546 14.5H24.4896C25.271 14.5 25.6617 14.1382 25.437 13.4147C25.2124 12.6912 24.304 11.671 23.1299 10.4482C22.4911 9.74997 21.5358 9.0011 21.2467 8.62306C20.8403 8.14009 20.9556 7.92484 21.2467 7.49614C21.2467 7.49614 24.5677 3.15491 24.9252 1.67527L24.9194 1.68432Z"
+                            fill="#FFE68D"
+                          />
+                        </svg>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pages Links -->
+        <div class="hidden lg:block border-b border-main-silver py-4">
+          <ul
+            class="flex-center gap-8 xl:gap-10.5 text-xs/3.5 xl:text-main-sm/4.5 capitalize"
+          >
+            <li>
+              <a
+                href="#"
+                class="hover:text-main-gray transition-all duration-200"
+                >компании</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="hover:text-main-gray transition-all duration-200"
+                >Наше производство</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="hover:text-main-gray transition-all duration-200"
+                >Бренды</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="inline-block flex-center bg-[#17BFBF] text-white rounded-[2px] py-0.5 px-2"
+              >
+                Распродажа
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="hover:text-main-gray transition-all duration-200"
+                >Новинки</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="hover:text-main-gray transition-all duration-200"
+                >Доставка</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="hover:text-main-gray transition-all duration-200"
+                >Оплата</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="hover:text-main-gray transition-all duration-200"
+                >Наши клиенты</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="hover:text-main-gray transition-all duration-200"
+                >Сотрудничество</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="hover:text-main-gray transition-all duration-200"
+                >Контакты</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <!-- Catalog -->
+        <div
+          class="custom-scroll container-base w-full absolute top-full inset-x-0 right-0 lg:right-auto z-50 bg-white lg:bg-transparent"
+          x-show="catalogOpen"
+          x-transition:enter="transition-all ease-out duration-300"
+          x-transition:enter-start="opacity-0 transform -translate-y-4"
+          x-transition:enter-end="opacity-100 transform translate-y-0"
+          x-transition:leave="transition-all ease-in duration-250"
+          x-transition:leave-start="opacity-100 transform translate-y-0"
+          x-transition:leave-end="opacity-0 transform -translate-y-4"
+          @click.outside="catalogOpen = false"
+        >
+          <div
+            class="catalog-mobile-scroll overflow-auto h-[calc(100vh-64px)] lg:h-auto w-full grid lg:flex !items-stretch bg-white rounded-b-lg lg:px-6 relative"
+          >
+            <!-- Left Categories -->
+            <div class="lg:border-r border-main-gray/20 lg:pt-6 lg:pr-1">
+              <div
+                class="lg:w-66.5 shrink-0 h-full font-medium lg:font-normal text-lg/5.75 lg:text-xs xl:text-main-sm/4.5"
+              >
+                <div
+                  class="flex lg:hidden items-center gap-3 border-b border-main-gray-200 mb-4 py-4"
+                >
+                  <!-- Back Button -->
+                  <button @click="goBack()">
+                    <svg
+                      width="32"
+                      height="32"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="0.5"
+                        y="0.5"
+                        width="31"
+                        height="31"
+                        rx="15.5"
+                        stroke="#303030"
+                      />
+                      <path d="M19 24L11 16L19 8" stroke="#303030" />
+                    </svg>
+                  </button>
+
+                  <h2
+                    class="lg:hidden text-2xl/7.25 font-rooftop-wide font-medium lg:font-normal lg:text-xs xl:text-main-sm/4.5 tracking-tighter line-clamp-2"
+                    x-text="showProducts ? selectedCategory : 'Каталог'"
+                  >
+                    Каталог
+                  </h2>
+                </div>
+                <ul
+                  class="space-y-6 lg:space-y-2"
+                  x-show="!showProducts"
+                  x-transition:enter="transition-all ease-out duration-300"
+                  x-transition:enter-start="opacity-0 transform translate-x-4"
+                  x-transition:enter-end="opacity-100 transform translate-x-0"
+                  x-transition:leave="transition-all ease-in duration-200"
+                  x-transition:leave-start="opacity-100 transform translate-x-0"
+                  x-transition:leave-end="opacity-0 transform -translate-x-4"
+                >
+                  <li
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Фарфоровая и керамическая посуда' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Фарфоровая и керамическая посуда')"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/catalog-6.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Фарфоровая и керамическая посуда
+                    </div>
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="shrink-0 lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
+                  </li>
+                  <li
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Бокалы и барное стекло' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Бокалы и барное стекло')"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/glass-2.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Бокалы и барное стекло
+                    </div>
+
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="shrink-0 lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
+                  </li>
+                  <li
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Столовые приборы' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Столовые приборы')"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative overflow-hidden"
+                      >
+                        <img
+                          src="./assets/images/cutlery-17.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Столовые приборы
+                    </div>
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="shrink-0 lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
+                  </li>
+                  <li
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Деревянная посуда' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Деревянная посуда')"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/wooden-6.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Деревянная посуда
+                    </div>
+
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="shrink-0 lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
+                  </li>
+                  <li
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Металлическая посуда' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Металлическая посуда')"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/metal-14.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Металлическая посуда
+                    </div>
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="shrink-0 lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
+                  </li>
+                  <li
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Барный инвентарь' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Барный инвентарь')"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/bar-13.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Барный инвентарь
+                    </div>
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="shrink-0 lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
+                  </li>
+                  <li
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Сервировка стола и прочее' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Сервировка стола и прочее')"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/table-24.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Сервировка стола и прочее
+                    </div>
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="shrink-0 lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
+                  </li>
+                  <li
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Текстиль' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Текстиль')"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/textile-1.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Текстиль
+                    </div>
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="shrink-0 lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
+                  </li>
+                  <li
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Мебель и декор' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Мебель и декор')"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/decor-1.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Мебель и декор
+                    </div>
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="shrink-0 lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
+                  </li>
+                  <li
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
+                    :class="selectedCategory === 'Стеклянная посуда' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Стеклянная посуда')"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 lg:hidden rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/glassware-1.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Стеклянная посуда
+                    </div>
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="shrink-0 lg:hidden"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
+                  </li>
+                  <!-- Mobile: Regular category button -->
+                  <li
+                    class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5 lg:hidden"
+                    :class="selectedCategory === 'Наплитная посуда, кухонный инвентарь' ? 'lg:bg-main-silver' : ''"
+                    @click="navigateToProducts('Наплитная посуда, кухонный инвентарь')"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="size-15 shrink-0 rounded-lg bg-main-silver relative"
+                      >
+                        <img
+                          src="./assets/images/stove-1.png"
+                          class="size-full object-cover absolute bottom-0"
+                          alt=""
+                        />
+                      </div>
+                      Наплитная посуда, кухонный <br />
+                      инвентарь
+                    </div>
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 9 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                        stroke="#303030"
+                        stroke-width="1.6"
+                      />
+                    </svg>
+                  </li>
+
+                  <!-- Desktop: Accordion -->
+                  <div x-data="{ open: false }" @click.outside="open = false">
+                    <!-- Desktop: Accordion button -->
+                    <li
+                      class="flex-between cursor-pointer rounded-lg lg:py-2 lg:px-2.5 hidden lg:flex"
+                      @click="open = !open"
+                    >
+                      <div class="flex items-center gap-3">
+                        Наплитная посуда, кухонный инвентарь
+                      </div>
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        :class="{ 'rotate-180': open }"
+                        class="transition-transform duration-300 ease-out"
+                      >
+                        <path
+                          d="M18.75 9L12.75 15L6.75 9"
+                          stroke="#303030"
+                          stroke-width="1.02857"
+                        />
+                      </svg>
+                    </li>
+
+                    <!-- Desktop: Accordion subcategories -->
+                    <ul
+                      class="space-y-2 w-full pt-2 pb-5 overflow-hidden hidden lg:block"
+                      x-show="open"
+                      x-transition:enter="transition-all ease-out duration-300"
+                      x-transition:enter-start="opacity-0 max-h-0 transform -translate-y-2"
+                      x-transition:enter-end="opacity-100 max-h-[500px] transform translate-y-0"
+                      x-transition:leave="transition-all ease-in duration-250"
+                      x-transition:leave-start="opacity-100 max-h-[500px] transform translate-y-0"
+                      x-transition:leave-end="opacity-0 max-h-0 transform -translate-y-2"
+                    >
+                      <li
+                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                        :class="selectedCategory === 'Наплитная посуда' ? 'bg-main-silver' : ''"
+                        @click="navigateToProducts('Наплитная посуда')"
+                      >
+                        Наплитная посуда
+                      </li>
+                      <li
+                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                        :class="selectedCategory === 'Кухонный инвентарь' ? 'bg-main-silver' : ''"
+                        @click="navigateToProducts('Кухонный инвентарь')"
+                      >
+                        Кухонный инвентарь
+                      </li>
+                      <li
+                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                        :class="selectedCategory === 'Кондитерский инвентарь' ? 'bg-main-silver' : ''"
+                        @click="navigateToProducts('Кондитерский инвентарь')"
+                      >
+                        Кондитерский инвентарь
+                      </li>
+                      <li
+                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                        :class="selectedCategory === 'Ножи и аксессуары' ? 'bg-main-silver' : ''"
+                        @click="navigateToProducts('Ножи и аксессуары')"
+                      >
+                        Ножи и аксессуары
+                      </li>
+                      <li
+                        class="cursor-pointer rounded-lg hover:bg-main-silver/50 transition-colors duration-200 py-2 pl-6 pr-2.5"
+                        :class="selectedCategory === 'Инвентарь для пиццы' ? 'bg-main-silver' : ''"
+                        @click="navigateToProducts('Инвентарь для пиццы')"
+                      >
+                        Инвентарь для пиццы
+                      </li>
+                    </ul>
+                  </div>
+                </ul>
+
+                <!-- Products View -->
+                <div
+                  x-show="showProducts"
+                  class="lg:hidden"
+                  :key="selectedCategory"
+                  x-transition:enter="transition-all ease-out duration-300"
+                  x-transition:enter-start="opacity-0 transform -translate-x-4"
+                  x-transition:enter-end="opacity-100 transform translate-x-0"
+                  x-transition:leave="transition-all ease-in duration-200"
+                  x-transition:leave-start="opacity-100 transform translate-x-0"
+                  x-transition:leave-end="opacity-0 transform translate-x-4"
+                >
+                  <ul class="space-y-6">
+                    <template
+                      x-for="item in categoryData[selectedCategory]"
+                      :key="`${selectedCategory}-${item.name}`"
+                    >
+                      <li
+                        class="flex-between gap-3 cursor-pointer rounded-lg transition-colors duration-200"
+                        @click="selectedCategory === 'Наплитная посуда, кухонный инвентарь' ? navigateToProducts(item.name) : navigateToProduct(item.name)"
+                      >
+                        <div class="flex items-center gap-3">
+                          <div
+                            class="size-15 shrink-0 rounded-lg bg-main-silver relative"
+                          >
+                            <img
+                              :src="`./assets/images/${item.image}`"
+                              class="size-full object-cover absolute bottom-0"
+                              :alt="item.name"
+                            />
+                          </div>
+                          <span x-text="item.name" class="line-clamp-2"></span>
+                        </div>
+                        <svg
+                          width="9"
+                          height="15"
+                          viewBox="0 0 9 15"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M0.803125 1.39844L7.20313 7.79844L0.803125 14.1984"
+                            stroke="#303030"
+                            stroke-width="1.6"
+                          />
+                        </svg>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- Center Products -->
+            <div class="hidden lg:block space-y-5 flex-1 pl-6 pr-3 pt-6 pb-10">
+              <p
+                class="font-rooftop-wide font-medium text-main-dark transition-all duration-300 ease-out"
+                x-text="selectedCategory"
+              ></p>
+
+              <div
+                class="custom-scroll max-h-[calc(100vh-180px)] overflow-y-auto"
+              >
+                <div
+                  class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 transition-all duration-300 ease-out"
+                  :key="selectedCategory"
+                >
+                  <template
+                    x-for="(item, index) in categoryData[selectedCategory]"
+                    :key="item.name"
+                  >
+                    <a
+                      href="#"
+                      class="h-43.5 group relative font-rooftop flex flex-col justify-between bg-main-silver rounded-lg transition-all duration-300 ease-out hover:bg-main-silver/80 hover:shadow-lg hover:-translate-y-1 overflow-hidden"
+                    >
+                      <p
+                        class="text-center text-xs/3.5 group-hover:scale-105 transition-all duration-300 ease-out px-4 py-2"
+                        x-text="truncateWords(item.name)"
+                      ></p>
+
+                      <img
+                        :src="`./assets/images/${item.image}`"
+                        :alt="item.name"
+                        class="absolute left-1/2 -translate-x-1/2 bottom-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:-translate-y-2"
+                      />
+                    </a>
+                  </template>
+                </div>
+              </div>
+            </div>
+            <!-- Right Filters -->
+            <div
+              class="lg:w-66.5 shrink-0 space-y-13 lg:space-y-6 pb-10 pt-13 lg:py-6"
+            >
+              <!-- Search By Brands -->
+              <div
+                class="space-y-6 lg:space-y-3"
+                x-data="{ 
+                showMoreBrands: false,
+                selectedBrands: [],
+                brands: [
+                  'TUDOR', 'PORLAND', 'KUNSTWERK', 'P.L. PROFF CUISINE', 'COSY & TRENDY',
+                  'ARIANO DARO', '.L. PROFF CUISINE', 'SUMMA'
+                ],
+                additionalBrands: [
+                  'BRAND A', 'BRAND B', 'BRAND C', 'BRAND D', 'BRAND E',
+                  'BRAND F', 'BRAND G', 'BRAND H', 'BRAND I', 'BRAND J',
+                  'BRAND K', 'BRAND L', 'BRAND M', 'BRAND N', 'BRAND O',
+                  'BRAND P', 'BRAND Q', 'BRAND R', 'BRAND S', 'BRAND T',
+                  'BRAND U', 'BRAND V', 'BRAND W', 'BRAND X', 'BRAND Y',
+                  'BRAND Z', 'BRAND AA', 'BRAND BB', 'BRAND CC', 'BRAND DD',
+                  'BRAND EE', 'BRAND FF', 'BRAND GG', 'BRAND HH', 'BRAND II',
+                  'BRAND JJ', 'BRAND KK', 'BRAND LL', 'BRAND MM', 'BRAND NN',
+                  'BRAND OO', 'BRAND PP', 'BRAND QQ', 'BRAND RR', 'BRAND SS'
+                ],
+                toggleBrand(brandName) {
+                  if (this.selectedBrands.includes(brandName)) {
+                    this.selectedBrands = this.selectedBrands.filter(b => b !== brandName);
+                  } else {
+                    this.selectedBrands.push(brandName);
+                  }
+                }
+              }"
+              >
+                <p
+                  class="text-2xl/7.25 lg:text-lg/5.75 font-rooftop-wide font-medium text-main-dark"
+                >
+                  Поиск по брендам
+                </p>
+
+                <!-- Brands -->
+                <div
+                  class="flex items-center flex-wrap gap-x-1 gap-y-2 uppercase text-xs xl:text-main-sm/4.5"
+                >
+                  <!-- Main brands -->
+                  <template x-for="brand in brands" :key="brand">
+                    <button
+                      :class="selectedBrands.includes(brand) ? 'bg-main-yellow' : 'bg-main-silver hover:bg-main-yellow'"
+                      class="rounded-[5px] transition-colors duration-200 py-0.75 px-2"
+                      @click="toggleBrand(brand)"
+                      x-text="brand"
+                    ></button>
+                  </template>
+
+                  <!-- Additional hidden brands -->
+                  <template x-for="brand in additionalBrands" :key="brand">
+                    <button
+                      x-show="showMoreBrands"
+                      x-transition:enter="transition-all ease-out duration-300"
+                      x-transition:enter-start="opacity-0 transform scale-95"
+                      x-transition:enter-end="opacity-100 transform scale-100"
+                      x-transition:leave="transition-all ease-in duration-200"
+                      x-transition:leave-start="opacity-100 transform scale-100"
+                      x-transition:leave-end="opacity-0 transform scale-95"
+                      :class="selectedBrands.includes(brand) ? 'bg-main-yellow' : 'bg-main-silver hover:bg-main-yellow'"
+                      class="rounded-[5px] transition-colors duration-200 py-0.75 px-2"
+                      @click="toggleBrand(brand)"
+                      x-text="brand"
+                    ></button>
+                  </template>
+
+                  <button
+                    class="bg-main-yellow rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-0.75 px-2"
+                    @click="showMoreBrands = !showMoreBrands"
+                    x-text="showMoreBrands ? 'Скрыть' : `Еще +${additionalBrands.length}`"
+                  ></button>
+                </div>
+              </div>
+
+              <!-- Search By Series -->
+              <div class="space-y-3">
+                <p
+                  class="text-2xl/7.25 lg:text-lg/5.75 font-rooftop-wide font-medium text-main-dark"
+                >
+                  Поиск по сериям
+                </p>
+                <div class="space-y-3">
+                  <div class="space-y-1">
+                    <span class="text-main-sm/4.5 text-main-gray"
+                      >Выберите бренд</span
+                    >
+                    <div
+                      class="relative"
+                      x-data="{ brandsOpen: false, selectedBrand: '', searchQuery: '' }"
+                    >
+                      <!-- Input that acts like button -->
+                      <div
+                        class="relative w-full bg-main-silver rounded-lg overflow-hidden"
+                        @click.outside="brandsOpen = false"
+                      >
+                        <div class="relative">
+                          <input
+                            type="text"
+                            :placeholder="brandsOpen ? 'Поиск по брендам' : 'Бренды'"
+                            :value="brandsOpen ? searchQuery : (selectedBrand || '')"
+                            @input="searchQuery = $event.target.value"
+                            @focus="brandsOpen = true"
+                            @click="brandsOpen = true"
+                            :readonly="!brandsOpen"
+                            class="w-full h-12 text-sm/4.75 outline-none pl-5 pr-10 py-3.5 bg-transparent"
+                            :class="brandsOpen ? 'cursor-text placeholder:text-gray-400' : ' font-rooftop-wide font-medium cursor-pointer placeholder:text-main-black'"
+                          />
+                          <div
+                            class="absolute h-full top-0 right-5 flex items-center gap-2"
+                          >
+                            <!-- Clear Input -->
+                            <button
+                              x-show="brandsOpen && searchQuery"
+                              @click="searchQuery = ''"
+                              class="p-1 hover:bg-gray-200 rounded transition-colors duration-200"
+                            >
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 14 14"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M10.9375 10.9375L7 7L10.9375 3.0625"
+                                  stroke="#303030"
+                                />
+                                <path
+                                  d="M3.0625 3.0625L7 7L3.0625 10.9375"
+                                  stroke="#303030"
+                                />
+                              </svg>
+                            </button>
+                            <!-- Arrow Icon -->
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                              :class="brandsOpen ? 'rotate-180' : ''"
+                              class="transition-transform duration-200"
+                            >
+                              <path
+                                d="M18.75 9L12.75 15L6.75 9"
+                                stroke="#303030"
+                                stroke-width="1.02857"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+
+                        <!-- Brand list -->
+                        <div
+                          x-show="brandsOpen"
+                          x-transition:enter="transition-all ease-out duration-300"
+                          x-transition:enter-start="opacity-0 max-h-0 transform -translate-y-2"
+                          x-transition:enter-end="opacity-100 max-h-[500px] transform translate-y-0"
+                          x-transition:leave="transition-all ease-in duration-250"
+                          x-transition:leave-start="opacity-100 max-h-[500px] transform translate-y-0"
+                          x-transition:leave-end="opacity-0 max-h-0 transform -translate-y-2"
+                          class="divide-y divide-main-gray-100 border-t border-gray-200 overflow-hidden"
+                        >
+                          <ul
+                            class="custom-scroll-brands leading-5.5 max-h-48 overflow-y-auto"
+                          >
+                            <template
+                              x-for="brand in [
+                            'Bonna',
+                            'Ariane', 
+                            'Porland',
+                            'Style Point',
+                            'Cosy & Trendy',
+                            'SUMMA',
+                            'Adidas',
+                            'Nike',
+                            'Puma',
+                            'Zara',
+                            'Mango',
+                            'H&M',
+                            'Uniqlo',
+                            'Levi\'s',
+                            'Calvin Klein'
+                          ].filter(b => b.toLowerCase().includes(searchQuery.toLowerCase()))"
+                              :key="brand"
+                            >
+                              <li class="hover:bg-main-yellow pl-6 pr-3">
+                                <button
+                                  @click="selectedBrand = brand; brandsOpen = false"
+                                  class="w-full text-left border-b border-main-gray-100 py-1.25"
+                                  x-text="brand"
+                                ></button>
+                              </li>
+                            </template>
+
+                            <!-- No results message -->
+                            <li
+                              x-show="searchQuery && !['Bonna', 'Ariane', 'Porland', 'Style Point', 'Cosy & Trendy', 'SUMMA', 'Adidas', 'Nike', 'Puma', 'Zara', 'Mango', 'H&M', 'Uniqlo', 'Levi\'s', 'Calvin Klein'].filter(b => b.toLowerCase().includes(searchQuery.toLowerCase())).length"
+                              class="px-6 py-2 text-gray-500 text-sm text-center"
+                            >
+                              Бренды не найдены
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="space-y-1">
+                  <span class="text-main-sm/4.5 text-main-gray"
+                    >Выберите серию</span
+                  >
+                  <div
+                    class="relative"
+                    x-data="{ seriesOpen: false, selectedSeries: '', searchQuerySeries: '' }"
+                  >
+                    <!-- Input that acts like button -->
+                    <div
+                      class="relative w-full bg-main-silver rounded-lg overflow-hidden"
+                      @click.outside="seriesOpen = false"
+                    >
+                      <div class="relative">
+                        <input
+                          type="text"
+                          :placeholder="seriesOpen ? 'Поиск по сериям' : 'Серии'"
+                          :value="seriesOpen ? searchQuerySeries : (selectedSeries || '')"
+                          @input="searchQuerySeries = $event.target.value"
+                          @focus="seriesOpen = true"
+                          @click="seriesOpen = true"
+                          :readonly="!seriesOpen"
+                          class="w-full h-12 text-sm/4.75 outline-none pl-5 pr-10 py-3.5 bg-transparent"
+                          :class="seriesOpen ? 'cursor-text placeholder:text-gray-400' : ' font-rooftop-wide font-medium cursor-pointer placeholder:text-main-gray'"
+                        />
+                        <div
+                          class="absolute h-full top-0 right-5 flex items-center gap-2"
+                        >
+                          <!-- Clear Input -->
+                          <button
+                            x-show="seriesOpen && searchQuerySeries"
+                            @click="searchQuerySeries = ''"
+                            class="p-1 hover:bg-gray-200 rounded transition-colors duration-200"
+                          >
+                            <svg
+                              width="14"
+                              height="14"
+                              viewBox="0 0 14 14"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M10.9375 10.9375L7 7L10.9375 3.0625"
+                                stroke="#303030"
+                              />
+                              <path
+                                d="M3.0625 3.0625L7 7L3.0625 10.9375"
+                                stroke="#303030"
+                              />
+                            </svg>
+                          </button>
+                          <!-- Arrow Icon -->
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            :class="seriesOpen ? 'rotate-180' : ''"
+                            class="transition-transform duration-200"
+                          >
+                            <path
+                              d="M18.75 9L12.75 15L6.75 9"
+                              stroke="#303030"
+                              stroke-width="1.02857"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+
+                      <!-- Series list -->
+                      <div
+                        x-show="seriesOpen"
+                        x-transition:enter="transition-all ease-out duration-300"
+                        x-transition:enter-start="opacity-0 max-h-0 transform -translate-y-2"
+                        x-transition:enter-end="opacity-100 max-h-[500px] transform translate-y-0"
+                        x-transition:leave="transition-all ease-in duration-250"
+                        x-transition:leave-start="opacity-100 max-h-[500px] transform translate-y-0"
+                        x-transition:leave-end="opacity-0 max-h-0 transform -translate-y-2"
+                        class="divide-y divide-main-gray-100 border-t border-gray-200 overflow-hidden"
+                      >
+                        <ul
+                          class="custom-scroll-brands leading-5.5 max-h-48 overflow-y-auto"
+                        >
+                          <template
+                            x-for="series in [
+                              'Ariane Prime',
+                              'Ariane Slide',
+                              'Ariana Vital',
+                              'Ariana Selas',
+                              'Ariane Daro',
+                              'Ariane Classic',
+                              'Ariane Premium',
+                              'Ariane Sport',
+                              'Ariane Business',
+                              'Ariane Elegant',
+                              'Ariane Modern',
+                              'Ariane Vintage',
+                              'Ariane Urban',
+                              'Ariane Outdoor',
+                              'Ariane Luxury',
+                              'Ariane Basic',
+                              'Ariane Pro',
+                              'Ariane Elite',
+                              'Ariane Standard',
+                              'Ariane Collection',
+                              'Ariane Signature',
+                              'Ariane Limited',
+                              'Ariane Exclusive',
+                              'Ariane Master',
+                              'Ariane Supreme'
+                            ].filter(s => s.toLowerCase().includes(searchQuerySeries.toLowerCase()))"
+                            :key="series"
+                          >
+                            <li class="hover:bg-main-gray-100 pl-6 pr-3">
+                              <button
+                                @click="selectedSeries = series; seriesOpen = false"
+                                class="w-full text-left border-b border-main-gray-100 py-1.25 flex items-center justify-between"
+                              >
+                                <span x-text="series"></span>
+                                <svg
+                                  width="24"
+                                  height="24"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M9.75 6L15.75 12L9.75 18"
+                                    stroke="#303030"
+                                    stroke-width="1.02857"
+                                  />
+                                </svg>
+                              </button>
+                            </li>
+                          </template>
+
+                          <!-- No results message -->
+                          <li
+                            x-show="searchQuerySeries && !['Ariane Prime', 'Ariane Slide', 'Ariana Vital', 'Ariana Selas', 'Ariane Daro', 'Ariane Classic', 'Ariane Premium', 'Ariane Sport', 'Ariane Business', 'Ariane Elegant', 'Ariane Modern', 'Ariane Vintage', 'Ariane Urban', 'Ariane Outdoor', 'Ariane Luxury', 'Ariane Basic', 'Ariane Pro', 'Ariane Elite', 'Ariane Standard', 'Ariane Collection', 'Ariane Signature', 'Ariane Limited', 'Ariane Exclusive', 'Ariane Master', 'Ariane Supreme'].filter(s => s.toLowerCase().includes(searchQuerySeries.toLowerCase())).length"
+                            class="px-6 py-2 text-gray-500 text-sm text-center"
+                          >
+                            Серии не найдены
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Search By Article -->
+              <div class="space-y-3">
+                <p
+                  class="text-2xl/7.25 lg:text-lg/5.75 font-rooftop-wide font-medium text-main-dark"
+                >
+                  Поиск по сериям
+                </p>
+
+                <div class="relative">
+                  <input
+                    type="text"
+                    placeholder="Поиск"
+                    class="w-full h-10 text-lg/6.25 bg-main-silver rounded-lg outline-none placeholder:text-main-gray-400/50 pl-5 pr-12 py-2"
+                  />
+                  <div class="absolute right-2 top-1/2 -translate-y-1/2">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M14.25 14.25L19.5 19.5" stroke="#303030" />
+                      <circle
+                        cx="10.125"
+                        cy="10.125"
+                        r="5.875"
+                        stroke="#303030"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Catalog overlay -->
+        <div
+          :class="isScrolled ? 'fixed top-0 inset-x-0 bottom-0 w-full hidden lg:block bg-main-black/50 transition-all duration-150 ease-out' : 'fixed top-16 lg:top-33.25 xl:top-38.5 inset-x-0 bottom-0 w-full hidden lg:block bg-main-black/50 transition-all duration-150 ease-out'"
+          x-show="catalogOpen"
+          @click="catalogOpen = false"
+          x-transition:enter="transition-opacity ease-out duration-300"
+          x-transition:enter-start="opacity-0"
+          x-transition:enter-end="opacity-100"
+          x-transition:leave="transition-opacity ease-in duration-250"
+          x-transition:leave-start="opacity-100"
+          x-transition:leave-end="opacity-0"
+        ></div>
+      </nav>
+    </header>
+
+    <!-- Main -->
+    <main class="">
+      <!-- Path -->
+      <div class="mb-4 md:mb-6 lg:mb-8.5 px-4 lg:px-0">
+        <div
+          class="container-base px-0 lg:px-4 text-main-sm/4.5 flex items-center gap-2 lg:gap-3 flex-wrap"
+        >
+          <a href="#" class="transition duration-200 hover:text-main-gray">
+            Главная
+          </a>
+          <svg
+            width="5"
+            height="10"
+            viewBox="0 0 5 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3.21754 0.899999H4.38754L1.78754 10H0.630539L3.21754 0.899999Z"
+              fill="#303030"
+            />
+          </svg>
+
+          <a href="#" class="transition duration-200 hover:text-main-gray">
+            Каталог товаров
+          </a>
+          <svg
+            width="5"
+            height="10"
+            viewBox="0 0 5 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3.21754 0.899999H4.38754L1.78754 10H0.630539L3.21754 0.899999Z"
+              fill="#303030"
+            />
+          </svg>
+
+          <a href="#" class="transition duration-200 hover:text-main-gray">
+            Фарфоровая и керамическая посуда
+          </a>
+          <svg
+            width="5"
+            height="10"
+            viewBox="0 0 5 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3.21754 0.899999H4.38754L1.78754 10H0.630539L3.21754 0.899999Z"
+              fill="#303030"
+            />
+          </svg>
+
+          <a href="#" class="transition duration-200 hover:text-main-gray">
+            Плоские тарелки
+          </a>
+          <svg
+            width="5"
+            height="10"
+            viewBox="0 0 5 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3.21754 0.899999H4.38754L1.78754 10H0.630539L3.21754 0.899999Z"
+              fill="#303030"
+            />
+          </svg>
+
+          <a href="#" class="transition duration-200 hover:text-main-gray">
+            Мелкие столовые тарелки
+          </a>
+          <svg
+            width="5"
+            height="10"
+            viewBox="0 0 5 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3.21754 0.899999H4.38754L1.78754 10H0.630539L3.21754 0.899999Z"
+              fill="#303030"
+            />
+          </svg>
+
+          <p>
+            Блюдо для подачи, P.L. Proff Cuisine, Untouched Taiga, 22х18х9см
+          </p>
+        </div>
+      </div>
+
+      <!-- Product Details -->
+      <section class="mb-4 md:mb-6 lg:mb-12">
+        <div
+          class="container-base px-0 lg:px-4 flex flex-col lg:flex-row gap-4 lg:gap-10 xl:gap-16"
+        >
+          <!-- Product Images Slide -->
+          <div
+            class="w-full lg:w-140 xl:w-152.5 max-h-screen shrink-0 flex flex-col lg:flex-row items-stretch gap-2"
+            x-data="{
+              currentIndex: 0,
+              currentMedia: null,
+              thumbnails: [
+                { type: 'image', src: './assets/images/img-product-card-1.jpg', thumbnail: './assets/images/img-product-card-1.jpg' },
+                { type: 'image', src: './assets/images/img-product-card-2.jpg', thumbnail: './assets/images/img-product-card-2.jpg' },
+                { type: 'image', src: './assets/images/img-product-card-3.jpg', thumbnail: './assets/images/img-product-card-3.jpg' },
+                { type: 'image', src: './assets/images/img-product-card-4.jpg', thumbnail: './assets/images/img-product-card-4.jpg' },
+                { type: 'video', src: './assets/videos/vid.mp4', thumbnail: './assets/images/img-product-card-1.jpg' },
+                { type: 'image', src: './assets/images/img-product-card-5.jpg', thumbnail: './assets/images/img-product-card-5.jpg' },
+                { type: 'image', src: './assets/images/img-product-card-1.jpg', thumbnail: './assets/images/img-product-card-1.jpg' },
+                { type: 'image', src: './assets/images/img-product-card-2.jpg', thumbnail: './assets/images/img-product-card-2.jpg' }
+              ],
+              thumbnailContainer: null,
+              mobileSwiper: null,
+              thumbnailHeight: 124,
+              thumbnailGap: 8,
+              visibleThumbnails: 5,
+              scrollTop: 0,
+              scrollHeight: 0,
+              clientHeight: 0,
+              init() {
+                this.$nextTick(() => {
+                  this.thumbnailContainer = this.$refs.thumbnailContainer;
+                  this.selectMedia(0);
+                  this.updateScrollState();
+                  this.initMobileSwiper();
+                });
+              },
+              initMobileSwiper() {
+                if (window.innerWidth >= 1024) return; // Only on mobile
+                const swiperEl = this.$refs.mobileSwiperContainer;
+                if (!swiperEl) return;
+                
+                // Destroy existing swiper if it exists
+                if (this.mobileSwiper) {
+                  this.mobileSwiper.destroy(true, true);
+                }
+                
+                const paginationEl = this.$refs.mobilePagination;
+                
+                this.mobileSwiper = new Swiper(swiperEl, {
+                  slidesPerView: 'auto',
+                  spaceBetween: 0,
+                  centeredSlides: false,
+                  loop: false,
+                  freeMode: false,
+                  resistance: true,
+                  resistanceRatio: 0.85,
+                  touchEventsTarget: 'container',
+                  on: {
+                    slideChange: (swiper) => {
+                      this.currentIndex = swiper.activeIndex;
+                      this.currentMedia = this.thumbnails[swiper.activeIndex];
+                      this.updateCustomPagination(swiper.activeIndex, paginationEl);
+                    },
+                    init: (swiper) => {
+                      this.updateCustomPagination(swiper.activeIndex, paginationEl);
+                    }
+                  }
+                });
+              },
+              updateCustomPagination(activeIndex, paginationEl) {
+                if (!paginationEl) return;
+                const bullets = paginationEl.querySelectorAll('.pagination-bullet');
+                bullets.forEach((bullet, index) => {
+                  if (index === activeIndex) {
+                    bullet.classList.remove('bg-main-silver');
+                    bullet.classList.add('bg-main-yellow');
+                  } else {
+                    bullet.classList.remove('bg-main-yellow');
+                    bullet.classList.add('bg-main-silver');
+                  }
+                });
+              },
+              selectMedia(index) {
+                this.currentIndex = index;
+                this.currentMedia = this.thumbnails[index];
+                // Slide to selected slide in Swiper
+                if (this.mobileSwiper) {
+                  this.mobileSwiper.slideTo(index);
+                }
+                // Pause all thumbnail videos when selecting a new media
+                this.$nextTick(() => {
+                  const thumbnailVideos = this.$el.querySelectorAll('video[data-thumbnail-video]');
+                  thumbnailVideos.forEach(video => {
+                    video.pause();
+                    video.currentTime = 0;
+                  });
+                  // Play main video if it's a video type
+                  if (this.currentMedia && this.currentMedia.type === 'video' && this.$refs.mainVideo) {
+                    this.$refs.mainVideo.play();
+                  }
+                });
+              },
+              scrollUp() {
+                if (this.thumbnailContainer) {
+                  const scrollAmount = this.thumbnailHeight + this.thumbnailGap;
+                  this.thumbnailContainer.scrollBy({ top: -scrollAmount, behavior: 'smooth' });
+                }
+              },
+              scrollDown() {
+                if (this.thumbnailContainer) {
+                  const scrollAmount = this.thumbnailHeight + this.thumbnailGap;
+                  this.thumbnailContainer.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+                }
+              },
+              updateScrollState() {
+                if (this.thumbnailContainer) {
+                  this.scrollTop = this.thumbnailContainer.scrollTop;
+                  this.scrollHeight = this.thumbnailContainer.scrollHeight;
+                  this.clientHeight = this.thumbnailContainer.clientHeight;
+                }
+              },
+              isActive(index) {
+                return this.currentIndex === index;
+              },
+              canScrollUp() {
+                return this.scrollTop > 0;
+              },
+              canScrollDown() {
+                const maxScroll = this.scrollHeight - this.clientHeight;
+                return this.scrollTop < maxScroll - 1;
+              },
+              needsScrollButtons() {
+                return this.thumbnails.length > this.visibleThumbnails;
+              }
+            }"
+          >
+            <!-- Mobile Swiper Slider -->
+            <div class="lg:hidden w-full">
+              <div
+                x-ref="mobileSwiperContainer"
+                class="swiper product-mobile-swiper"
+                style="padding-left: 0; padding-right: 0"
+              >
+                <div class="swiper-wrapper">
+                  <template
+                    x-for="(thumbnail, index) in thumbnails"
+                    :key="index"
+                  >
+                    <div
+                      class="swiper-slide ml-2 sm:ml-4 last:mr-2 sm:last:mr-4"
+                      style="width: 87.5%"
+                    >
+                      <div
+                        class="h-100 sm:h-160 border border-main-silver rounded-lg sm:rounded-xl overflow-hidden"
+                        @click="selectMedia(index)"
+                      >
+                        <!-- Image Display -->
+                        <template x-if="thumbnail.type === 'image'">
+                          <img
+                            :src="thumbnail.src"
+                            alt="Product Image"
+                            class="size-full object-cover"
+                          />
+                        </template>
+
+                        <!-- Video Display -->
+                        <template x-if="thumbnail.type === 'video'">
+                          <div class="relative size-full">
+                            <video
+                              :data-thumbnail-video="index"
+                              :id="`mobile-video-${index}`"
+                              :src="thumbnail.src"
+                              class="size-full object-cover"
+                              :controls="false"
+                              :autoplay="false"
+                              muted
+                              playsinline
+                              @click.stop="selectMedia(index)"
+                              @play="
+                                const video = $event.target;
+                                video.controls = true;
+                                const btn = video.parentElement.querySelector('.play-button-overlay');
+                                if (btn) btn.classList.add('hidden');
+                              "
+                              @pause="
+                                const video = $event.target;
+                                const btn = video.parentElement.querySelector('.play-button-overlay');
+                                if (btn) btn.classList.remove('hidden');
+                              "
+                            ></video>
+                            <!-- Video Play Button -->
+                            <button
+                              class="play-button-overlay absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
+                              @click.stop="
+                                const videoId = `mobile-video-${index}`;
+                                const video = document.getElementById(videoId);
+                                if (video) {
+                                  video.controls = true;
+                                  const playPromise = video.play();
+                                  if (playPromise !== undefined) {
+                                    playPromise.then(() => {
+                                      $el.classList.add('hidden');
+                                    }).catch(err => {
+                                      console.log('Play failed:', err);
+                                    });
+                                  } else {
+                                    $el.classList.add('hidden');
+                                  }
+                                }
+                              "
+                            >
+                              <svg
+                                width="26"
+                                height="33"
+                                viewBox="0 0 26 33"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="drop-shadow-lg"
+                              >
+                                <path
+                                  d="M0.724687 31.8797C0.9375 32.0022 1.17187 32.0624 1.40625 32.0624C1.665 32.0624 1.92375 31.9885 2.15156 31.8409L24.6516 17.267C25.0631 17.0008 25.3125 16.5335 25.3125 16.0311C25.3125 15.5288 25.0631 15.0615 24.6516 14.7953L2.15156 0.221414C1.71844 -0.0593761 1.17187 -0.07395 0.724687 0.18255C0.2775 0.43905 0 0.92776 0 1.45728V30.605C0 31.1345 0.2775 31.6232 0.724687 31.8797Z"
+                                  fill="white"
+                                  fill-opacity="0.9"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </template>
+                      </div>
+                    </div>
+                  </template>
+                </div>
+              </div>
+
+              <!-- Pagination -->
+              <div
+                x-ref="mobilePagination"
+                class="custom-pagination flex items-center gap-1 mt-1 sm:mt-2 px-4"
+              >
+                <template
+                  x-for="(thumbnail, bulletIndex) in thumbnails"
+                  :key="bulletIndex"
+                >
+                  <div
+                    class="pagination-bullet w-full h-0.5 sm:h-1 rounded-full cursor-pointer"
+                    :class="isActive(bulletIndex) ? 'bg-main-yellow' : 'bg-main-silver'"
+                    @click="selectMedia(bulletIndex)"
+                  ></div>
+                </template>
+              </div>
+            </div>
+
+            <!-- Desktop: Slides Thumbnails -->
+            <div class="hidden lg:block w-24 space-y-2.5 relative">
+              <!-- Slides Up -->
+              <button
+                @click="scrollUp()"
+                class="size-5 flex-center absolute top-0 left-1/2 -translate-x-1/2 rounded bg-main-silver z-10"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="rotate-180"
+                >
+                  <path
+                    d="M13.374 8.11996L9.55282 11.9412L5.73163 8.11996"
+                    stroke="#303030"
+                    stroke-width="0.9553"
+                  />
+                </svg>
+              </button>
+
+              <!-- Slides Thumbnails -->
+              <div
+                x-ref="thumbnailContainer"
+                @scroll="updateScrollState()"
+                class="flex flex-col gap-2 overflow-y-auto scroll-none py-6"
+                :style="`max-height: ${(thumbnailHeight + thumbnailGap) * visibleThumbnails + 48}px; scrollbar-width: none; -ms-overflow-style: none;`"
+              >
+                <template x-for="(thumbnail, index) in thumbnails" :key="index">
+                  <button
+                    @click="selectMedia(index)"
+                    :class="isActive(index) ? 'border-main-yellow' : 'border-main-silver'"
+                    class="h-31 border-2 rounded overflow-hidden bg-main-silver hover:border-main-yellow transition-colors relative flex-center shrink-0"
+                  >
+                    <!-- Image Thumbnail -->
+                    <template x-if="thumbnail.type === 'image'">
+                      <img
+                        :src="thumbnail.thumbnail"
+                        alt="Product Image"
+                        class="size-full object-cover"
+                      />
+                    </template>
+
+                    <!-- Video Thumbnail -->
+                    <template x-if="thumbnail.type === 'video'">
+                      <div class="relative size-full">
+                        <video
+                          :data-thumbnail-video="index"
+                          :src="thumbnail.src"
+                          class="size-full object-cover"
+                          muted
+                          loop
+                          playsinline
+                          preload="metadata"
+                          @mouseenter="$event.target.play()"
+                          @mouseleave="$event.target.pause(); $event.target.currentTime = 0;"
+                        ></video>
+                        <!-- Video Play Icon -->
+                        <div
+                          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none"
+                        >
+                          <svg
+                            width="26"
+                            height="33"
+                            viewBox="0 0 26 33"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="drop-shadow-lg"
+                          >
+                            <path
+                              d="M0.724687 31.8797C0.9375 32.0022 1.17187 32.0624 1.40625 32.0624C1.665 32.0624 1.92375 31.9885 2.15156 31.8409L24.6516 17.267C25.0631 17.0008 25.3125 16.5335 25.3125 16.0311C25.3125 15.5288 25.0631 15.0615 24.6516 14.7953L2.15156 0.221414C1.71844 -0.0593761 1.17187 -0.07395 0.724687 0.18255C0.2775 0.43905 0 0.92776 0 1.45728V30.605C0 31.1345 0.2775 31.6232 0.724687 31.8797Z"
+                              fill="white"
+                              fill-opacity="0.9"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </template>
+                  </button>
+                </template>
+              </div>
+
+              <!-- Slides Down -->
+              <button
+                @click="scrollDown()"
+                class="size-5 flex-center absolute bottom-0 left-1/2 -translate-x-1/2 rounded bg-main-silver z-10"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M13.374 8.11996L9.55282 11.9412L5.73163 8.11996"
+                    stroke="#303030"
+                    stroke-width="0.9553"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Desktop: Main Image/Video -->
+            <div
+              class="hidden lg:flex flex-1 rounded-2xl overflow-hidden bg-black"
+              :style="`height: ${(thumbnailHeight + thumbnailGap) * visibleThumbnails + 48}px;`"
+            >
+              <!-- Image Display -->
+              <template x-if="currentMedia && currentMedia.type === 'image'">
+                <img
+                  :src="currentMedia.src"
+                  alt="Product Image"
+                  class="size-full object-cover transition-opacity duration-300"
+                />
+              </template>
+
+              <!-- Video Display -->
+              <template x-if="currentMedia && currentMedia.type === 'video'">
+                <video
+                  x-ref="mainVideo"
+                  :src="currentMedia.src"
+                  class="size-full object-cover"
+                  controls
+                  autoplay
+                  playsinline
+                ></video>
+              </template>
+            </div>
+          </div>
+
+          <div class="flex-1 space-y-6 px-4 lg:px-0">
+            <!-- Product Info -->
+            <div class="space-y-4">
+              <!-- Like Button & Brand -->
+              <div class="flex items-center gap-4">
+                <button class="flex items-center">
+                  <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 32 32"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g clip-path="url(#clip0_11643_110086)">
+                      <path
+                        d="M22.0005 6.5C24.0539 6.5001 25.7598 7.6367 26.6157 9.34863C27.4695 11.0564 27.4924 13.3755 26.0718 15.7432C24.5896 18.2134 22.0188 20.6691 19.7856 22.5244C18.6747 23.4474 17.6574 24.2132 16.9185 24.748C16.5491 25.0154 16.2491 25.225 16.0425 25.3672C16.0285 25.3768 16.0146 25.3855 16.0015 25.3945C15.9874 25.3848 15.9726 25.3747 15.9575 25.3643C15.7494 25.2197 15.4472 25.0073 15.0757 24.7363C14.3324 24.1943 13.3103 23.42 12.1958 22.4912C9.95462 20.6235 7.38406 18.1675 5.9292 15.7432C4.50847 13.3754 4.53135 11.0564 5.38525 9.34863C6.24132 7.63671 7.94698 6.5 10.0005 6.5C12.7805 6.50009 14.1523 7.85883 15.647 9.35352L16.0034 9.70996L16.354 9.35352C17.8487 7.85882 19.2204 6.5 22.0005 6.5Z"
+                        stroke="#303030"
+                      />
+                      <path
+                        d="M30.6666 122.48C26.1874 122.48 21.7082 120.986 17.2292 118.001C-61.1721 63.4959 -176.157 -55.9721 -184.371 -150.052C-187.355 -182.907 -177.652 -209.787 -155.996 -231.437C-135.089 -252.344 -111.193 -262.052 -84.3134 -260.557C-31.2974 -257.573 16.4893 -210.531 29.9266 -192.609C44.1146 -210.531 91.8999 -256.823 144.911 -260.557C171.791 -262.052 196.432 -252.344 216.593 -231.437C238.244 -209.787 247.953 -182.156 244.968 -150.052C236.754 -55.9734 121.771 63.4946 43.3679 118.001C39.6231 120.986 35.1439 122.48 30.6648 122.48H30.6666ZM-89.5467 -244.88C-110.453 -244.88 -129.12 -236.666 -145.547 -220.24C-164.213 -201.573 -172.427 -178.428 -169.443 -150.802C-164.964 -97.0423 -100.749 17.9444 26.1839 106.051C29.1683 108.291 32.9027 108.291 35.8922 106.051C162.824 17.9471 226.292 -97.0423 231.519 -150.802C233.758 -178.428 226.29 -202.324 207.623 -220.24C189.702 -238.161 169.544 -246.376 147.144 -244.88C100.103 -241.895 55.3055 -197.838 43.3575 -182.906C37.3835 -175.437 24.6908 -175.437 19.4615 -182.906C7.51364 -197.838 -36.5385 -241.89 -84.3251 -244.88H-89.5439H-89.5467Z"
+                        fill="#303030"
+                      />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_11643_110086">
+                        <rect width="32" height="32" rx="8" fill="white" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+
+                  Избранное
+                </button>
+
+                <img src="./assets/images/proff-cuisine.png" alt="Brand Logo" />
+              </div>
+
+              <!-- Title & Article -->
+              <h2 class="font-medium text-xl/6 lg:text-2xl/7.5 xl:pr-16">
+                Блюдо для подачи, P.L. Proff Cuisine, Untouched Taiga, 22х18х9см
+              </h2>
+
+              <p class="text-main-base/5 text-main-gray">
+                Арт. <span>81250112</span>
+              </p>
+            </div>
+
+            <!-- Product Price -->
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <span
+                  class="text-[9px]/4.5 font-rooftop font-medium uppercase bg-[#B8D39C] rounded-[2px] px-1"
+                  >В наличии</span
+                >
+                <span
+                  class="text-[9px]/3.5 font-rooftop font-medium uppercase bg-main-status-red text-white rounded-[2px] py-0.5 px-1"
+                  >NEW</span
+                >
+              </div>
+
+              <p class="text-[30px]/8.75 font-rooftop-wide font-medium">
+                34 500 ₽
+              </p>
+
+              <div class="flex items-center gap-4">
+                <div
+                  class="h-10 flex items-center bg-main-silver rounded-lg px-5"
+                >
+                  <button class="size-8 flex-center">
+                    <span class="w-2.5 h-px bg-main-black"></span>
+                  </button>
+                  <span
+                    class="h-8 flex-center font-rooftop font-medium text-xs/3 px-2"
+                    >100</span
+                  >
+                  <button class="size-8 relative">
+                    <span
+                      class="w-2.5 h-px bg-main-black absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                    ></span>
+                    <span
+                      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-px h-2.5 bg-main-black"
+                    ></span>
+                  </button>
+                </div>
+
+                <button
+                  class="h-10 max-w-51.75 w-full bg-main-yellow rounded-lg px-5"
+                >
+                  <span
+                    class="text-main-xs/3 font-rooftop font-medium uppercase"
+                  >
+                    в корзину
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Product Details -->
+            <div class="max-w-91 space-y-3">
+              <div class="flex">
+                <ul class="space-y-3 text-sm/4.75 text-main-gray-dark">
+                  <li class="flex gap-10 sm:gap-17.5">
+                    <span class="w-35 shrink-0">Производитель</span>
+                    <span class="text-main-sm/4.5 font-medium font-rooftop"
+                      >GIBCO</span
+                    >
+                  </li>
+                  <li class="flex gap-10 sm:gap-17.5">
+                    <span class="w-35 shrink-0">Серия</span>
+                    <span class="text-main-sm/4.5 font-medium font-rooftop"
+                      >Untouched Taiga</span
+                    >
+                  </li>
+                  <li class="flex gap-10 sm:gap-17.5">
+                    <span class="w-35 shrink-0">Страна</span>
+                    <span class="text-main-sm/4.5 font-medium font-rooftop"
+                      >Россия</span
+                    >
+                  </li>
+                  <li class="flex gap-10 sm:gap-17.5">
+                    <span class="w-35 shrink-0">Материал</span>
+                    <span class="text-main-sm/4.5 font-medium font-rooftop"
+                      >Латунь</span
+                    >
+                  </li>
+                  <li class="flex gap-10 sm:gap-17.5">
+                    <span class="w-35 shrink-0">Цвет</span>
+                    <span class="text-main-sm/4.5 font-medium font-rooftop"
+                      >Золото</span
+                    >
+                  </li>
+                  <li class="flex gap-10 sm:gap-17.5">
+                    <span class="w-35 shrink-0">Размер</span>
+                    <span class="text-main-sm/4.5 font-medium font-rooftop"
+                      >10х2 см</span
+                    >
+                  </li>
+                  <li class="flex gap-10 sm:gap-17.5">
+                    <span class="w-35 shrink-0">Кратность товара</span>
+                    <span class="text-main-sm/4.5 font-medium font-rooftop"
+                      >1</span
+                    >
+                  </li>
+                  <li class="flex gap-10 sm:gap-17.5">
+                    <span class="w-35 shrink-0">Мойка в П/М</span>
+                    <span class="text-main-sm/4.5 font-medium font-rooftop"
+                      >Нет</span
+                    >
+                  </li>
+                  <li class="flex gap-10 sm:gap-17.5">
+                    <span class="w-35 shrink-0">Тип товара</span>
+                    <span class="text-main-sm/4.5 font-medium font-rooftop"
+                      >Блюдо столовое</span
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div class="flex flex-wrap gap-2.5 text-main-sm/4.5">
+                <button
+                  class="group flex items-center gap-1 bg-main-light-blue rounded-lg py-1.75 px-2.5"
+                >
+                  Все характеристики
+                  <img
+                    src="./assets/svg/angle-right-product-desc.svg"
+                    alt="Angle"
+                    class="group-hover:translate-x-1 smooth"
+                  />
+                </button>
+                <button
+                  class="group flex items-center gap-1 bg-main-light-blue rounded-lg py-1.75 px-2.5"
+                >
+                  Узнать о бренде
+                  <img
+                    src="./assets/svg/angle-right-product-desc.svg"
+                    alt="Angle"
+                    class="group-hover:translate-x-1 smooth"
+                  />
+                </button>
+                <button
+                  class="group flex items-center gap-1 bg-main-light-blue rounded-lg py-1.75 px-2.5"
+                >
+                  Способ получения
+                  <img
+                    src="./assets/svg/angle-right-product-desc.svg"
+                    alt="Angle"
+                    class="group-hover:translate-x-1 smooth"
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Products bought together -->
+      <section class="mb-4 md:mb-6 lg:mb-8.5">
+        <div
+          class="container-base"
+          x-data="{
+            activeTab: 'series',
+            tabsContainer: null,
+            scrollLeft: 0,
+            scrollWidth: 0,
+            clientWidth: 0,
+            leftTabButton: null,
+            rightTabButton: null,
+            scrollTimeout: null,
+            updateTrigger: 0, // Force reactivity
+            init() {
+              this.$nextTick(() => {
+                this.tabsContainer = this.$refs.tabsContainer;
+                this.leftTabButton = this.$refs.leftTabButton;
+                this.rightTabButton = this.$refs.rightTabButton;
+                this.updateScrollState();
+                // Listen for window resize
+                window.addEventListener('resize', () => {
+                  this.updateScrollState();
+                });
+              });
+            },
+            handleScroll() {
+              this.updateScrollState();
+              // Clear existing timeout
+              if (this.scrollTimeout) {
+                clearTimeout(this.scrollTimeout);
+              }
+              // Update again after scroll ends to ensure visibility is recalculated
+              this.scrollTimeout = setTimeout(() => {
+                this.updateScrollState();
+                // Force Alpine to re-evaluate
+                this.$nextTick(() => {});
+              }, 150);
+            },
+            updateScrollState() {
+              if (this.tabsContainer) {
+                this.scrollLeft = this.tabsContainer.scrollLeft;
+                this.scrollWidth = this.tabsContainer.scrollWidth;
+                this.clientWidth = this.tabsContainer.clientWidth;
+                // Force reactivity update
+                this.updateTrigger++;
+              }
+            },
+            hasOverflow() {
+              return this.scrollWidth > this.clientWidth;
+            },
+            isLeftTabVisible() {
+              if (!this.leftTabButton || !this.tabsContainer) return false;
+              const leftTabRect = this.leftTabButton.getBoundingClientRect();
+              const containerRect = this.tabsContainer.getBoundingClientRect();
+              // Check if left tab is visible (its left edge is at or past container's left edge)
+              return leftTabRect.left >= containerRect.left - 2;
+            },
+            isRightTabVisible() {
+              if (!this.rightTabButton || !this.tabsContainer) return false;
+              const rightTabRect = this.rightTabButton.getBoundingClientRect();
+              const containerRect = this.tabsContainer.getBoundingClientRect();
+              // Check if right tab is visible (its right edge is at or before container's right edge)
+              return rightTabRect.right <= containerRect.right + 2;
+            },
+            canScrollLeft() {
+              if (!this.tabsContainer) return false;
+              return this.scrollLeft > 1; // Can scroll left if scroll position > 0
+            },
+            canScrollRight() {
+              if (!this.tabsContainer) return false;
+              const maxScroll = this.scrollWidth - this.clientWidth;
+              return this.scrollLeft < maxScroll - 1; // Can scroll right if not at max scroll
+            },
+            showLeftButton() {
+              // Reference updateTrigger to ensure reactivity
+              const _ = this.updateTrigger;
+              // Only show if there's overflow
+              if (!this.hasOverflow()) return false;
+              // Show if: can scroll left OR both tabs are not visible (center visible)
+              const bothTabsNotVisible = !this.isLeftTabVisible() && !this.isRightTabVisible();
+              return this.canScrollLeft() || bothTabsNotVisible;
+            },
+            showRightButton() {
+              // Reference updateTrigger to ensure reactivity
+              const _ = this.updateTrigger;
+              // Only show if there's overflow
+              if (!this.hasOverflow()) return false;
+              // Show if: can scroll right OR both tabs are not visible (center visible)
+              const bothTabsNotVisible = !this.isLeftTabVisible() && !this.isRightTabVisible();
+              return this.canScrollRight() || bothTabsNotVisible;
+            },
+            scrollTabsLeft() {
+              if (this.tabsContainer) {
+                this.tabsContainer.scrollBy({ left: -200, behavior: 'smooth' });
+                // Update state after scroll animation completes
+                setTimeout(() => {
+                  this.updateScrollState();
+                  this.$nextTick(() => {});
+                }, 350);
+              }
+            },
+            scrollTabsRight() {
+              if (this.tabsContainer) {
+                this.tabsContainer.scrollBy({ left: 200, behavior: 'smooth' });
+                // Update state after scroll animation completes
+                setTimeout(() => {
+                  this.updateScrollState();
+                  this.$nextTick(() => {});
+                }, 350);
+              }
+            }
+          }"
+        >
+          <!-- Tabs -->
+          <div
+            class="relative text-main-sm/4.5 sm:text-base/5.25 border border-main-black rounded-full overflow-hidden p-1"
+          >
+            <!-- Left Scrolling Button -->
+            <button
+              x-show="showLeftButton()"
+              @click="scrollTabsLeft()"
+              class="absolute left-1 top-1/2 -translate-y-1/2 z-10 size-8.5 shrink-0 flex-center bg-white border border-main-silver rounded-full shadow-tab-scoll-btn"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.8125 13.5005L7.3125 9.00049L11.8125 4.50049"
+                  stroke="#303030"
+                  stroke-width="0.771429"
+                />
+              </svg>
+            </button>
+
+            <div
+              x-ref="tabsContainer"
+              @scroll="handleScroll()"
+              class="flex items-center overflow-x-auto scroll-none rounded-full"
+              style="scrollbar-width: none; -ms-overflow-style: none"
+            >
+              <button
+                x-ref="leftTabButton"
+                @click="activeTab = 'series'"
+                class="w-full whitespace-nowrap font-medium font-rooftop leading-5.25 rounded-full hover:text-main-black smooth py-1.75 lg:py-3 px-6 transition-all min-w-fit"
+                :class="activeTab === 'series' ? 'bg-main-light-blue text-main-black' : 'bg-transparent text-main-gray'"
+              >
+                С этим товаром покупают
+              </button>
+              <button
+                @click="activeTab = 'products'"
+                class="w-full whitespace-nowrap font-medium font-rooftop leading-5.25 rounded-full hover:text-main-black smooth py-1.75 lg:py-3 px-6 transition-all min-w-fit"
+                :class="activeTab === 'products' ? 'bg-main-light-blue text-main-black' : 'bg-transparent text-main-gray'"
+              >
+                Товары этой сериия
+              </button>
+              <button
+                x-ref="rightTabButton"
+                @click="activeTab = 'other-series'"
+                class="w-full whitespace-nowrap font-medium font-rooftop leading-5.25 rounded-full hover:text-main-black smooth py-1.75 lg:py-3 px-6 transition-all min-w-fit"
+                :class="activeTab === 'other-series' ? 'bg-main-light-blue text-main-black' : 'bg-transparent text-main-gray'"
+              >
+                Другие серии бренда
+              </button>
+            </div>
+
+            <!-- Right Scrolling Button -->
+            <button
+              x-show="showRightButton()"
+              @click="scrollTabsRight()"
+              class="absolute right-1 top-1/2 -translate-y-1/2 z-10 size-8.5 shrink-0 flex-center bg-white border border-main-silver rounded-full shadow-tab-scoll-btn"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M7.3125 4.5L11.8125 9L7.3125 13.5"
+                  stroke="#303030"
+                  stroke-width="0.771429"
+                />
+              </svg>
+            </button>
+          </div>
+          <h2
+            class="font-rooftop-wide font-medium text-xl/5.75 lg:text-2xl/7.5 mt-6"
+          >
+            С этим товаром покупают
+          </h2>
+
+          <!-- Products & Series -->
+          <div class="mt-8">
+            <!-- Bought Together (Products) -->
+            <div
+              id="series"
+              x-show="activeTab === 'series'"
+              class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3.5 gap-y-8 pb-6 px-4 lg:px-0"
+              x-data="{
+                series: [
+                  {
+                    name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
+                    price: 'От 1820 ₽',
+                    images: [
+                      './assets/images/plate.png',
+                      './assets/images/plate.png',
+                      './assets/images/plate.png',
+                      './assets/images/plate.png'
+                    ],
+                    art: '81250112',
+                    oldCost: '2000 ₽',
+                    cost: '1820 ₽',
+                  },
+                  {
+                    name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
+                    price: 'От 1820 ₽',
+                    images: [
+                      './assets/images/plate.png',
+                      './assets/images/plate.png',
+                      './assets/images/plate.png',
+                      './assets/images/plate.png'
+                    ],
+                    art: '81250112',
+                    oldCost: '2000 ₽',
+                    cost: '1820 ₽',
+                  },
+                  {
+                    name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
+                    price: 'От 1820 ₽',
+                    images: [
+                      './assets/images/plate.png',
+                      './assets/images/plate.png',
+                      './assets/images/plate.png',
+                      './assets/images/plate.png'
+                    ],
+                    art: '81250112',
+                    oldCost: '2000 ₽',
+                    cost: '1820 ₽',
+                  },
+                  {
+                    name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
+                    price: 'От 1820 ₽',
+                    images: [
+                      './assets/images/plate.png',
+                      './assets/images/plate.png',
+                      './assets/images/plate.png',
+                      './assets/images/plate.png'
+                    ],
+                    art: '81250112',
+                    oldCost: '2000 ₽',
+                    cost: '1820 ₽',
+                  },
+                  {
+                    name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
+                    price: 'От 1820 ₽',
+                    images: [
+                      './assets/images/plate.png',
+                      './assets/images/plate.png',
+                      './assets/images/plate.png',
+                      './assets/images/plate.png'
+                    ],
+                    art: '81250112',
+                    oldCost: '2000 ₽',
+                    cost: '1820 ₽',
+                  },
+                ],
+                init() {
+                  this.$nextTick(() => {
+                    const swipers = document.querySelectorAll('.series-swiper');
+                    swipers.forEach((swiperEl) => {
+                      const swiperContainer = swiperEl.closest('.border');
+                      const paginationContainer = swiperContainer
+                        ? swiperContainer.querySelector('.custom-pagination')
+                        : null;
+                      if (!paginationContainer) return;
+                      
+                      const swiper = new Swiper(swiperEl, {
+                        loop: true,
+                        on: {
+                          init: function () {
+                            updateCustomPagination(this, paginationContainer);
+                          },
+                          slideChange: function () {
+                            updateCustomPagination(this, paginationContainer);
+                          },
+                        },
+                      });
+                      
+                      function updateCustomPagination(swiperInstance, paginationEl) {
+                        const bullets = paginationEl.querySelectorAll('.pagination-bullet');
+                        const realIndex = swiperInstance.realIndex;
+                        bullets.forEach((bullet, index) => {
+                          if (index === realIndex) {
+                            bullet.classList.remove('bg-main-silver');
+                            bullet.classList.add('bg-main-yellow');
+                          } else {
+                            bullet.classList.remove('bg-main-yellow');
+                            bullet.classList.add('bg-main-silver');
+                          }
+                        });
+                      }
+                      
+                      const bullets = paginationContainer.querySelectorAll('.pagination-bullet');
+                      bullets.forEach((bullet, index) => {
+                        bullet.addEventListener('click', () => {
+                          swiper.slideToLoop(index);
+                        });
+                      });
+                    });
+                  });
+                }
+              }"
+            >
+              <template x-for="(item, index) in series" :key="index">
+                <div
+                  class="border border-main-silver rounded-2xl overflow-hidden"
+                >
+                  <!-- Slider -->
+                  <div
+                    class="swiper series-swiper h-55 sm:h-74 relative rounded-lg sm:rounded-2xl overflow-hidden"
+                  >
+                    <div
+                      class="absolute top-2 left-2 z-10 w-full flex-between px-2"
+                    >
+                      <span
+                        class="text-[9px]/4.5 font-rooftop font-medium uppercase bg-[#B8D39C] rounded-[2px] px-1"
+                        >В наличии</span
+                      >
+
+                      <button class="mr-2">
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g clip-path="url(#clip0_13474_7966)">
+                            <path
+                              d="M16.5005 5C17.9913 5.00017 19.2285 5.82425 19.8501 7.06738C20.4695 8.30635 20.4923 10.0005 19.4467 11.7432C18.3464 13.577 16.4316 15.4075 14.7592 16.7969C13.9285 17.4871 13.1672 18.0601 12.6147 18.46C12.3622 18.6427 12.1532 18.7887 12.0014 18.8936C11.8483 18.7868 11.6362 18.6377 11.3803 18.4512C10.8244 18.0458 10.0595 17.467 9.22604 16.7725C7.54739 15.3736 5.63401 13.5425 4.55417 11.7432C3.50851 10.0005 3.53044 8.30635 4.14987 7.06738C4.77153 5.82412 6.00939 5 7.50046 5C9.53017 5.00015 10.5264 5.98396 11.646 7.10352L12.0034 7.46094L12.353 7.10254L12.354 7.10352C13.4737 5.98386 14.4705 5 16.5005 5Z"
+                              stroke="#303030"
+                            />
+                            <path
+                              d="M23 91.8603C19.6406 91.8603 16.2812 90.7393 12.922 88.5009C-45.879 47.6219 -132.118 -41.9791 -138.278 -112.539C-140.516 -137.18 -133.239 -157.34 -116.997 -173.578C-101.317 -189.258 -83.395 -196.539 -63.235 -195.418C-23.473 -193.18 12.367 -157.898 22.445 -144.457C33.086 -157.898 68.925 -192.617 108.683 -195.418C128.843 -196.539 147.324 -189.258 162.445 -173.578C178.683 -157.34 185.965 -136.617 183.726 -112.539C177.566 -41.9801 91.328 47.6209 32.526 88.5009C29.7174 90.7393 26.358 91.8603 22.9987 91.8603H23ZM-67.16 -183.66C-82.84 -183.66 -96.84 -177.499 -109.16 -165.18C-123.16 -151.18 -129.32 -133.821 -127.082 -113.102C-123.723 -72.7817 -75.562 13.4583 19.638 79.5383C21.8763 81.218 24.6771 81.218 26.9192 79.5383C122.118 13.4603 169.719 -72.7817 173.639 -113.102C175.319 -133.821 169.717 -151.743 155.717 -165.18C142.276 -178.621 127.158 -184.782 110.358 -183.66C75.0771 -181.421 41.4792 -148.379 32.5182 -137.18C28.0377 -131.578 18.5182 -131.578 14.5962 -137.18C5.63525 -148.379 -27.4038 -181.418 -63.2438 -183.66H-67.1579H-67.16Z"
+                              fill="#303030"
+                            />
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_13474_7966">
+                              <rect
+                                width="24"
+                                height="24"
+                                rx="8"
+                                fill="white"
+                              />
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </button>
+                    </div>
+
+                    <span
+                      class="absolute bottom-2 left-2 z-10 text-[9px]/4.5 font-rooftop font-medium uppercase bg-main-status-red text-white rounded-[2px] py-0.5 px-1"
+                      >NEW</span
+                    >
+                    <div class="swiper-wrapper">
+                      <template
+                        x-for="(image, imgIndex) in item.images"
+                        :key="imgIndex"
+                      >
+                        <div class="swiper-slide">
+                          <img
+                            :src="image"
+                            :alt="item.name"
+                            class="size-full"
+                          />
+                        </div>
+                      </template>
+                    </div>
+                  </div>
+
+                  <!-- Custom Pagination -->
+                  <div
+                    class="custom-pagination flex items-center gap-1 mt-2 px-2"
+                  >
+                    <template
+                      x-for="(image, bulletIndex) in item.images"
+                      :key="bulletIndex"
+                    >
+                      <div
+                        class="pagination-bullet w-full h-0.5 rounded-full cursor-pointer"
+                        :class="bulletIndex === 0 ? 'bg-main-yellow' : 'bg-main-silver'"
+                        :data-index="bulletIndex"
+                      ></div>
+                    </template>
+                  </div>
+
+                  <div class="space-y-4 mt-4 px-2 pb-2">
+                    <p
+                      class="text-main-sm/4.5 tracking-[0%] line-clamp-3"
+                      x-text="item.name"
+                    ></p>
+                    <div class="space-y-2">
+                      <p class="text-main-base/5 text-main-gray">
+                        Арт. <span x-text="item.art"></span>
+                      </p>
+
+                      <div class="flex gap-2">
+                        <p
+                          x-text="item.cost"
+                          class="font-rooftop-wide font-medium leading-5"
+                        >
+                          1820 ₽
+                        </p>
+                        <span
+                          x-text="item.oldCost"
+                          class="text-main-gray text-main-sm/4.5 line-through"
+                          >2000 ₽</span
+                        >
+                        <span
+                          class="size-4.5 flex-center font-rooftop bg-main-black text-white text-xs/4.75 rounded"
+                          >%</span
+                        >
+                      </div>
+                    </div>
+
+                    <!-- Count Button & Add To Cart Button -->
+                    <div class="flex items-center xs:justify-between gap-2">
+                      <div
+                        class="h-10 xs:h-8 w-2/3 xs:w-full grid grid-cols-3 rounded-lg hover:bg-main-yellow transition-colors"
+                        :class="item.quantity > 0 ? 'bg-main-yellow' : 'bg-main-gray/15'"
+                        x-init="if (typeof item.quantity === 'undefined') item.quantity = 0"
+                      >
+                        <button
+                          @click="if (item.quantity > 0) item.quantity--"
+                          class="size-8 flex-center hover:opacity-70 smooth"
+                          :class="{ 'opacity-50 cursor-not-allowed': item.quantity <= 0 }"
+                        >
+                          <svg
+                            width="32"
+                            height="32"
+                            viewBox="0 0 32 32"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="11"
+                              y="16"
+                              width="9"
+                              height="1"
+                              fill="#303030"
+                            />
+                          </svg>
+                        </button>
+                        <span
+                          class="h-8 w-9 text-rooftop font-medium py-1.25 flex items-center justify-center mt-1"
+                          x-text="item.quantity"
+                        ></span>
+                        <button
+                          @click="item.quantity++"
+                          class="size-8 flex-center hover:opacity-70 smooth"
+                        >
+                          <svg
+                            width="32"
+                            height="32"
+                            viewBox="0 0 32 32"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="11"
+                              y="16"
+                              width="9"
+                              height="1"
+                              fill="#303030"
+                            />
+                            <rect
+                              x="15"
+                              y="21"
+                              width="9"
+                              height="1"
+                              transform="rotate(-90 15 21)"
+                              fill="#303030"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+
+                      <button
+                        class="size-10 xs:h-8 xs:w-full flex-center uppercase text-xs/3 font-medium font-rooftop whitespace-nowrap border border-main-black rounded-lg smooth xs:px-2.5 transition-colors"
+                        :class="item.quantity > 0 ? 'bg-main-black text-white hover:bg-main-gray' : 'bg-main-yellow xs:bg-transparent xs:hover:bg-main-black hover:text-white'"
+                      >
+                        <span class="hidden xs:block">в корзину</span>
+                        <svg
+                          width="32"
+                          height="32"
+                          viewBox="0 0 32 32"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="xs:hidden"
+                        >
+                          <rect
+                            x="6.00049"
+                            y="9"
+                            width="20.0008"
+                            height="16"
+                            stroke="#303030"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M12.0005 12V9C12.0005 6.79086 13.7914 5 16.0007 5C18.2099 5 20.0008 6.79086 20.0008 9V12"
+                            stroke="#303030"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </div>
+
+            <!-- Series Products -->
+            <div
+              id="products"
+              x-show="activeTab === 'products'"
+              class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3.5 gap-y-8 pb-6 px-4 lg:px-0"
+              x-data="{
+                series: [
+                  {
+                    country: 'Portland (турция)',
+                    name: 'Ariane Daro',
+                    price: 'От 1820 ₽',
+                    images: [
+                      './assets/images/series-1.jpg',
+                      './assets/images/series-1.jpg',
+                      './assets/images/series-1.jpg',
+                      './assets/images/series-1.jpg'
+                    ]
+                  },
+                  {
+                    country: 'Portland (турция)',
+                    name: 'Ariane Classic',
+                    price: 'От 1950 ₽',
+                    images: [
+                      './assets/images/series-1.jpg',
+                      './assets/images/series-1.jpg',
+                      './assets/images/series-1.jpg',
+                      './assets/images/series-1.jpg'
+                    ]
+                  },
+                  {
+                    country: 'Portland (турция)',
+                    name: 'Ariane Premium',
+                    price: 'От 2100 ₽',
+                    images: [
+                      './assets/images/series-1.jpg',
+                      './assets/images/series-1.jpg',
+                      './assets/images/series-1.jpg',
+                      './assets/images/series-1.jpg'
+                    ]
+                  },
+                  {
+                    country: 'Portland (турция)',
+                    name: 'Ariane Sport',
+                    price: 'От 1750 ₽',
+                    images: [
+                      './assets/images/series-1.jpg',
+                      './assets/images/series-1.jpg',
+                      './assets/images/series-1.jpg',
+                      './assets/images/series-1.jpg'
+                    ]
+                  },
+                  {
+                    country: 'Portland (турция)',
+                    name: 'Ariane Sport',
+                    price: 'От 1750 ₽',
+                    images: [
+                      './assets/images/series-1.jpg',
+                      './assets/images/series-1.jpg',
+                      './assets/images/series-1.jpg',
+                      './assets/images/series-1.jpg'
+                    ]
+                  }
+                ],
+                init() {
+                  this.$nextTick(() => {
+                    const swipers = document.querySelectorAll('.series-swiper');
+                    swipers.forEach((swiperEl) => {
+                      const swiperContainer = swiperEl.closest('.border');
+                      const paginationContainer = swiperContainer
+                        ? swiperContainer.querySelector('.custom-pagination')
+                        : null;
+                      if (!paginationContainer) return;
+                      
+                      const swiper = new Swiper(swiperEl, {
+                        loop: true,
+                        on: {
+                          init: function () {
+                            updateCustomPagination(this, paginationContainer);
+                          },
+                          slideChange: function () {
+                            updateCustomPagination(this, paginationContainer);
+                          },
+                        },
+                      });
+                      
+                      function updateCustomPagination(swiperInstance, paginationEl) {
+                        const bullets = paginationEl.querySelectorAll('.pagination-bullet');
+                        const realIndex = swiperInstance.realIndex;
+                        bullets.forEach((bullet, index) => {
+                          if (index === realIndex) {
+                            bullet.classList.remove('bg-main-silver');
+                            bullet.classList.add('bg-main-yellow');
+                          } else {
+                            bullet.classList.remove('bg-main-yellow');
+                            bullet.classList.add('bg-main-silver');
+                          }
+                        });
+                      }
+                      
+                      const bullets = paginationContainer.querySelectorAll('.pagination-bullet');
+                      bullets.forEach((bullet, index) => {
+                        bullet.addEventListener('click', () => {
+                          swiper.slideToLoop(index);
+                        });
+                      });
+                    });
+                  });
+                }
+              }"
+            >
+              <template x-for="(item, index) in series" :key="index">
+                <div
+                  class="border border-main-silver rounded-lg sm:rounded-2xl"
+                >
+                  <!-- Slider -->
+                  <div
+                    class="swiper series-swiper h-55 sm:h-74 rounded-lg sm:rounded-2xl overflow-hidden"
+                  >
+                    <div class="swiper-wrapper">
+                      <template
+                        x-for="(image, imgIndex) in item.images"
+                        :key="imgIndex"
+                      >
+                        <div class="swiper-slide">
+                          <img
+                            :src="image"
+                            :alt="item.name"
+                            class="size-full object-cover"
+                          />
+                        </div>
+                      </template>
+                    </div>
+                  </div>
+
+                  <!-- Custom Pagination -->
+                  <div
+                    class="custom-pagination flex items-center gap-1 mt-2 px-2"
+                  >
+                    <template
+                      x-for="(image, bulletIndex) in item.images"
+                      :key="bulletIndex"
+                    >
+                      <div
+                        class="pagination-bullet w-full h-0.5 rounded-full cursor-pointer"
+                        :class="bulletIndex === 0 ? 'bg-main-yellow' : 'bg-main-silver'"
+                        :data-index="bulletIndex"
+                      ></div>
+                    </template>
+                  </div>
+
+                  <div class="space-y-3.5 mt-1.5 p-2">
+                    <p
+                      class="text-main-base/5 text-main-gray"
+                      x-text="item.country"
+                    ></p>
+
+                    <div class="space-y-0.5 font-rooftop-wide font-medium">
+                      <p
+                        class="uppercase text-main-base/3.75"
+                        x-text="item.name"
+                      ></p>
+                      <p class="leading-5.5" x-text="item.price"></p>
+                    </div>
+
+                    <button
+                      class="w-full h-8 uppercase text-xs/3 font-medium border border-main-black rounded-lg hover:bg-main-black hover:text-white smooth mt-1.5"
+                    >
+                      Смотреть
+                    </button>
+                  </div>
+                </div>
+              </template>
+            </div>
+
+            <!-- Other Series -->
+            <div
+              id="other-series"
+              x-show="activeTab === 'other-series'"
+              class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3.5 gap-y-8 pb-6 px-4 lg:px-0"
+              x-data="{
+                series: [
+                  {
+                    country: 'Portland (турция)',
+                    name: 'Ariane Business',
+                    price: 'От 2200 ₽',
+                    images: [
+                      './assets/images/series-2.jpg',
+                      './assets/images/series-2.jpg',
+                      './assets/images/series-2.jpg',
+                      './assets/images/series-2.jpg'
+                    ]
+                  },
+                  {
+                    country: 'Portland (турция)',
+                    name: 'Ariane Elegant',
+                    price: 'От 1890 ₽',
+                    images: [
+                      './assets/images/series-2.jpg',
+                      './assets/images/series-2.jpg',
+                      './assets/images/series-2.jpg',
+                      './assets/images/series-2.jpg'
+                    ]
+                  },
+                  {
+                    country: 'Portland (турция)',
+                    name: 'Ariane Modern',
+                    price: 'От 2050 ₽',
+                    images: [
+                      './assets/images/series-2.jpg',
+                      './assets/images/series-2.jpg',
+                      './assets/images/series-2.jpg',
+                      './assets/images/series-2.jpg'
+                    ]
+                  },
+                  {
+                    country: 'Portland (турция)',
+                    name: 'Ariane Vintage',
+                    price: 'От 1980 ₽',
+                    images: [
+                      './assets/images/series-2.jpg',
+                      './assets/images/series-2.jpg',
+                      './assets/images/series-2.jpg',
+                      './assets/images/series-2.jpg'
+                    ]
+                  },
+                  {
+                    country: 'Portland (турция)',
+                    name: 'Ariane Vintage',
+                    price: 'От 1980 ₽',
+                    images: [
+                      './assets/images/series-2.jpg',
+                      './assets/images/series-2.jpg',
+                      './assets/images/series-2.jpg',
+                      './assets/images/series-2.jpg'
+                    ]
+                  },
+                ],
+                init() {
+                  this.$nextTick(() => {
+                    const swipers = document.querySelectorAll('.series-swiper');
+                    swipers.forEach((swiperEl) => {
+                      const swiperContainer = swiperEl.closest('.border');
+                      const paginationContainer = swiperContainer
+                        ? swiperContainer.querySelector('.custom-pagination')
+                        : null;
+                      if (!paginationContainer) return;
+                      
+                      const swiper = new Swiper(swiperEl, {
+                        loop: true,
+                        on: {
+                          init: function () {
+                            updateCustomPagination(this, paginationContainer);
+                          },
+                          slideChange: function () {
+                            updateCustomPagination(this, paginationContainer);
+                          },
+                        },
+                      });
+                      
+                      function updateCustomPagination(swiperInstance, paginationEl) {
+                        const bullets = paginationEl.querySelectorAll('.pagination-bullet');
+                        const realIndex = swiperInstance.realIndex;
+                        bullets.forEach((bullet, index) => {
+                          if (index === realIndex) {
+                            bullet.classList.remove('bg-main-silver');
+                            bullet.classList.add('bg-main-yellow');
+                          } else {
+                            bullet.classList.remove('bg-main-yellow');
+                            bullet.classList.add('bg-main-silver');
+                          }
+                        });
+                      }
+                      
+                      const bullets = paginationContainer.querySelectorAll('.pagination-bullet');
+                      bullets.forEach((bullet, index) => {
+                        bullet.addEventListener('click', () => {
+                          swiper.slideToLoop(index);
+                        });
+                      });
+                    });
+                  });
+                }
+              }"
+            >
+              <template x-for="(item, index) in series" :key="index">
+                <div
+                  class="border border-main-silver rounded-lg sm:rounded-2xl"
+                >
+                  <!-- Slider -->
+                  <div
+                    class="swiper series-swiper h-55 sm:h-74 rounded-lg sm:rounded-2xl overflow-hidden"
+                  >
+                    <div class="swiper-wrapper">
+                      <template
+                        x-for="(image, imgIndex) in item.images"
+                        :key="imgIndex"
+                      >
+                        <div class="swiper-slide">
+                          <img
+                            :src="image"
+                            :alt="item.name"
+                            class="size-full object-cover"
+                          />
+                        </div>
+                      </template>
+                    </div>
+                  </div>
+
+                  <!-- Custom Pagination -->
+                  <div
+                    class="custom-pagination flex items-center gap-1 mt-2 px-2"
+                  >
+                    <template
+                      x-for="(image, bulletIndex) in item.images"
+                      :key="bulletIndex"
+                    >
+                      <div
+                        class="pagination-bullet w-full h-0.5 rounded-full cursor-pointer"
+                        :class="bulletIndex === 0 ? 'bg-main-yellow' : 'bg-main-silver'"
+                        :data-index="bulletIndex"
+                      ></div>
+                    </template>
+                  </div>
+
+                  <div class="space-y-3.5 mt-1.5 p-2">
+                    <p
+                      class="text-main-base/5 text-main-gray"
+                      x-text="item.country"
+                    ></p>
+
+                    <div class="space-y-0.5 font-rooftop-wide font-medium">
+                      <p
+                        class="uppercase text-main-base/3.75"
+                        x-text="item.name"
+                      ></p>
+                      <p class="leading-5.5" x-text="item.price"></p>
+                    </div>
+
+                    <button
+                      class="w-full h-8 uppercase text-xs/3 font-medium border border-main-black rounded-lg hover:bg-main-black hover:text-white smooth mt-1.5"
+                    >
+                      Смотреть
+                    </button>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-main-yellow">
+      <div class="container-base py-6 lg:py-9">
+        <div class="flex max-lg:flex-col gap-10 lg:gap-9">
+          <!-- 1 -->
+          <div class="w-full lg:max-w-80 pt-8 lg:pt-0">
+            <a href="#" class="block shrink-0 mb-6">
+              <img
+                class="h-21.75 w-63.25 lg:size-auto"
+                src="./assets/svg/footer-logo.svg"
+                alt="Img"
+              />
+            </a>
+            <p class="leading-5.5 lg:text-main-sm/4.5 mb-10 lg:mb-8">
+              Оснащение HoReCa в одно касание. <br />
+              Интернет-магазин посуды, предметов сервировки, инвентаря и
+              текстиля для кафе, ресторанови отелей
+            </p>
+
+            <div>
+              <p class="leading-5.5 lg:text-main-sm/4.5 lg:mb-3">
+                © Restotouch 2018 - 2025
+              </p>
+
+              <div class="max-lg:hidden lg:flex items-center gap-4">
+                <img
+                  class="opacity-60"
+                  src="./assets/svg/pay-1.svg"
+                  alt="Pay Logo"
+                />
+                <img
+                  class="opacity-60"
+                  src="./assets/svg/pay-2.svg"
+                  alt="Pay Logo"
+                />
+                <img
+                  class="opacity-60"
+                  src="./assets/svg/pay-3.svg"
+                  alt="Pay Logo"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="w-full flex max-md:flex-col gap-10 lg:gap-9">
+            <!-- 2 -->
+            <div x-data="{ open: false }" class="w-full max-w-55">
+              <div
+                @click="open = !open"
+                class="max-md:cursor-pointer w-full flex items-center gap-3"
+              >
+                <h3
+                  class="font-rooftop-wide font-medium text-lg/5.75 lg:text-base/5"
+                >
+                  О нас
+                </h3>
+                <svg
+                  :class="open ? 'rotate-180' : ''"
+                  class="md:hidden w-4 h-4 transition-transform duration-500"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+
+              <!-- kontent -->
+              <div
+                :class="open ? 'max-h-96 mt-6' : 'max-h-0 mt-0'"
+                class="transition-all duration-500 overflow-hidden md:!max-h-full md:!overflow-visible md:mt-8"
+              >
+                <div
+                  class="flex flex-col gap-4.5 lg:gap-3 leading-5.5 lg:text-main-sm/4.5"
+                >
+                  <a href="#" class="transition hover:text-main-gray">Оплата</a>
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Доставка</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Гарантия и возврат</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Пользовательское соглашение</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Политика конфиденциальности</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Реквизиты</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Каталог товаров</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Распродажа</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Карта сайта</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Журнал Restotouch</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Сотрудничество</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- 3 -->
+            <div x-data="{ open: false }" class="w-full max-w-87.5">
+              <div
+                @click="open = !open"
+                class="max-md:cursor-pointer w-full flex items-center gap-3"
+              >
+                <h3
+                  class="font-rooftop-wide font-medium text-lg/5.75 lg:text-base/5"
+                >
+                  Каталог
+                </h3>
+                <svg
+                  :class="open ? 'rotate-180' : ''"
+                  class="md:hidden w-4 h-4 transition-transform duration-500"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+
+              <!-- kontent -->
+              <div
+                :class="open ? 'max-h-96 mt-6' : 'max-h-0 mt-0'"
+                class="transition-all duration-500 overflow-hidden md:!max-h-full md:!overflow-visible md:mt-8"
+              >
+                <div
+                  class="flex flex-col gap-4.5 lg:gap-3 leading-5.5 lg:text-main-sm/4.5"
+                >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Фарфоровая и керамическая посуда</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Бокалы и барное стекло</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Столовые приборы</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Деревянная посуда</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Металлическая посуда</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Сервировка стола и прочее</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Барный инвентарь</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Текстиль</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Мебель и декор</a
+                  >
+                  <a href="#" class="transition hover:text-main-gray"
+                    >Наплитная посуда и кухонный инвентарь</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 -->
+          <div class="w-full lg:max-w-87.5">
+            <div class="mb-6 lg:mb-8">
+              <h3
+                class="font-rooftop-wide font-medium text-lg/5.75 lg:text-base/5"
+              >
+                Контакты
+              </h3>
+            </div>
+            <div
+              class="leading-5.5 lg:text-main-sm/4.5 w-full max-w-65 flex flex-col gap-4.5 lg:gap-3 mb-10 md:mb-16 lg:mb-21"
+            >
+              <p class="whitespace-nowrap">
+                +7 495 185 20 69 (10:00—19:00 пн-пт) 
+              </p>
+              <p class="whitespace-nowrap">
+                115172, Москва, Котельническая <br />
+                набережная 25с1 (10:00—19:00 пн-пт
+              </p>
+
+              <p>zakaz@restotouch.ru</p>
+            </div>
+
+            <div class="text-main-sm/4.5 w-full flex flex-col gap-4.5 lg:gap-3">
+              <p>
+                Информация, размещенная на сайте https:// restotouch.ru/
+                является ознакомительной и не является публичной офертой,
+                определяемой положениями статьи 437 Гражданского кодекса
+                Российской Федерации.
+              </p>
+              <p>
+                ИП Маслов Константин Сергеевич 188561, Ленинградская область, г.
+                Сланцы, ул. 1 Мая, д.86 ИНН 772271708796 +74950232571
+              </p>
+            </div>
+          </div>
+
+          <div class="max-lg:flex lg:hidden items-center gap-4">
+            <img
+              class="opacity-60 h-8.5"
+              src="./assets/svg/pay-1.svg"
+              alt="Pay Logo"
+            />
+            <img
+              class="opacity-60 h-3"
+              src="./assets/svg/pay-2.svg"
+              alt="Pay Logo"
+            />
+            <img
+              class="opacity-60 h-5.5"
+              src="./assets/svg/pay-3.svg"
+              alt="Pay Logo"
+            />
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  </body>
+</html>
