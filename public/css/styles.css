@@ -826,6 +826,9 @@
   .max-w-153\.25 {
     max-width: calc(var(--spacing) * 153.25);
   }
+  .max-w-155 {
+    max-width: calc(var(--spacing) * 155);
+  }
   .max-w-189 {
     max-width: calc(var(--spacing) * 189);
   }
@@ -1166,6 +1169,11 @@
   .divide-main-gray-100 {
     :where(& > :not(:last-child)) {
       border-color: var(--color-main-gray-100);
+    }
+  }
+  .divide-main-silver {
+    :where(& > :not(:last-child)) {
+      border-color: var(--color-main-silver);
     }
   }
   .divide-white {
@@ -1571,6 +1579,10 @@
   .text-lg\/5\.75 {
     font-size: var(--text-lg);
     line-height: calc(var(--spacing) * 5.75);
+  }
+  .text-lg\/6 {
+    font-size: var(--text-lg);
+    line-height: calc(var(--spacing) * 6);
   }
   .text-lg\/6\.25 {
     font-size: var(--text-lg);
