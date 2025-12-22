@@ -2571,16 +2571,25 @@
 
               <div class="flex items-center gap-4">
                 <div
+                  x-data="{ quantity: 1 }"
                   class="h-10 flex items-center bg-main-silver rounded-lg px-5"
                 >
-                  <button class="size-8 flex-center">
+                  <button
+                    @click="if (quantity > 1) quantity--"
+                    class="size-8 flex-center hover:opacity-70 smooth"
+                    :class="{ 'opacity-50 cursor-not-allowed': quantity <= 1 }"
+                  >
                     <span class="w-2.5 h-px bg-main-black"></span>
                   </button>
                   <span
                     class="h-8 flex-center font-rooftop font-medium text-xs/3 px-2"
-                    >100</span
+                    x-text="quantity"
+                    >1</span
                   >
-                  <button class="size-8 relative">
+                  <button
+                    @click="quantity++"
+                    class="size-8 relative hover:opacity-70 smooth"
+                  >
                     <span
                       class="w-2.5 h-px bg-main-black absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                     ></span>

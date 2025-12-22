@@ -73,10 +73,12 @@
   --color-main-gray-400: #555555;
   --color-main-gray-500: #e2e2e2;
   --color-main-yellow: #ffe68d;
+  --color-main-yellow-100: #fcf1c5;
   --color-main-silver: #efefef;
   --color-main-light-blue: #c6e7ff;
   --color-main-whitish: #f9f9f9;
   --color-main-status-red: #ff5151;
+  --color-main-mistake: #ff1515;
   --color-main-status-green: #b8d39c;
 
   /* Custom text sizes - additional to Tailwind defaults */
@@ -309,3 +311,11 @@
 .series-swiper .swiper-pagination-bullet-active {
   @apply bg-main-yellow;
 } */
+
+input[type="radio"]:checked + label {
+  @apply bg-white border-main-black smooth;
+}
+
+input[type="radio"]:checked + label span {
+  @apply opacity-100;
+}
