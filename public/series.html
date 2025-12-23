@@ -68,8 +68,8 @@
     </div>
     <script>
       (() => {
-        const loader = document.getElementById("page-loader");
-        const hide = () => loader && loader.classList.add("page-loader--hide");
+        let loader = document.getElementById("page-loader");
+        let hide = () => loader && loader.classList.add("page-loader--hide");
         window.addEventListener("load", hide);
         // Fallback in case onload is delayed
         setTimeout(hide, 4000);
@@ -117,7 +117,7 @@
             this.$store.mobileMenuOpen = true;
           } else {
             // Back to previous level - check what the previous level was
-            const previousLevel = this.navigationStack[this.navigationStack.length - 1];
+            let previousLevel = this.navigationStack[this.navigationStack.length - 1];
             if (previousLevel.type === 'products') {
               this.showProducts = true;
               this.selectedCategory = previousLevel.name;
@@ -155,15 +155,15 @@
       },
       truncateWords(text, maxWords = 4) {
         if (!text) return '';
-        const words = text.split(' ');
+        let words = text.split(' ');
         if (words.length <= maxWords) return text;
         return words.slice(0, maxWords).join(' ') + '...';
       },
       checkScrollbar() {
         this.$nextTick(() => {
-          const scrollContainer = this.$el.querySelector('.custom-scroll');
+          let scrollContainer = this.$el.querySelector('.custom-scroll');
           if (scrollContainer) {
-            const hasScrollbar = scrollContainer.scrollHeight > scrollContainer.clientHeight;
+            let hasScrollbar = scrollContainer.scrollHeight > scrollContainer.clientHeight;
             if (hasScrollbar) {
               scrollContainer.classList.remove('no-scrollbar');
               scrollContainer.classList.add('has-scrollbar');
@@ -361,8 +361,8 @@
         this.checkScrollbar();
         
         window.addEventListener('scroll', () => {
-          const scrollY = window.scrollY;
-          const width = window.innerWidth;
+          let scrollY = window.scrollY;
+          let width = window.innerWidth;
           
           // Only apply scroll detection on lg and above screens (overlay is hidden under lg)
           if (width >= 1024) {
@@ -379,7 +379,7 @@
       }
     }"
     >
-      <nav class="container-base relative">
+      <nav class="container-base relative z-50">
         <!-- Top -->
         <div class="max-xl:hidden flex items-center justify-between gap-5 py-1">
           <div class="flex items-center gap-2.25">
@@ -2079,7 +2079,7 @@
             ],
             init() {
               this.$nextTick(() => {
-                const seriesButtonsSwiper = document.querySelector('.series-buttons-swiper');
+                let seriesButtonsSwiper = document.querySelector('.series-buttons-swiper');
                 if (seriesButtonsSwiper) {
                   new Swiper(seriesButtonsSwiper, {
                     freeMode: true,
@@ -2133,8 +2133,8 @@
             x-data="{
               selectedItems: [],
               toggleItem(accordionName, itemName) {
-                const key = `${accordionName}:${itemName}`;
-                const index = this.selectedItems.findIndex(item => item.key === key);
+                let key = `${accordionName}:${itemName}`;
+                let index = this.selectedItems.findIndex(item => item.key === key);
                 if (index > -1) {
                   this.selectedItems.splice(index, 1);
                 } else {
@@ -2142,13 +2142,13 @@
                 }
               },
               removeItem(key) {
-                const index = this.selectedItems.findIndex(item => item.key === key);
+                let index = this.selectedItems.findIndex(item => item.key === key);
                 if (index > -1) {
                   this.selectedItems.splice(index, 1);
                 }
               },
               isSelected(accordionName, itemName) {
-                const key = `${accordionName}:${itemName}`;
+                let key = `${accordionName}:${itemName}`;
                 return this.selectedItems.some(item => item.key === key);
               },
               getSelectedByCategory(categoryName) {
@@ -2160,9 +2160,9 @@
                 this.$dispatch('reset-price-range');
                 // Also try direct access as fallback
                 this.$nextTick(() => {
-                  const priceRange = this.$refs.priceRangeSlider;
+                  let priceRange = this.$refs.priceRangeSlider;
                   if (priceRange && priceRange.__x && priceRange.__x.$data) {
-                    const data = priceRange.__x.$data;
+                    let data = priceRange.__x.$data;
                     data.minPrice = 0;
                     data.maxPrice = data.maxLimit || 1000;
                   }
@@ -2371,16 +2371,16 @@
                 },
                 updateMinPrice(event) {
                   if (!this.sliderTrack) return;
-                  const rect = this.sliderTrack.getBoundingClientRect();
-                  const percent = Math.max(0, Math.min(100, ((event.clientX - rect.left) / rect.width) * 100));
-                  const value = Math.round(this.minLimit + (percent / 100) * (this.maxLimit - this.minLimit));
+                  let rect = this.sliderTrack.getBoundingClientRect();
+                  let percent = Math.max(0, Math.min(100, ((event.clientX - rect.left) / rect.width) * 100));
+                  let value = Math.round(this.minLimit + (percent / 100) * (this.maxLimit - this.minLimit));
                   this.minPrice = Math.min(value, this.maxPrice - 1);
                 },
                 updateMaxPrice(event) {
                   if (!this.sliderTrack) return;
-                  const rect = this.sliderTrack.getBoundingClientRect();
-                  const percent = Math.max(0, Math.min(100, ((event.clientX - rect.left) / rect.width) * 100));
-                  const value = Math.round(this.minLimit + (percent / 100) * (this.maxLimit - this.minLimit));
+                  let rect = this.sliderTrack.getBoundingClientRect();
+                  let percent = Math.max(0, Math.min(100, ((event.clientX - rect.left) / rect.width) * 100));
+                  let value = Math.round(this.minLimit + (percent / 100) * (this.maxLimit - this.minLimit));
                   this.maxPrice = Math.max(value, this.minPrice + 1);
                 },
                 startDrag(handle, event) {
@@ -2388,7 +2388,7 @@
                   this.dragging = handle;
                   this.sliderTrack = this.$refs.sliderTrack;
                   
-                  const moveHandler = (e) => {
+                  let moveHandler = (e) => {
                     if (this.dragging === 'min') {
                       this.updateMinPrice(e);
                     } else if (this.dragging === 'max') {
@@ -2396,7 +2396,7 @@
                     }
                   };
                   
-                  const upHandler = () => {
+                  let upHandler = () => {
                     this.dragging = null;
                     document.removeEventListener('mousemove', moveHandler);
                     document.removeEventListener('mouseup', upHandler);
@@ -2662,7 +2662,7 @@
                           x-data="{ 
                             open: false,
                             getSortLabel(value) {
-                              const labels = {
+                              let labels = {
                                 'name-asc': 'Названия (А-Я)',
                                 'name-desc': 'Названия (Я-А)',
                                 'price-asc': 'Цена (низкая > высокая)',
@@ -3055,8 +3055,8 @@
                         this.currentFilterCategory = null;
                       },
                       toggleFilterItem(categoryName, itemName) {
-                        const key = `${categoryName}:${itemName}`;
-                        const index = this.selectedFilterItems.findIndex(item => item.key === key);
+                        let key = `${categoryName}:${itemName}`;
+                        let index = this.selectedFilterItems.findIndex(item => item.key === key);
                         if (index > -1) {
                           this.selectedFilterItems.splice(index, 1);
                         } else {
@@ -3065,7 +3065,7 @@
                         this.updateFilterIndicators();
                       },
                       isFilterItemSelected(categoryName, itemName) {
-                        const key = `${categoryName}:${itemName}`;
+                        let key = `${categoryName}:${itemName}`;
                         return this.selectedFilterItems.some(item => item.key === key);
                       },
                       getSelectedByFilterCategory(categoryName) {
@@ -3081,9 +3081,9 @@
                       },
                       resetFilterCategory() {
                         if (this.currentFilterCategory) {
-                          const categoryName = this.currentFilterCategory.name;
+                          let categoryName = this.currentFilterCategory.name;
                           // Create a new array to ensure reactivity
-                          const filtered = this.selectedFilterItems.filter(item => item.categoryName !== categoryName);
+                          let filtered = this.selectedFilterItems.filter(item => item.categoryName !== categoryName);
                           this.selectedFilterItems = [...filtered];
                           // Force update indicators
                           this.updateFilterIndicators();
@@ -3102,7 +3102,7 @@
                         this.toggleBodyScroll();
                       },
                       toggleBodyScroll() {
-                        const isModalOpen = this.filterModalOpen || this.sortModalOpen;
+                        let isModalOpen = this.filterModalOpen || this.sortModalOpen;
                         if (isModalOpen) {
                           document.body.style.overflow = 'hidden';
                         } else {
@@ -3148,7 +3148,7 @@
                           "
                           @touchend.prevent="
                             if (isDragging) {
-                              const dragDistance = dragCurrentY - dragStartY;
+                              let dragDistance = dragCurrentY - dragStartY;
                               if (dragDistance > 150) {
                                 sortModalOpen = false;
                               }
@@ -3384,7 +3384,7 @@
                           "
                           @touchend.prevent="
                             if (filterIsDragging) {
-                              const dragDistance = filterDragCurrentY - filterDragStartY;
+                              let dragDistance = filterDragCurrentY - filterDragStartY;
                               if (dragDistance > 150) {
                                 filterModalOpen = false;
                               }
@@ -3908,15 +3908,15 @@
                     init() {
                       this.$nextTick(() => {
                         // Initialize swipers after Alpine renders
-                        const swipers = document.querySelectorAll('.series-swiper');
+                        let swipers = document.querySelectorAll('.series-swiper');
                         swipers.forEach((swiperEl) => {
-                          const swiperContainer = swiperEl.closest('.border');
-                          const paginationContainer = swiperContainer
+                          let swiperContainer = swiperEl.closest('.border');
+                          let paginationContainer = swiperContainer
                             ? swiperContainer.querySelector('.custom-pagination')
                             : null;
                           if (!paginationContainer) return;
                           
-                          const swiper = new Swiper(swiperEl, {
+                          let swiper = new Swiper(swiperEl, {
                             loop: true,
                             on: {
                               init: function () {
@@ -3929,8 +3929,8 @@
                           });
                           
                           function updateCustomPagination(swiperInstance, paginationEl) {
-                            const bullets = paginationEl.querySelectorAll('.pagination-bullet');
-                            const realIndex = swiperInstance.realIndex;
+                            let bullets = paginationEl.querySelectorAll('.pagination-bullet');
+                            let realIndex = swiperInstance.realIndex;
                             bullets.forEach((bullet, index) => {
                               if (index === realIndex) {
                                 bullet.classList.remove('bg-main-silver');
@@ -3942,7 +3942,7 @@
                             });
                           }
                           
-                          const bullets = paginationContainer.querySelectorAll('.pagination-bullet');
+                          let bullets = paginationContainer.querySelectorAll('.pagination-bullet');
                           bullets.forEach((bullet, index) => {
                             bullet.addEventListener('click', () => {
                               swiper.slideToLoop(index);
@@ -4179,15 +4179,15 @@
                     init() {
                       this.$nextTick(() => {
                         // Initialize swipers after Alpine renders
-                        const swipers = document.querySelectorAll('.series-swiper');
+                        let swipers = document.querySelectorAll('.series-swiper');
                         swipers.forEach((swiperEl) => {
-                          const swiperContainer = swiperEl.closest('.border');
-                          const paginationContainer = swiperContainer
+                          let swiperContainer = swiperEl.closest('.border');
+                          let paginationContainer = swiperContainer
                             ? swiperContainer.querySelector('.custom-pagination')
                             : null;
                           if (!paginationContainer) return;
                           
-                          const swiper = new Swiper(swiperEl, {
+                          let swiper = new Swiper(swiperEl, {
                             loop: true,
                             on: {
                               init: function () {
@@ -4200,8 +4200,8 @@
                           });
                           
                           function updateCustomPagination(swiperInstance, paginationEl) {
-                            const bullets = paginationEl.querySelectorAll('.pagination-bullet');
-                            const realIndex = swiperInstance.realIndex;
+                            let bullets = paginationEl.querySelectorAll('.pagination-bullet');
+                            let realIndex = swiperInstance.realIndex;
                             bullets.forEach((bullet, index) => {
                               if (index === realIndex) {
                                 bullet.classList.remove('bg-main-silver');
@@ -4213,7 +4213,7 @@
                             });
                           }
                           
-                          const bullets = paginationContainer.querySelectorAll('.pagination-bullet');
+                          let bullets = paginationContainer.querySelectorAll('.pagination-bullet');
                           bullets.forEach((bullet, index) => {
                             bullet.addEventListener('click', () => {
                               swiper.slideToLoop(index);
@@ -4614,15 +4614,15 @@
             init() {
               this.$nextTick(() => {
                 // Initialize swipers after Alpine renders
-                const swipers = document.querySelectorAll('.series-swiper');
+                let swipers = document.querySelectorAll('.series-swiper');
                 swipers.forEach((swiperEl) => {
-                  const swiperContainer = swiperEl.closest('.border');
-                  const paginationContainer = swiperContainer
+                  let swiperContainer = swiperEl.closest('.border');
+                  let paginationContainer = swiperContainer
                     ? swiperContainer.querySelector('.custom-pagination')
                     : null;
                   if (!paginationContainer) return;
                   
-                  const swiper = new Swiper(swiperEl, {
+                  let swiper = new Swiper(swiperEl, {
                     loop: true,
                     on: {
                       init: function () {
@@ -4635,8 +4635,8 @@
                   });
                   
                   function updateCustomPagination(swiperInstance, paginationEl) {
-                    const bullets = paginationEl.querySelectorAll('.pagination-bullet');
-                    const realIndex = swiperInstance.realIndex;
+                    let bullets = paginationEl.querySelectorAll('.pagination-bullet');
+                    let realIndex = swiperInstance.realIndex;
                     bullets.forEach((bullet, index) => {
                       if (index === realIndex) {
                         bullet.classList.remove('bg-main-silver');
@@ -4648,7 +4648,7 @@
                     });
                   }
                   
-                  const bullets = paginationContainer.querySelectorAll('.pagination-bullet');
+                  let bullets = paginationContainer.querySelectorAll('.pagination-bullet');
                   bullets.forEach((bullet, index) => {
                     bullet.addEventListener('click', () => {
                       swiper.slideToLoop(index);

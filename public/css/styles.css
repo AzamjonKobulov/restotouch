@@ -354,6 +354,9 @@
   .left-2 {
     left: calc(var(--spacing) * 2);
   }
+  .\!z-100 {
+    z-index: 100 !important;
+  }
   .z-0 {
     z-index: 0;
   }
@@ -365,6 +368,12 @@
   }
   .z-50 {
     z-index: 50;
+  }
+  .z-80 {
+    z-index: 80;
+  }
+  .z-100 {
+    z-index: 100;
   }
   .container {
     width: 100%;
@@ -682,20 +691,11 @@
   .h-13\.5 {
     height: calc(var(--spacing) * 13.5);
   }
-  .h-17 {
-    height: calc(var(--spacing) * 17);
-  }
-  .h-17\.5 {
-    height: calc(var(--spacing) * 17.5);
-  }
   .h-21 {
     height: calc(var(--spacing) * 21);
   }
   .h-21\.75 {
     height: calc(var(--spacing) * 21.75);
-  }
-  .h-25 {
-    height: calc(var(--spacing) * 25);
   }
   .h-31 {
     height: calc(var(--spacing) * 31);
@@ -831,9 +831,6 @@
   }
   .w-70 {
     width: calc(var(--spacing) * 70);
-  }
-  .w-85 {
-    width: calc(var(--spacing) * 85);
   }
   .w-fit {
     width: fit-content;
@@ -1878,9 +1875,6 @@
     --tw-shadow: 0px 0px 20px 0px var(--tw-shadow-color, #30303033);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
-  .ring-main-black {
-    --tw-ring-color: var(--color-main-black);
-  }
   .ring-main-yellow {
     --tw-ring-color: var(--color-main-yellow);
   }
@@ -2454,11 +2448,6 @@
       height: calc(var(--spacing) * 1);
     }
   }
-  .sm\:h-17\.5 {
-    @media (width >= 640px) {
-      height: calc(var(--spacing) * 17.5);
-    }
-  }
   .sm\:h-74 {
     @media (width >= 640px) {
       height: calc(var(--spacing) * 74);
@@ -2516,11 +2505,6 @@
   .sm\:rounded-xl {
     @media (width >= 640px) {
       border-radius: var(--radius-xl);
-    }
-  }
-  .sm\:py-0 {
-    @media (width >= 640px) {
-      padding-block: calc(var(--spacing) * 0);
     }
   }
   .sm\:py-3 {
@@ -2812,11 +2796,6 @@
       width: calc(var(--spacing) * 66.5);
     }
   }
-  .lg\:w-85 {
-    @media (width >= 1024px) {
-      width: calc(var(--spacing) * 85);
-    }
-  }
   .lg\:w-140 {
     @media (width >= 1024px) {
       width: calc(var(--spacing) * 140);
@@ -3060,11 +3039,6 @@
   .lg\:pb-24 {
     @media (width >= 1024px) {
       padding-bottom: calc(var(--spacing) * 24);
-    }
-  }
-  .lg\:pb-96 {
-    @media (width >= 1024px) {
-      padding-bottom: calc(var(--spacing) * 96);
     }
   }
   .lg\:text-2xl\/7\.5 {
