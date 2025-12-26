@@ -93,305 +93,305 @@
     <header
       class="max-xl:mt-4 mb-6 xl:mb-4"
       x-data="{ 
-      selectedCategory: 'Фарфоровая и керамическая посуда',
-      showProducts: false,
-      navigationStack: [],
-      navigateToCategory(category) {
-        this.navigationStack.push({ type: 'category', name: category });
-        this.selectedCategory = category;
-        this.showProducts = true;
-      },
-      navigateToProducts(category) {
-        // Check if we're on mobile/tablet (under 1024px)
-        if (window.innerWidth < 1024) {
-          // Mobile navigation logic
-          if (this.navigationStack.length === 0) {
-            this.navigationStack.push({ type: 'categories' });
-          }
-          this.navigationStack.push({ type: 'products', name: category });
-          this.selectedCategory = category;
-          this.showProducts = true;
-        } else {
-          // Desktop navigation logic (original behavior)
-          this.selectedCategory = category;
-          this.showProducts = false; // Desktop doesn't use showProducts
-        }
-      },
-      goBack() {
-        // Check if we're on mobile/tablet (under 1024px)
-        if (window.innerWidth < 1024) {
-          // Mobile back button logic
-          if (this.navigationStack.length > 0) {
-            this.navigationStack.pop();
-          }
-          
-          if (this.navigationStack.length === 0) {
-            // Back to mobile menu
-            this.catalogOpen = false;
-            this.$store.mobileMenuOpen = true;
-          } else {
-            // Back to previous level - check what the previous level was
-            const previousLevel = this.navigationStack[this.navigationStack.length - 1];
-            if (previousLevel.type === 'products') {
-              this.showProducts = true;
-              this.selectedCategory = previousLevel.name;
-            } else if (previousLevel.type === 'categories') {
-              this.showProducts = false;
-            } else {
-              this.showProducts = false;
-            }
-          }
-        } else {
-          // Desktop back button logic (original behavior)
-          this.catalogOpen = false;
-          this.$store.mobileMenuOpen = true;
-        }
-      },
-      navigateToProduct(productName) {
-        console.log('navigateToProduct called with:', productName);
-        console.log('Window width:', window.innerWidth);
-        // Check if we're on mobile/tablet (under 1024px)
-        if (window.innerWidth < 1024) {
-          // Mobile navigation logic - close catalog and reset to main level
-          console.log('Closing catalog and resetting to main level');
-          this.catalogOpen = false;
-          this.$store.mobileMenuOpen = false;
-          this.showProducts = false;
-          this.selectedCategory = 'Фарфоровая и керамическая посуда';
-          this.navigationStack = [];
-          // You can add navigation to product page here
-          console.log('Navigated to product:', productName);
-        } else {
-          // Desktop navigation logic (original behavior)
-          console.log('Desktop product navigation:', productName);
-          this.checkScrollbar();
-        }
-      },
-      truncateWords(text, maxWords = 4) {
-        if (!text) return '';
-        const words = text.split(' ');
-        if (words.length <= maxWords) return text;
-        return words.slice(0, maxWords).join(' ') + '...';
-      },
-      checkScrollbar() {
-        this.$nextTick(() => {
-          const scrollContainer = this.$el.querySelector('.custom-scroll');
-          if (scrollContainer) {
-            const hasScrollbar = scrollContainer.scrollHeight > scrollContainer.clientHeight;
-            if (hasScrollbar) {
-              scrollContainer.classList.remove('no-scrollbar');
-              scrollContainer.classList.add('has-scrollbar');
-            } else {
-              scrollContainer.classList.remove('has-scrollbar');
-              scrollContainer.classList.add('no-scrollbar');
-            }
-          }
-        });
-      },
-      categoryData: {
-        'Фарфоровая и керамическая посуда': [
-          { name: 'Мелкие столовые тарелки', image: 'catalog-1.png' },
-          { name: 'Тарелки для пиццы', image: 'catalog-2.png' },
-          { name: 'Тарелки с вертикальным бортом', image: 'catalog-3.png' },
-          { name: 'Тарелки для пасты', image: 'catalog-4.png' },
-          { name: 'Блюда', image: 'catalog-5.png' },
-          { name: 'Глубокие тарелки', image: 'catalog-6.png' },
-          { name: 'Салатники', image: 'catalog-7.png' },
-          { name: 'Миски и суповые', image: 'catalog-8.png' },
-          { name: 'Молочники', image: 'catalog-9.png' },
-          { name: 'Сахарницы', image: 'catalog-10.png' },
-          { name: 'Чайники', image: 'catalog-11.png' },
-          { name: 'Чашки и блюдца', image: 'catalog-12.png' },
-          { name: 'Кружки', image: 'catalog-13.png' },
-          { name: 'Солонки и перечницы', image: 'catalog-14.png' },
-          { name: 'Десертные тарелки', image: 'catalog-15.png' }
-        ],
-        'Бокалы и барное стекло': [
-          { name: 'Бокалы для вина', image: 'glass-1.png' },
-          { name: 'Бокалы для игристого вина', image: 'glass-2.png' },
-          { name: 'Барные бокалы', image: 'glass-3.png' },
-          { name: 'Бокалы и стаканы для пива', image: 'glass-4.png' },
-          { name: 'Бокалы из цветного стекла', image: 'glass-5.png' },
-          { name: 'Стаканы и кружки Тики', image: 'glass-6.png' },
-          { name: 'Cтаканы для воды', image: 'glass-7.png' },
-          { name: 'Бокалы для крепкого алкоголя', image: 'glass-9.png' },
-          { name: 'Чайная посуда из стекла', image: 'glass-10.png' },
-          { name: 'Наборы', image: 'glass-11.png' },
-          { name: 'Кувшины графины штоф', image: 'glass-12.png' },
-          { name: 'Стаканы из хрустального стекла', image: 'glass-13.png' },
-          { name: 'Креманки', image: 'glass-14.png' },
-          { name: 'Френч-прессы', image: 'glass-15.png' },
-        ],
-        'Столовые приборы': [
-          { name: 'Стейковые приборы', image: 'cutlery-1.png' },
-          { name: 'Ножи столовые', image: 'cutlery-2.png' },
-          { name: 'Ножи десертные', image: 'cutlery-3.png' },
-          { name: 'Ножи стейковые', image: 'cutlery-4.png' },
-          { name: 'Ножи для рыбы', image: 'cutlery-5.png' },
-          { name: 'Вилки десертные', image: 'cutlery-6.png' },
-          { name: 'Вилки для рыбы', image: 'cutlery-7.png' },
-          { name: 'Вилки столовые', image: 'cutlery-8.png' },
-          { name: 'Набор столовых приборов', image: 'cutlery-9.png' },
-          { name: 'Ложки столовые', image: 'cutlery-10.png' },
-          { name: 'Ложки десертные', image: 'cutlery-11.png' },
-          { name: 'Чайные ложки', image: 'cutlery-12.png' },
-          { name: 'Ложки кофейные', image: 'cutlery-13.png' },
-          { name: 'Специальные', image: 'cutlery-14.png' },
-          { name: 'Приборы с деревянной ручкой', image: 'cutlery-15.png' },
-          { name: 'Подставки и емкости для столовых приборов', image: 'cutlery-16.png' }  
-        ],
-        'Деревянная посуда': [
-          { name: 'Доски', image: 'wooden-1.png' },
-          { name: 'Доски со стоком', image: 'wooden-2.png' },
-          { name: 'Планшеты', image: 'wooden-3.png' },
-          { name: 'Ящики', image: 'wooden-4.png' },
-          { name: 'Для подачи и сервировки', image: 'wooden-5.png' },
-        ],
-        'Металлическая посуда': [
-          { name: 'Ведерки для охлаждения', image: 'metal-1.png' },
-          { name: 'Для морепродуктов', image: 'metal-2.png' },
-          { name: 'Емкости для подачи', image: 'metal-3.png' },
-          { name: 'Кастрюли', image: 'metal-4.png' },
-          { name: 'Подносы металлические', image: 'metal-5.png' },
-          { name: 'Салфетницы', image: 'metal-6.png' },
-          { name: 'Сахарницы', image: 'metal-7.png' },
-          { name: 'Сковородки для подачи', image: 'metal-8.png' },
-          { name: 'Сотейники для подачи', image: 'metal-9.png' },
-          { name: 'Соусники', image: 'metal-10.png' },
-          { name: 'Стаканы и кружки', image: 'metal-11.png' },
-          { name: 'Тарелки', image: 'metal-12.png' },
-          { name: 'Салатники', image: 'metal-13.png' },
-        ],
-        'Барный инвентарь': [
-          { name: 'Джиггеры', image: 'bar-1.png' },
-          { name: 'Направляющие для бокалов', image: 'bar-2.png' },
-          { name: 'Мадлеры', image: 'bar-3.png' },
-          { name: 'Аксессуары для сервировки стола', image: 'bar-4.png' },
-          { name: 'Сквизеры, пинцеты', image: 'bar-5.png' },
-          { name: 'Декорации', image: 'bar-6.png' },
-          { name: 'Стрейнеры', image: 'bar-7.png' },
-          { name: 'Шейкеры, смесительные стаканы', image: 'bar-8.png' },
-          { name: 'Барные ложки', image: 'bar-9.png' },
-          { name: 'Инвентарь бариста', image: 'bar-10.png' },
-          { name: 'Прочее', image: 'bar-11.png' },
-          { name: 'Бутылки для флейринга', image: 'bar-12.png' },
-        ],
-        'Сервировка стола и прочее': [
-          { name: 'Лампы и светильники', image: 'table-1.png' },
-          { name: 'Ведерки для льда', image: 'table-2.png' },
-          { name: 'Мельница для специй', image: 'table-3.png' },
-          { name: 'Салфетницы для ресторана', image: 'table-4.png' },
-          { name: 'Хлебницы', image: 'table-5.png' },
-          { name: 'Бутылки для масла', image: 'table-6.png' },
-          { name: 'Боксы для приборов и органащйеров', image: 'table-7.png' },
-          { name: 'Подставки для сумок', image: 'table-8.png' },
-          { name: 'Вазы для сервировки', image: 'table-9.png' },
-          { name: 'Подставки под зубачистки', image: 'table-10.png' },
-          { name: 'Сервировка стола и прочее', image: 'table-11.png' },
-          { name: 'Бараканчики, клоши, крышки для блюд', image: 'table-12.png' },
-          { name: 'Менажи', image: 'table-13.png' },
-          { name: 'Наборы для специй', image: 'table-14.png' },
-          { name: 'Пепельницы', image: 'table-15.png' },
-          { name: 'Подсвечники и свечи', image: 'table-16.png' },
-          { name: 'Посуда чугунная порционная для подачи и запекания', image: 'table-17.png' },
-          { name: 'Фуршетная посуда для подачи из пластика', image: 'table-18.png' },
-          { name: 'Френч-прессы', image: 'table-19.png' },
-          { name: 'Блюда для подачи', image: 'table-20.png' },
-          { name: 'Наборы для Саджа, Фондю', image: 'table-21.png' },
-          { name: 'Подносы', image: 'table-22.png' },
-          { name: 'Барный инвентарь диспенсеры', image: 'table-23.png' }
-        ],
-        'Мебель и декор': [
-          { name: 'Лампы и светильники', image: 'decor-1.png' },
-          { name: 'Ведерки для льда', image: 'decor-1.png' },
-          { name: 'Мельница для специй', image: 'decor-1.png' },
-          { name: 'Салфетницы для ресторана', image: 'decor-1.png' },
-          { name: 'Хлебницы', image: 'decor-1.png' },
-          { name: 'Бутылки для масла', image: 'decor-1.png' },
-        ],
-        'Наплитная посуда, кухонный инвентарь': [
-          { name: 'Наплитная посуда', image: 'stove-1.png' },
-          { name: 'Кухонный инвентарь', image: 'stove-2.png' },
-          { name: 'Кондитерский инвентарь', image: 'stove-3.png' },
-          { name: 'Ножи и аксессуары', image: 'stove-4.png' },
-          { name: 'Инвентарь для пиццы', image: 'stove-5.png' },
-        ],
-        'Наплитная посуда': [
-          { name: 'Сковороды', image: 'stove-1.png' },
-          { name: 'Кастрюли', image: 'stove-2.png' },
-          { name: 'Сотейники', image: 'stove-3.png' },
-          { name: 'Ковши', image: 'stove-4.png' },
-          { name: 'Грили', image: 'stove-5.png' },
-          { name: 'Воки', image: 'stove-6.png' },
-        ],
-        'Кухонный инвентарь': [
-          { name: 'Сковороды', image: 'stove-1.png' },
-          { name: 'Кастрюли', image: 'stove-2.png' },
-          { name: 'Сотейники', image: 'stove-3.png' },
-          { name: 'Ковши', image: 'stove-4.png' },
-          { name: 'Грили', image: 'stove-5.png' },
-          { name: 'Воки', image: 'stove-6.png' },
-        ],
-        'Кондитерский инвентарь': [
-          { name: 'Сковороды', image: 'stove-1.png' },
-          { name: 'Кастрюли', image: 'stove-2.png' },
-          { name: 'Сотейники', image: 'stove-3.png' },
-          { name: 'Ковши', image: 'stove-4.png' },
-          { name: 'Грили', image: 'stove-5.png' },
-          { name: 'Воки', image: 'stove-6.png' },
-        ],
-        'Ножи и аксессуары': [
-          { name: 'Сковороды', image: 'stove-1.png' },
-          { name: 'Кастрюли', image: 'stove-2.png' },
-          { name: 'Сотейники', image: 'stove-3.png' },
-          { name: 'Ковши', image: 'stove-4.png' },
-          { name: 'Грили', image: 'stove-5.png' },
-          { name: 'Воки', image: 'stove-6.png' },
-        ],
-        'Инвентарь для пиццы': [
-          { name: 'Сковороды', image: 'stove-1.png' },
-          { name: 'Кастрюли', image: 'stove-2.png' },
-          { name: 'Сотейники', image: 'stove-3.png' },
-          { name: 'Ковши', image: 'stove-4.png' },
-          { name: 'Грили', image: 'stove-5.png' },
-          { name: 'Воки', image: 'stove-6.png' },
-        ],
-        'Текстиль': [
-          { name: 'Салфетки и плейсматы', image: 'textile-1.png' },
-          { name: 'Скатерти и дорожки', image: 'textile-2.png' },
-        ],
-        'Стеклянная посуда': [
-          { name: 'Тарелки', image: 'glassware-1.png' },
-          { name: 'Салатники', image: 'glassware-2.png' },
-          { name: 'Блюда', image: 'glassware-3.png' },
-          { name: 'Соусники', image: 'glassware-4.png' },
-          { name: 'Чайники', image: 'glassware-5.png' },
-          { name: 'Чашки', image: 'glassware-6.png' },
-        ],
-      },
-      isScrolled: false,
-      init() {
-        // Check scrollbar on initial load
-        this.checkScrollbar();
-        
-        window.addEventListener('scroll', () => {
-          const scrollY = window.scrollY;
-          const width = window.innerWidth;
-          
-          // Only apply scroll detection on lg and above screens (overlay is hidden under lg)
-          if (width >= 1024) {
-            if (width >= 1280) { // xl and above
-              this.isScrolled = scrollY > 98;
-            } else { // lg
-              this.isScrolled = scrollY > 84;
-            }
-          } else {
-            // Under lg - overlay is hidden, so no need to track scroll
-            this.isScrolled = false;
-          }
-        });
-      }
-    }"
+     selectedCategory: 'Фарфоровая и керамическая посуда',
+     showProducts: false,
+     navigationStack: [],
+     navigateToCategory(category) {
+       this.navigationStack.push({ type: 'category', name: category });
+       this.selectedCategory = category;
+       this.showProducts = true;
+     },
+     navigateToProducts(category) {
+       // Check if we're on mobile/tablet (under 1024px)
+       if (window.innerWidth < 1024) {
+         // Mobile navigation logic
+         if (this.navigationStack.length === 0) {
+           this.navigationStack.push({ type: 'categories' });
+         }
+         this.navigationStack.push({ type: 'products', name: category });
+         this.selectedCategory = category;
+         this.showProducts = true;
+       } else {
+         // Desktop navigation logic (original behavior)
+         this.selectedCategory = category;
+         this.showProducts = false; // Desktop doesn't use showProducts
+       }
+     },
+     goBack() {
+       // Check if we're on mobile/tablet (under 1024px)
+       if (window.innerWidth < 1024) {
+         // Mobile back button logic
+         if (this.navigationStack.length > 0) {
+           this.navigationStack.pop();
+         }
+         
+         if (this.navigationStack.length === 0) {
+           // Back to mobile menu
+           this.catalogOpen = false;
+           this.$store.mobileMenuOpen = true;
+         } else {
+           // Back to previous level - check what the previous level was
+           let previousLevel = this.navigationStack[this.navigationStack.length - 1];
+           if (previousLevel.type === 'products') {
+             this.showProducts = true;
+             this.selectedCategory = previousLevel.name;
+           } else if (previousLevel.type === 'categories') {
+             this.showProducts = false;
+           } else {
+             this.showProducts = false;
+           }
+         }
+       } else {
+         // Desktop back button logic (original behavior)
+         this.catalogOpen = false;
+         this.$store.mobileMenuOpen = true;
+       }
+     },
+     navigateToProduct(productName) {
+       console.log('navigateToProduct called with:', productName);
+       console.log('Window width:', window.innerWidth);
+       // Check if we're on mobile/tablet (under 1024px)
+       if (window.innerWidth < 1024) {
+         // Mobile navigation logic - close catalog and reset to main level
+         console.log('Closing catalog and resetting to main level');
+         this.catalogOpen = false;
+         this.$store.mobileMenuOpen = false;
+         this.showProducts = false;
+         this.selectedCategory = 'Фарфоровая и керамическая посуда';
+         this.navigationStack = [];
+         // You can add navigation to product page here
+         console.log('Navigated to product:', productName);
+       } else {
+         // Desktop navigation logic (original behavior)
+         console.log('Desktop product navigation:', productName);
+         this.checkScrollbar();
+       }
+     },
+     truncateWords(text, maxWords = 4) {
+       if (!text) return '';
+       let words = text.split(' ');
+       if (words.length <= maxWords) return text;
+       return words.slice(0, maxWords).join(' ') + '...';
+     },
+     checkScrollbar() {
+       this.$nextTick(() => {
+         let scrollContainer = this.$el.querySelector('.custom-scroll');
+         if (scrollContainer) {
+           let hasScrollbar = scrollContainer.scrollHeight > scrollContainer.clientHeight;
+           if (hasScrollbar) {
+             scrollContainer.classList.remove('no-scrollbar');
+             scrollContainer.classList.add('has-scrollbar');
+           } else {
+             scrollContainer.classList.remove('has-scrollbar');
+             scrollContainer.classList.add('no-scrollbar');
+           }
+         }
+       });
+     },
+     categoryData: {
+       'Фарфоровая и керамическая посуда': [
+         { name: 'Мелкие столовые тарелки', image: 'catalog-1.png' },
+         { name: 'Тарелки для пиццы', image: 'catalog-2.png' },
+         { name: 'Тарелки с вертикальным бортом', image: 'catalog-3.png' },
+         { name: 'Тарелки для пасты', image: 'catalog-4.png' },
+         { name: 'Блюда', image: 'catalog-5.png' },
+         { name: 'Глубокие тарелки', image: 'catalog-6.png' },
+         { name: 'Салатники', image: 'catalog-7.png' },
+         { name: 'Миски и суповые', image: 'catalog-8.png' },
+         { name: 'Молочники', image: 'catalog-9.png' },
+         { name: 'Сахарницы', image: 'catalog-10.png' },
+         { name: 'Чайники', image: 'catalog-11.png' },
+         { name: 'Чашки и блюдца', image: 'catalog-12.png' },
+         { name: 'Кружки', image: 'catalog-13.png' },
+         { name: 'Солонки и перечницы', image: 'catalog-14.png' },
+         { name: 'Десертные тарелки', image: 'catalog-15.png' }
+       ],
+       'Бокалы и барное стекло': [
+         { name: 'Бокалы для вина', image: 'glass-1.png' },
+         { name: 'Бокалы для игристого вина', image: 'glass-2.png' },
+         { name: 'Барные бокалы', image: 'glass-3.png' },
+         { name: 'Бокалы и стаканы для пива', image: 'glass-4.png' },
+         { name: 'Бокалы из цветного стекла', image: 'glass-5.png' },
+         { name: 'Стаканы и кружки Тики', image: 'glass-6.png' },
+         { name: 'Cтаканы для воды', image: 'glass-7.png' },
+         { name: 'Бокалы для крепкого алкоголя', image: 'glass-9.png' },
+         { name: 'Чайная посуда из стекла', image: 'glass-10.png' },
+         { name: 'Наборы', image: 'glass-11.png' },
+         { name: 'Кувшины графины штоф', image: 'glass-12.png' },
+         { name: 'Стаканы из хрустального стекла', image: 'glass-13.png' },
+         { name: 'Креманки', image: 'glass-14.png' },
+         { name: 'Френч-прессы', image: 'glass-15.png' },
+       ],
+       'Столовые приборы': [
+         { name: 'Стейковые приборы', image: 'cutlery-1.png' },
+         { name: 'Ножи столовые', image: 'cutlery-2.png' },
+         { name: 'Ножи десертные', image: 'cutlery-3.png' },
+         { name: 'Ножи стейковые', image: 'cutlery-4.png' },
+         { name: 'Ножи для рыбы', image: 'cutlery-5.png' },
+         { name: 'Вилки десертные', image: 'cutlery-6.png' },
+         { name: 'Вилки для рыбы', image: 'cutlery-7.png' },
+         { name: 'Вилки столовые', image: 'cutlery-8.png' },
+         { name: 'Набор столовых приборов', image: 'cutlery-9.png' },
+         { name: 'Ложки столовые', image: 'cutlery-10.png' },
+         { name: 'Ложки десертные', image: 'cutlery-11.png' },
+         { name: 'Чайные ложки', image: 'cutlery-12.png' },
+         { name: 'Ложки кофейные', image: 'cutlery-13.png' },
+         { name: 'Специальные', image: 'cutlery-14.png' },
+         { name: 'Приборы с деревянной ручкой', image: 'cutlery-15.png' },
+         { name: 'Подставки и емкости для столовых приборов', image: 'cutlery-16.png' }  
+       ],
+       'Деревянная посуда': [
+         { name: 'Доски', image: 'wooden-1.png' },
+         { name: 'Доски со стоком', image: 'wooden-2.png' },
+         { name: 'Планшеты', image: 'wooden-3.png' },
+         { name: 'Ящики', image: 'wooden-4.png' },
+         { name: 'Для подачи и сервировки', image: 'wooden-5.png' },
+       ],
+       'Металлическая посуда': [
+         { name: 'Ведерки для охлаждения', image: 'metal-1.png' },
+         { name: 'Для морепродуктов', image: 'metal-2.png' },
+         { name: 'Емкости для подачи', image: 'metal-3.png' },
+         { name: 'Кастрюли', image: 'metal-4.png' },
+         { name: 'Подносы металлические', image: 'metal-5.png' },
+         { name: 'Салфетницы', image: 'metal-6.png' },
+         { name: 'Сахарницы', image: 'metal-7.png' },
+         { name: 'Сковородки для подачи', image: 'metal-8.png' },
+         { name: 'Сотейники для подачи', image: 'metal-9.png' },
+         { name: 'Соусники', image: 'metal-10.png' },
+         { name: 'Стаканы и кружки', image: 'metal-11.png' },
+         { name: 'Тарелки', image: 'metal-12.png' },
+         { name: 'Салатники', image: 'metal-13.png' },
+       ],
+       'Барный инвентарь': [
+         { name: 'Джиггеры', image: 'bar-1.png' },
+         { name: 'Направляющие для бокалов', image: 'bar-2.png' },
+         { name: 'Мадлеры', image: 'bar-3.png' },
+         { name: 'Аксессуары для сервировки стола', image: 'bar-4.png' },
+         { name: 'Сквизеры, пинцеты', image: 'bar-5.png' },
+         { name: 'Декорации', image: 'bar-6.png' },
+         { name: 'Стрейнеры', image: 'bar-7.png' },
+         { name: 'Шейкеры, смесительные стаканы', image: 'bar-8.png' },
+         { name: 'Барные ложки', image: 'bar-9.png' },
+         { name: 'Инвентарь бариста', image: 'bar-10.png' },
+         { name: 'Прочее', image: 'bar-11.png' },
+         { name: 'Бутылки для флейринга', image: 'bar-12.png' },
+       ],
+       'Сервировка стола и прочее': [
+         { name: 'Лампы и светильники', image: 'table-1.png' },
+         { name: 'Ведерки для льда', image: 'table-2.png' },
+         { name: 'Мельница для специй', image: 'table-3.png' },
+         { name: 'Салфетницы для ресторана', image: 'table-4.png' },
+         { name: 'Хлебницы', image: 'table-5.png' },
+         { name: 'Бутылки для масла', image: 'table-6.png' },
+         { name: 'Боксы для приборов и органащйеров', image: 'table-7.png' },
+         { name: 'Подставки для сумок', image: 'table-8.png' },
+         { name: 'Вазы для сервировки', image: 'table-9.png' },
+         { name: 'Подставки под зубачистки', image: 'table-10.png' },
+         { name: 'Сервировка стола и прочее', image: 'table-11.png' },
+         { name: 'Бараканчики, клоши, крышки для блюд', image: 'table-12.png' },
+         { name: 'Менажи', image: 'table-13.png' },
+         { name: 'Наборы для специй', image: 'table-14.png' },
+         { name: 'Пепельницы', image: 'table-15.png' },
+         { name: 'Подсвечники и свечи', image: 'table-16.png' },
+         { name: 'Посуда чугунная порционная для подачи и запекания', image: 'table-17.png' },
+         { name: 'Фуршетная посуда для подачи из пластика', image: 'table-18.png' },
+         { name: 'Френч-прессы', image: 'table-19.png' },
+         { name: 'Блюда для подачи', image: 'table-20.png' },
+         { name: 'Наборы для Саджа, Фондю', image: 'table-21.png' },
+         { name: 'Подносы', image: 'table-22.png' },
+         { name: 'Барный инвентарь диспенсеры', image: 'table-23.png' }
+       ],
+       'Мебель и декор': [
+         { name: 'Лампы и светильники', image: 'decor-1.png' },
+         { name: 'Ведерки для льда', image: 'decor-1.png' },
+         { name: 'Мельница для специй', image: 'decor-1.png' },
+         { name: 'Салфетницы для ресторана', image: 'decor-1.png' },
+         { name: 'Хлебницы', image: 'decor-1.png' },
+         { name: 'Бутылки для масла', image: 'decor-1.png' },
+       ],
+       'Наплитная посуда, кухонный инвентарь': [
+         { name: 'Наплитная посуда', image: 'stove-1.png' },
+         { name: 'Кухонный инвентарь', image: 'stove-2.png' },
+         { name: 'Кондитерский инвентарь', image: 'stove-3.png' },
+         { name: 'Ножи и аксессуары', image: 'stove-4.png' },
+         { name: 'Инвентарь для пиццы', image: 'stove-5.png' },
+       ],
+       'Наплитная посуда': [
+         { name: 'Сковороды', image: 'stove-1.png' },
+         { name: 'Кастрюли', image: 'stove-2.png' },
+         { name: 'Сотейники', image: 'stove-3.png' },
+         { name: 'Ковши', image: 'stove-4.png' },
+         { name: 'Грили', image: 'stove-5.png' },
+         { name: 'Воки', image: 'stove-6.png' },
+       ],
+       'Кухонный инвентарь': [
+         { name: 'Сковороды', image: 'stove-1.png' },
+         { name: 'Кастрюли', image: 'stove-2.png' },
+         { name: 'Сотейники', image: 'stove-3.png' },
+         { name: 'Ковши', image: 'stove-4.png' },
+         { name: 'Грили', image: 'stove-5.png' },
+         { name: 'Воки', image: 'stove-6.png' },
+       ],
+       'Кондитерский инвентарь': [
+         { name: 'Сковороды', image: 'stove-1.png' },
+         { name: 'Кастрюли', image: 'stove-2.png' },
+         { name: 'Сотейники', image: 'stove-3.png' },
+         { name: 'Ковши', image: 'stove-4.png' },
+         { name: 'Грили', image: 'stove-5.png' },
+         { name: 'Воки', image: 'stove-6.png' },
+       ],
+       'Ножи и аксессуары': [
+         { name: 'Сковороды', image: 'stove-1.png' },
+         { name: 'Кастрюли', image: 'stove-2.png' },
+         { name: 'Сотейники', image: 'stove-3.png' },
+         { name: 'Ковши', image: 'stove-4.png' },
+         { name: 'Грили', image: 'stove-5.png' },
+         { name: 'Воки', image: 'stove-6.png' },
+       ],
+       'Инвентарь для пиццы': [
+         { name: 'Сковороды', image: 'stove-1.png' },
+         { name: 'Кастрюли', image: 'stove-2.png' },
+         { name: 'Сотейники', image: 'stove-3.png' },
+         { name: 'Ковши', image: 'stove-4.png' },
+         { name: 'Грили', image: 'stove-5.png' },
+         { name: 'Воки', image: 'stove-6.png' },
+       ],
+       'Текстиль': [
+         { name: 'Салфетки и плейсматы', image: 'textile-1.png' },
+         { name: 'Скатерти и дорожки', image: 'textile-2.png' },
+       ],
+       'Стеклянная посуда': [
+         { name: 'Тарелки', image: 'glassware-1.png' },
+         { name: 'Салатники', image: 'glassware-2.png' },
+         { name: 'Блюда', image: 'glassware-3.png' },
+         { name: 'Соусники', image: 'glassware-4.png' },
+         { name: 'Чайники', image: 'glassware-5.png' },
+         { name: 'Чашки', image: 'glassware-6.png' },
+       ],
+     },
+     isScrolled: false,
+     init() {
+       // Check scrollbar on initial load
+       this.checkScrollbar();
+       
+       window.addEventListener('scroll', () => {
+         let scrollY = window.scrollY;
+         let width = window.innerWidth;
+         
+         // Only apply scroll detection on lg and above screens (overlay is hidden under lg)
+         if (width >= 1024) {
+           if (width >= 1280) { // xl and above
+             this.isScrolled = scrollY > 98;
+           } else { // lg
+             this.isScrolled = scrollY > 84;
+           }
+         } else {
+           // Under lg - overlay is hidden, so no need to track scroll
+           this.isScrolled = false;
+         }
+       });
+     }
+   }"
     >
       <nav class="container-base relative z-50">
         <!-- Top -->
@@ -528,8 +528,10 @@
 
                 <span class="text-main-lg leading-6"> Каталог </span>
               </button>
-
-              <div class="relative max-w-153.25 w-full min-w-25">
+              <!-- Searchbar -->
+              <div
+                class="relative max-w-153.25 w-full min-w-25 hidden min-[375px]:block"
+              >
                 <input
                   class="relative z-0 max-w-153.25 w-full bg-white border border-transparent rounded-lg focus:border-main-gray placeholder:text-main-gray-400/50 max-md:placeholder:font-light lg:text-lg/6.25 outline-none lg:h-10.25 py-1 lg:py-2 px-2.5 lg:px-4"
                   type="text"
@@ -675,13 +677,13 @@
               <button
                 class="xl:hidden transition duration-200 max-3xs:-ml-3"
                 @click="
-                  if ($store.mobileMenuOpen || catalogOpen) {
-                    $store.mobileMenuOpen = false;
-                    catalogOpen = false;
-                  } else {
-                    $store.mobileMenuOpen = true;
-                  }
-                "
+                 if ($store.mobileMenuOpen || catalogOpen) {
+                   $store.mobileMenuOpen = false;
+                   catalogOpen = false;
+                 } else {
+                   $store.mobileMenuOpen = true;
+                 }
+               "
               >
                 <!-- Hamburger Icon (when both menu and catalog are closed) -->
                 <svg
@@ -747,202 +749,235 @@
             @click.outside="$store.mobileMenuOpen = false"
           >
             <div
-              class="size-full h-[calc(100vh-84px)] flex flex-col justify-between gap-8 bg-main-yellow rounded-b-lg overflow-auto pb-10 px-4 custom-scroll"
+              class="size-full h-[calc(100vh-84px)] bg-main-yellow rounded-b-lg overflow-auto pb-10 px-4 custom-scroll"
             >
-              <ul
-                class="divide-y divide-white text-2xl/7.25 font-medium font-rooftop"
-              >
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="catalogOpen = true; $store.mobileMenuOpen = false"
-                    >Каталог товаров</a
+              <!-- Searchbar for mobile (under 375px) -->
+              <div class="max-[374px]:block min-[375px]:hidden mt-4 mb-2">
+                <div class="relative w-full">
+                  <input
+                    class="relative z-0 w-full bg-white border border-transparent rounded-lg focus:border-main-gray placeholder:text-main-gray-400/50 placeholder:font-light text-base outline-none h-10 py-2 px-4"
+                    type="text"
+                    name="search-mobile"
+                    id="search-mobile"
+                    placeholder="Поиск"
+                  />
+                  <div
+                    class="absolute z-10 top-1/2 -translate-y-1/2 right-4 size-6 flex items-center justify-center"
                   >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >О компании</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Наше производство</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Бренды</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Доставка</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Оплата</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Контакты</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Новинки</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Акции</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Избранное</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Для партнеров</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Личный кабинет</a
-                  >
-                </li>
-              </ul>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 17 18"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M10.2536 11.0375C11.1355 10.1559 11.5765 9.09587 11.5765 7.85753C11.5765 6.6192 11.1355 5.5592 10.2536 4.67753C9.37326 3.79753 8.31374 3.35753 7.07498 3.35753C5.83456 3.35753 4.77419 3.79753 3.89389 4.67753C3.01359 5.5592 2.57344 6.6192 2.57344 7.85753C2.57344 9.09587 3.01359 10.1559 3.89389 11.0375C4.77419 11.9175 5.83456 12.3575 7.07498 12.3575C8.31374 12.3575 9.37326 11.9175 10.2536 11.0375ZM16.7208 16.215C16.7208 16.5634 16.5932 16.8642 16.3381 17.1175C16.0831 17.3725 15.7813 17.5 15.4328 17.5C15.071 17.5 14.7701 17.3725 14.53 17.1175L11.0838 13.6825C9.88344 14.5125 8.54715 14.9275 7.07498 14.9275C6.11632 14.9275 5.20017 14.7417 4.32654 14.37C3.45124 13.9984 2.69765 13.4967 2.06577 12.865C1.43222 12.2317 0.929545 11.4784 0.557752 10.605C0.185958 9.73003 6.10352e-05 8.8142 6.10352e-05 7.85753C6.10352e-05 6.8992 0.185958 5.98337 0.557752 5.11003C0.929545 4.2367 1.43222 3.48337 2.06577 2.85003C2.69765 2.2167 3.45124 1.7142 4.32654 1.34253C5.20017 0.970868 6.11632 0.785034 7.07498 0.785034C8.03197 0.785034 8.94729 0.970868 9.82092 1.34253C10.6962 1.7142 11.4498 2.2167 12.0817 2.85003C12.7152 3.48337 13.2179 4.2367 13.5897 5.11003C13.9615 5.98337 14.1474 6.8992 14.1474 7.85753C14.1474 9.33087 13.7323 10.6667 12.902 11.865L16.3481 15.31C16.5966 15.5584 16.7208 15.86 16.7208 16.215Z"
+                        fill="#333333"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
 
-              <!-- Bottom Contacts -->
-              <div class="space-y-8">
-                <ul class="space-y-4 leading-5.5">
+              <div class="flex flex-col justify-between gap-8">
+                <ul
+                  class="divide-y divide-white text-2xl/7.25 font-medium font-rooftop"
+                >
                   <li>
-                    <a href="tel:+74994305605"
-                      >+7 499 430 5605 (10:00—19:00 пн-пт)</a
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="catalogOpen = true; $store.mobileMenuOpen = false"
+                      >Каталог товаров</a
                     >
                   </li>
                   <li>
-                    <a href="tel:+880043478743"
-                      >8 800 434 78743 (Бесплатный звонок по России)</a
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >О компании</a
                     >
                   </li>
                   <li>
-                    Москва, Котельническая набережная 25с1 (10:00—21:00 пн-пт)
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Наше производство</a
+                    >
                   </li>
                   <li>
-                    <a href="mailto:zakaz@restotouch.ru">zakaz@restotouch.ru</a>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Бренды</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Доставка</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Оплата</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Контакты</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Новинки</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Акции</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Избранное</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Для партнеров</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Личный кабинет</a
+                    >
                   </li>
                 </ul>
 
-                <!-- Socials -->
-                <div class="space-y-6">
-                  <p class="font-rooftop-wide font-medium leading-5">
-                    Следите за нами
-                  </p>
-                  <ul class="flex items-center gap-2">
-                    <!-- Telegram -->
+                <!-- Bottom Contacts -->
+                <div class="space-y-8">
+                  <ul class="space-y-4 leading-5.5">
                     <li>
-                      <a
-                        href="#"
-                        class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
-                        @click="$store.mobileMenuOpen = false"
+                      <a href="tel:+74994305605"
+                        >+7 499 430 5605 (10:00—19:00 пн-пт)</a
                       >
-                        <svg
-                          width="21"
-                          height="19"
-                          viewBox="0 0 21 19"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M20.75 0.664441L17.5868 17.9695C17.5868 17.9695 17.1444 19.1696 15.9279 18.5936L11.4272 14.8494L8.53992 17.7058C8.53992 17.7058 8.31417 17.8916 8.06731 17.7752L8.62015 12.4695L8.63883 12.4853L8.65052 12.3771C8.65052 12.3771 16.7464 4.4807 17.0782 4.14465C17.41 3.80861 17.2993 3.73661 17.2993 3.73661C17.3214 3.32863 16.7021 3.73661 16.7021 3.73661L5.97399 11.1291L1.50578 9.49694C1.50578 9.49694 0.820092 9.23297 0.753732 8.65694C0.687373 8.0809 1.52788 7.76884 1.52788 7.76884L19.2901 0.208364C19.2901 0.208364 20.75 -0.487631 20.75 0.664441Z"
-                            fill="#FFE68D"
-                          />
-                        </svg>
-                      </a>
                     </li>
-                    <!-- Whatsapp -->
                     <li>
-                      <a
-                        href="#"
-                        class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
-                        @click="$store.mobileMenuOpen = false"
+                      <a href="tel:+880043478743"
+                        >8 800 434 78743 (Бесплатный звонок по России)</a
                       >
-                        <svg
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M17.0856 2.90944C15.3786 1.20723 13.108 0.180898 10.6971 0.0217388C8.28617 -0.137421 5.89933 0.58145 3.98148 2.04436C2.06362 3.50728 0.745597 5.61442 0.273064 7.97306C-0.19947 10.3317 0.205728 12.7809 1.41314 14.8642L0 20L5.2789 18.6209C6.73696 19.4122 8.37082 19.8276 10.0315 19.8292C12.0017 19.8311 13.9282 19.2513 15.5673 18.1631C17.2063 17.0749 18.4843 15.5272 19.2394 13.7159C19.9946 11.9046 20.193 9.91102 19.8096 7.98742C19.4262 6.06381 18.4782 4.29662 17.0856 2.90944ZM10.0417 18.1535C8.55823 18.1551 7.10175 17.7587 5.82555 17.0059L5.5246 16.8279L2.39157 17.6455L3.22899 14.6066L3.03126 14.2954C2.05557 12.7485 1.62402 10.9226 1.80444 9.10496C1.98486 7.28727 2.76703 5.58079 4.02798 4.2538C5.28894 2.92681 6.95717 2.05455 8.77044 1.77415C10.5837 1.49374 12.4392 1.82108 14.0452 2.70472C15.6512 3.58836 16.9166 4.97819 17.6426 6.65571C18.3685 8.33324 18.5138 10.2033 18.0556 11.972C17.5975 13.7407 16.5618 15.3077 15.1114 16.4266C13.661 17.5456 11.8782 18.153 10.0431 18.1535H10.0417ZM14.5806 11.9858C14.332 11.8628 13.1093 11.2623 12.881 11.1812C12.6528 11.1002 12.4871 11.0568 12.3213 11.3042C12.1556 11.5517 11.6787 12.1103 11.5333 12.2752C11.388 12.4402 11.2426 12.4619 10.994 12.3375C10.2605 12.0468 9.58348 11.631 8.99347 11.1089C8.44971 10.6083 7.98331 10.0304 7.60941 9.39401C7.46403 9.14511 7.59342 9.01197 7.71845 8.88752C7.84348 8.76306 7.96706 8.59809 8.09209 8.45338C8.19403 8.3277 8.27772 8.18837 8.3407 8.0395C8.37392 7.97112 8.38934 7.89552 8.38553 7.81966C8.38172 7.74379 8.3588 7.6701 8.31889 7.60536C8.25783 7.48091 7.75916 6.26243 7.55271 5.76607C7.34627 5.2697 7.14564 5.35798 6.99298 5.34495C6.84033 5.33193 6.68186 5.33627 6.51612 5.33627C6.38976 5.33944 6.26544 5.36874 6.15106 5.4223C6.03668 5.47586 5.93474 5.55252 5.85172 5.6474C5.57036 5.91255 5.34752 6.23308 5.19734 6.58859C5.04716 6.94411 4.97295 7.32684 4.97941 7.71245C4.97941 8.93093 5.87207 10.1089 5.9971 10.2739C6.12213 10.4388 7.75189 12.938 10.2481 14.0103C10.7109 14.2091 11.1841 14.383 11.6656 14.5313C12.1732 14.6855 12.7099 14.7192 13.2329 14.6297C13.7112 14.5588 14.7056 14.0306 14.9121 13.4532C15.1185 12.8758 15.12 12.378 15.0575 12.2752C14.9949 12.1725 14.8292 12.1103 14.5806 11.9858Z"
-                            fill="#FFE68D"
-                          />
-                        </svg>
-                      </a>
                     </li>
-                    <!-- VK -->
                     <li>
-                      <a
-                        href="#"
-                        class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
-                        @click="$store.mobileMenuOpen = false"
+                      Москва, Котельническая набережная 25с1 (10:00—21:00 пн-пт)
+                    </li>
+                    <li>
+                      <a href="mailto:zakaz@restotouch.ru"
+                        >zakaz@restotouch.ru</a
                       >
-                        <svg
-                          width="26"
-                          height="15"
-                          viewBox="0 0 26 15"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M24.9194 1.68432C25.0932 1.14166 24.9194 0.752763 24.093 0.752763H21.358C21.1015 0.735782 20.846 0.797421 20.631 0.928174C20.416 1.05893 20.2534 1.25154 20.1683 1.4763C20.1683 1.4763 18.7833 4.60742 16.8121 6.6478C16.1753 7.23748 15.8861 7.4256 15.5384 7.4256C15.3646 7.4256 15.1125 7.24471 15.1125 6.70206V1.68432C15.1125 1.04037 14.9172 0.752763 14.3311 0.752763H10.0333C9.9462 0.748133 9.85897 0.759584 9.77668 0.78645C9.69439 0.813316 9.61868 0.85506 9.55397 0.909256C9.48926 0.963452 9.43683 1.02902 9.39973 1.10214C9.36263 1.17527 9.34159 1.25449 9.33785 1.33521C9.33785 1.94479 10.3146 2.08588 10.424 3.80248V7.53232C10.424 8.34992 10.2638 8.49825 9.9161 8.49825C8.99012 8.49825 6.73377 5.34543 5.39755 1.73678C5.13382 1.03675 4.87204 0.752763 4.17267 0.752763H1.4377C0.656284 0.752763 0.5 1.09283 0.5 1.4763C0.5 2.14738 1.42794 5.47385 4.81734 9.87297C7.0776 12.872 10.2677 14.5 13.159 14.5C14.8977 14.5 15.1125 14.1382 15.1125 13.5142V11.2441C15.1125 10.5205 15.2766 10.3758 15.8275 10.3758C16.2339 10.3758 16.9293 10.5567 18.5508 12.0038C20.4067 13.7294 20.7114 14.5 21.7546 14.5H24.4896C25.271 14.5 25.6617 14.1382 25.437 13.4147C25.2124 12.6912 24.304 11.671 23.1299 10.4482C22.4911 9.74997 21.5358 9.0011 21.2467 8.62306C20.8403 8.14009 20.9556 7.92484 21.2467 7.49614C21.2467 7.49614 24.5677 3.15491 24.9252 1.67527L24.9194 1.68432Z"
-                            fill="#FFE68D"
-                          />
-                        </svg>
-                      </a>
                     </li>
                   </ul>
+
+                  <!-- Socials -->
+                  <div class="space-y-6">
+                    <p class="font-rooftop-wide font-medium leading-5">
+                      Следите за нами
+                    </p>
+                    <ul class="flex items-center gap-2">
+                      <!-- Telegram -->
+                      <li>
+                        <a
+                          href="#"
+                          class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
+                          @click="$store.mobileMenuOpen = false"
+                        >
+                          <svg
+                            width="21"
+                            height="19"
+                            viewBox="0 0 21 19"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M20.75 0.664441L17.5868 17.9695C17.5868 17.9695 17.1444 19.1696 15.9279 18.5936L11.4272 14.8494L8.53992 17.7058C8.53992 17.7058 8.31417 17.8916 8.06731 17.7752L8.62015 12.4695L8.63883 12.4853L8.65052 12.3771C8.65052 12.3771 16.7464 4.4807 17.0782 4.14465C17.41 3.80861 17.2993 3.73661 17.2993 3.73661C17.3214 3.32863 16.7021 3.73661 16.7021 3.73661L5.97399 11.1291L1.50578 9.49694C1.50578 9.49694 0.820092 9.23297 0.753732 8.65694C0.687373 8.0809 1.52788 7.76884 1.52788 7.76884L19.2901 0.208364C19.2901 0.208364 20.75 -0.487631 20.75 0.664441Z"
+                              fill="#FFE68D"
+                            />
+                          </svg>
+                        </a>
+                      </li>
+                      <!-- Whatsapp -->
+                      <li>
+                        <a
+                          href="#"
+                          class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
+                          @click="$store.mobileMenuOpen = false"
+                        >
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M17.0856 2.90944C15.3786 1.20723 13.108 0.180898 10.6971 0.0217388C8.28617 -0.137421 5.89933 0.58145 3.98148 2.04436C2.06362 3.50728 0.745597 5.61442 0.273064 7.97306C-0.19947 10.3317 0.205728 12.7809 1.41314 14.8642L0 20L5.2789 18.6209C6.73696 19.4122 8.37082 19.8276 10.0315 19.8292C12.0017 19.8311 13.9282 19.2513 15.5673 18.1631C17.2063 17.0749 18.4843 15.5272 19.2394 13.7159C19.9946 11.9046 20.193 9.91102 19.8096 7.98742C19.4262 6.06381 18.4782 4.29662 17.0856 2.90944ZM10.0417 18.1535C8.55823 18.1551 7.10175 17.7587 5.82555 17.0059L5.5246 16.8279L2.39157 17.6455L3.22899 14.6066L3.03126 14.2954C2.05557 12.7485 1.62402 10.9226 1.80444 9.10496C1.98486 7.28727 2.76703 5.58079 4.02798 4.2538C5.28894 2.92681 6.95717 2.05455 8.77044 1.77415C10.5837 1.49374 12.4392 1.82108 14.0452 2.70472C15.6512 3.58836 16.9166 4.97819 17.6426 6.65571C18.3685 8.33324 18.5138 10.2033 18.0556 11.972C17.5975 13.7407 16.5618 15.3077 15.1114 16.4266C13.661 17.5456 11.8782 18.153 10.0431 18.1535H10.0417ZM14.5806 11.9858C14.332 11.8628 13.1093 11.2623 12.881 11.1812C12.6528 11.1002 12.4871 11.0568 12.3213 11.3042C12.1556 11.5517 11.6787 12.1103 11.5333 12.2752C11.388 12.4402 11.2426 12.4619 10.994 12.3375C10.2605 12.0468 9.58348 11.631 8.99347 11.1089C8.44971 10.6083 7.98331 10.0304 7.60941 9.39401C7.46403 9.14511 7.59342 9.01197 7.71845 8.88752C7.84348 8.76306 7.96706 8.59809 8.09209 8.45338C8.19403 8.3277 8.27772 8.18837 8.3407 8.0395C8.37392 7.97112 8.38934 7.89552 8.38553 7.81966C8.38172 7.74379 8.3588 7.6701 8.31889 7.60536C8.25783 7.48091 7.75916 6.26243 7.55271 5.76607C7.34627 5.2697 7.14564 5.35798 6.99298 5.34495C6.84033 5.33193 6.68186 5.33627 6.51612 5.33627C6.38976 5.33944 6.26544 5.36874 6.15106 5.4223C6.03668 5.47586 5.93474 5.55252 5.85172 5.6474C5.57036 5.91255 5.34752 6.23308 5.19734 6.58859C5.04716 6.94411 4.97295 7.32684 4.97941 7.71245C4.97941 8.93093 5.87207 10.1089 5.9971 10.2739C6.12213 10.4388 7.75189 12.938 10.2481 14.0103C10.7109 14.2091 11.1841 14.383 11.6656 14.5313C12.1732 14.6855 12.7099 14.7192 13.2329 14.6297C13.7112 14.5588 14.7056 14.0306 14.9121 13.4532C15.1185 12.8758 15.12 12.378 15.0575 12.2752C14.9949 12.1725 14.8292 12.1103 14.5806 11.9858Z"
+                              fill="#FFE68D"
+                            />
+                          </svg>
+                        </a>
+                      </li>
+                      <!-- VK -->
+                      <li>
+                        <a
+                          href="#"
+                          class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
+                          @click="$store.mobileMenuOpen = false"
+                        >
+                          <svg
+                            width="26"
+                            height="15"
+                            viewBox="0 0 26 15"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M24.9194 1.68432C25.0932 1.14166 24.9194 0.752763 24.093 0.752763H21.358C21.1015 0.735782 20.846 0.797421 20.631 0.928174C20.416 1.05893 20.2534 1.25154 20.1683 1.4763C20.1683 1.4763 18.7833 4.60742 16.8121 6.6478C16.1753 7.23748 15.8861 7.4256 15.5384 7.4256C15.3646 7.4256 15.1125 7.24471 15.1125 6.70206V1.68432C15.1125 1.04037 14.9172 0.752763 14.3311 0.752763H10.0333C9.9462 0.748133 9.85897 0.759584 9.77668 0.78645C9.69439 0.813316 9.61868 0.85506 9.55397 0.909256C9.48926 0.963452 9.43683 1.02902 9.39973 1.10214C9.36263 1.17527 9.34159 1.25449 9.33785 1.33521C9.33785 1.94479 10.3146 2.08588 10.424 3.80248V7.53232C10.424 8.34992 10.2638 8.49825 9.9161 8.49825C8.99012 8.49825 6.73377 5.34543 5.39755 1.73678C5.13382 1.03675 4.87204 0.752763 4.17267 0.752763H1.4377C0.656284 0.752763 0.5 1.09283 0.5 1.4763C0.5 2.14738 1.42794 5.47385 4.81734 9.87297C7.0776 12.872 10.2677 14.5 13.159 14.5C14.8977 14.5 15.1125 14.1382 15.1125 13.5142V11.2441C15.1125 10.5205 15.2766 10.3758 15.8275 10.3758C16.2339 10.3758 16.9293 10.5567 18.5508 12.0038C20.4067 13.7294 20.7114 14.5 21.7546 14.5H24.4896C25.271 14.5 25.6617 14.1382 25.437 13.4147C25.2124 12.6912 24.304 11.671 23.1299 10.4482C22.4911 9.74997 21.5358 9.0011 21.2467 8.62306C20.8403 8.14009 20.9556 7.92484 21.2467 7.49614C21.2467 7.49614 24.5677 3.15491 24.9252 1.67527L24.9194 1.68432Z"
+                              fill="#FFE68D"
+                            />
+                          </svg>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1619,31 +1654,31 @@
               <div
                 class="space-y-6 lg:space-y-3"
                 x-data="{ 
-                showMoreBrands: false,
-                selectedBrands: [],
-                brands: [
-                  'TUDOR', 'PORLAND', 'KUNSTWERK', 'P.L. PROFF CUISINE', 'COSY & TRENDY',
-                  'ARIANO DARO', '.L. PROFF CUISINE', 'SUMMA'
-                ],
-                additionalBrands: [
-                  'BRAND A', 'BRAND B', 'BRAND C', 'BRAND D', 'BRAND E',
-                  'BRAND F', 'BRAND G', 'BRAND H', 'BRAND I', 'BRAND J',
-                  'BRAND K', 'BRAND L', 'BRAND M', 'BRAND N', 'BRAND O',
-                  'BRAND P', 'BRAND Q', 'BRAND R', 'BRAND S', 'BRAND T',
-                  'BRAND U', 'BRAND V', 'BRAND W', 'BRAND X', 'BRAND Y',
-                  'BRAND Z', 'BRAND AA', 'BRAND BB', 'BRAND CC', 'BRAND DD',
-                  'BRAND EE', 'BRAND FF', 'BRAND GG', 'BRAND HH', 'BRAND II',
-                  'BRAND JJ', 'BRAND KK', 'BRAND LL', 'BRAND MM', 'BRAND NN',
-                  'BRAND OO', 'BRAND PP', 'BRAND QQ', 'BRAND RR', 'BRAND SS'
-                ],
-                toggleBrand(brandName) {
-                  if (this.selectedBrands.includes(brandName)) {
-                    this.selectedBrands = this.selectedBrands.filter(b => b !== brandName);
-                  } else {
-                    this.selectedBrands.push(brandName);
-                  }
-                }
-              }"
+               showMoreBrands: false,
+               selectedBrands: [],
+               brands: [
+                 'TUDOR', 'PORLAND', 'KUNSTWERK', 'P.L. PROFF CUISINE', 'COSY & TRENDY',
+                 'ARIANO DARO', '.L. PROFF CUISINE', 'SUMMA'
+               ],
+               additionalBrands: [
+                 'BRAND A', 'BRAND B', 'BRAND C', 'BRAND D', 'BRAND E',
+                 'BRAND F', 'BRAND G', 'BRAND H', 'BRAND I', 'BRAND J',
+                 'BRAND K', 'BRAND L', 'BRAND M', 'BRAND N', 'BRAND O',
+                 'BRAND P', 'BRAND Q', 'BRAND R', 'BRAND S', 'BRAND T',
+                 'BRAND U', 'BRAND V', 'BRAND W', 'BRAND X', 'BRAND Y',
+                 'BRAND Z', 'BRAND AA', 'BRAND BB', 'BRAND CC', 'BRAND DD',
+                 'BRAND EE', 'BRAND FF', 'BRAND GG', 'BRAND HH', 'BRAND II',
+                 'BRAND JJ', 'BRAND KK', 'BRAND LL', 'BRAND MM', 'BRAND NN',
+                 'BRAND OO', 'BRAND PP', 'BRAND QQ', 'BRAND RR', 'BRAND SS'
+               ],
+               toggleBrand(brandName) {
+                 if (this.selectedBrands.includes(brandName)) {
+                   this.selectedBrands = this.selectedBrands.filter(b => b !== brandName);
+                 } else {
+                   this.selectedBrands.push(brandName);
+                 }
+               }
+             }"
               >
                 <p
                   class="text-2xl/7.25 lg:text-lg/5.75 font-rooftop-wide font-medium text-main-dark"
@@ -1784,22 +1819,22 @@
                           >
                             <template
                               x-for="brand in [
-                            'Bonna',
-                            'Ariane', 
-                            'Porland',
-                            'Style Point',
-                            'Cosy & Trendy',
-                            'SUMMA',
-                            'Adidas',
-                            'Nike',
-                            'Puma',
-                            'Zara',
-                            'Mango',
-                            'H&M',
-                            'Uniqlo',
-                            'Levi\'s',
-                            'Calvin Klein'
-                          ].filter(b => b.toLowerCase().includes(searchQuery.toLowerCase()))"
+                           'Bonna',
+                           'Ariane', 
+                           'Porland',
+                           'Style Point',
+                           'Cosy & Trendy',
+                           'SUMMA',
+                           'Adidas',
+                           'Nike',
+                           'Puma',
+                           'Zara',
+                           'Mango',
+                           'H&M',
+                           'Uniqlo',
+                           'Levi\'s',
+                           'Calvin Klein'
+                         ].filter(b => b.toLowerCase().includes(searchQuery.toLowerCase()))"
                               :key="brand"
                             >
                               <li class="hover:bg-main-yellow pl-6 pr-3">
@@ -1911,32 +1946,32 @@
                         >
                           <template
                             x-for="series in [
-                              'Ariane Prime',
-                              'Ariane Slide',
-                              'Ariana Vital',
-                              'Ariana Selas',
-                              'Ariane Daro',
-                              'Ariane Classic',
-                              'Ariane Premium',
-                              'Ariane Sport',
-                              'Ariane Business',
-                              'Ariane Elegant',
-                              'Ariane Modern',
-                              'Ariane Vintage',
-                              'Ariane Urban',
-                              'Ariane Outdoor',
-                              'Ariane Luxury',
-                              'Ariane Basic',
-                              'Ariane Pro',
-                              'Ariane Elite',
-                              'Ariane Standard',
-                              'Ariane Collection',
-                              'Ariane Signature',
-                              'Ariane Limited',
-                              'Ariane Exclusive',
-                              'Ariane Master',
-                              'Ariane Supreme'
-                            ].filter(s => s.toLowerCase().includes(searchQuerySeries.toLowerCase()))"
+                             'Ariane Prime',
+                             'Ariane Slide',
+                             'Ariana Vital',
+                             'Ariana Selas',
+                             'Ariane Daro',
+                             'Ariane Classic',
+                             'Ariane Premium',
+                             'Ariane Sport',
+                             'Ariane Business',
+                             'Ariane Elegant',
+                             'Ariane Modern',
+                             'Ariane Vintage',
+                             'Ariane Urban',
+                             'Ariane Outdoor',
+                             'Ariane Luxury',
+                             'Ariane Basic',
+                             'Ariane Pro',
+                             'Ariane Elite',
+                             'Ariane Standard',
+                             'Ariane Collection',
+                             'Ariane Signature',
+                             'Ariane Limited',
+                             'Ariane Exclusive',
+                             'Ariane Master',
+                             'Ariane Supreme'
+                           ].filter(s => s.toLowerCase().includes(searchQuerySeries.toLowerCase()))"
                             :key="series"
                           >
                             <li class="hover:bg-main-gray-100 pl-6 pr-3">
@@ -3792,7 +3827,7 @@
 
                 <div class="space-y-4 mt-4 px-2 pb-2">
                   <p
-                    class="font-rooftop text-main-sm/4.5 tracking-[0%] line-clamp-3"
+                    class="font-rooftop-compact-book text-main-sm/4.5 tracking-[0%] line-clamp-3"
                     x-text="item.name"
                   ></p>
                   <div class="space-y-2">

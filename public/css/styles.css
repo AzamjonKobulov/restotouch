@@ -247,6 +247,9 @@
   .pointer-events-none {
     pointer-events: none;
   }
+  .invisible {
+    visibility: hidden;
+  }
   .visible {
     visibility: visible;
   }
@@ -330,6 +333,9 @@
   .right-3 {
     right: calc(var(--spacing) * 3);
   }
+  .right-4 {
+    right: calc(var(--spacing) * 4);
+  }
   .right-5 {
     right: calc(var(--spacing) * 5);
   }
@@ -354,9 +360,6 @@
   .left-2 {
     left: calc(var(--spacing) * 2);
   }
-  .\!z-100 {
-    z-index: 100 !important;
-  }
   .z-0 {
     z-index: 0;
   }
@@ -368,12 +371,6 @@
   }
   .z-50 {
     z-index: 50;
-  }
-  .z-80 {
-    z-index: 80;
-  }
-  .z-100 {
-    z-index: 100;
   }
   .container {
     width: 100%;
@@ -410,6 +407,9 @@
   }
   .mx-auto {
     margin-inline: auto;
+  }
+  .my-4 {
+    margin-block: calc(var(--spacing) * 4);
   }
   .-mt-2 {
     margin-top: calc(var(--spacing) * -2);
@@ -1670,6 +1670,10 @@
     font-size: 30px;
     line-height: calc(var(--spacing) * 8.75);
   }
+  .text-base {
+    font-size: var(--text-base);
+    line-height: var(--tw-leading, var(--text-base--line-height));
+  }
   .text-lg {
     font-size: var(--text-lg);
     line-height: var(--tw-leading, var(--text-lg--line-height));
@@ -2069,6 +2073,12 @@
       }
     }
   }
+  .placeholder\:font-light {
+    &::placeholder {
+      --tw-font-weight: var(--font-weight-light);
+      font-weight: var(--font-weight-light);
+    }
+  }
   .placeholder\:text-gray-400 {
     &::placeholder {
       color: var(--color-gray-400);
@@ -2367,6 +2377,31 @@
   .max-3xs\:hidden {
     @media (width < 375px) {
       display: none;
+    }
+  }
+  .max-\[374px\]\:block {
+    @media (width < 374px) {
+      display: block;
+    }
+  }
+  .min-\[375px\]\:block {
+    @media (width >= 375px) {
+      display: block;
+    }
+  }
+  .min-\[375px\]\:hidden {
+    @media (width >= 375px) {
+      display: none;
+    }
+  }
+  .\33 xs\:grid-cols-2 {
+    @media (width >= 375px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .\33 xs\:flex-row {
+    @media (width >= 375px) {
+      flex-direction: row;
     }
   }
   .xs\:block {
