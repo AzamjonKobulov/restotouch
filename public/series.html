@@ -2160,13 +2160,32 @@
         </div>
 
         <div
-          class="container-base flex items-start gap-10 2xl:gap-14 px-0 lg:px-4"
+          class="container-base relative flex items-start gap-10 2xl:gap-14 px-0 lg:px-4"
         >
           <!-- Filter Desktop -->
           <aside
-            class="sticky top-7 w-70 2xl:w-85 shrink-0 hidden lg:block bg-main-silver rounded-2xl p-4"
+            class="w-70 2xl:w-85 shrink-0 hidden lg:block bg-main-silver rounded-2xl p-4"
             x-data="{
               selectedItems: [],
+              init() {
+                // Apply sticky positioning via JavaScript (equivalent to CSS sticky top-7)
+                // This keeps the element in document flow, so layout doesn't change
+                if (window.innerWidth >= 1024) {
+                  this.$el.style.position = 'sticky';
+                  this.$el.style.top = '28px'; // top-7 = 7 * 4px = 28px
+                }
+                
+                // Handle resize to toggle sticky on/off based on breakpoint
+                window.addEventListener('resize', () => {
+                  if (window.innerWidth >= 1024) {
+                    this.$el.style.position = 'sticky';
+                    this.$el.style.top = '28px';
+                  } else {
+                    this.$el.style.position = '';
+                    this.$el.style.top = '';
+                  }
+                }, { passive: true });
+              },
               toggleItem(accordionName, itemName) {
                 let key = `${accordionName}:${itemName}`;
                 let index = this.selectedItems.findIndex(item => item.key === key);
