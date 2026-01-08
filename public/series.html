@@ -4820,7 +4820,7 @@
                   <!-- Count Button & Add To Cart Button -->
                   <div class="flex items-center xs:justify-between gap-2">
                     <div
-                      class="h-10 xs:h-8 w-2/3 xs:w-full grid grid-cols-3 bg-main-gray/15 rounded-lg hover:bg-main-yellow"
+                      class="h-10 xs:h-8 w-2/3 xs:w-full grid grid-cols-3 bg-main-gray/15 rounded-lg hover:bg-main-yellow py-1"
                       x-init="if (typeof item.quantity === 'undefined') item.quantity = 1"
                     >
                       <button
@@ -4845,7 +4845,7 @@
                         </svg>
                       </button>
                       <span
-                        class="h-8 w-9 text-rooftop font-medium py-1.25 flex items-center justify-center mt-1"
+                        class="h-8 w-9 text-rooftop font-medium py-1.25 flex items-center justify-center"
                         x-text="item.quantity"
                       ></span>
                       <button
