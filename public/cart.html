@@ -2635,16 +2635,17 @@
                   <div
                     class="flex items-center overflow-x-auto scroll-none rounded-full"
                     style="scrollbar-width: none; -ms-overflow-style: none"
+                    x-ref="tabsContainer"
                   >
                     <button
-                      @click="activeTab = 'legal-entity'"
+                      @click="activeTab = 'legal-entity'; $nextTick(() => { $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); })"
                       class="w-1/2 whitespace-nowrap font-medium font-rooftop leading-5.25 rounded-full hover:text-main-black smooth py-1.75 sm:py-3 px-6 transition-all min-w-fit shrink-0"
                       :class="activeTab === 'legal-entity' ? 'bg-main-light-blue text-main-black' : 'bg-transparent text-main-gray'"
                     >
                       Юридическое лицо \ ИП
                     </button>
                     <button
-                      @click="activeTab = 'individual'"
+                      @click="activeTab = 'individual'; $nextTick(() => { $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); })"
                       class="w-1/2 whitespace-nowrap font-medium font-rooftop leading-5.25 rounded-full hover:text-main-black smooth py-1.75 sm:py-3 px-6 transition-all min-w-fit shrink-0"
                       :class="activeTab === 'individual' ? 'bg-main-light-blue text-main-black' : 'bg-transparent text-main-gray'"
                     >
@@ -3016,6 +3017,46 @@
 
                         <p class="font-medium text-main-sm/4.5">490 ₽</p>
                       </label>
+
+                      <!-- Address inputs for mobile (below md:) -->
+                      <div
+                        class="space-y-3 pt-3 md:hidden"
+                        x-show="deliveryOption === 'in-moscow'"
+                      >
+                        <p class="text-sm/4.75 font-rooftop-compact-book">
+                          Адрес доставки
+                        </p>
+
+                        <div
+                          class="grid gap-3 text-sm/4.75 font-rooftop-compact-book"
+                        >
+                          <div class="relative">
+                            <span
+                              class="absolute left-4 top-1/2 -translate-y-1/2 text-red-500 pointer-events-none"
+                              >*</span
+                            >
+                            <input
+                              type="text"
+                              class="h-10 w-full bg-main-silver rounded-lg outline-none focus:ring-2 focus:bg-white ring-main-yellow pl-6 pr-4"
+                              placeholder="Город"
+                              id="city-in-moscow"
+                            />
+                          </div>
+
+                          <div class="relative">
+                            <span
+                              class="absolute left-4 top-1/2 -translate-y-1/2 text-red-500 pointer-events-none"
+                              >*</span
+                            >
+                            <input
+                              type="text"
+                              class="h-10 w-full bg-main-silver rounded-lg outline-none focus:ring-2 focus:bg-white ring-main-yellow pl-6 pr-4"
+                              placeholder="Адрес"
+                              id="address-in-moscow"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     <!-- Option 4 -->
@@ -3047,12 +3088,53 @@
 
                         <p class="font-medium text-main-sm/4.5">800 ₽</p>
                       </label>
+
+                      <!-- Address inputs for mobile (below md:) -->
+                      <div
+                        class="space-y-3 pt-3 md:hidden"
+                        x-show="deliveryOption === 'out-moscow'"
+                      >
+                        <p class="text-sm/4.75 font-rooftop-compact-book">
+                          Адрес доставки
+                        </p>
+
+                        <div
+                          class="grid gap-3 text-sm/4.75 font-rooftop-compact-book"
+                        >
+                          <div class="relative">
+                            <span
+                              class="absolute left-4 top-1/2 -translate-y-1/2 text-red-500 pointer-events-none"
+                              >*</span
+                            >
+                            <input
+                              type="text"
+                              class="h-10 w-full bg-main-silver rounded-lg outline-none focus:ring-2 focus:bg-white ring-main-yellow pl-6 pr-4"
+                              placeholder="Город"
+                              id="city-out-moscow"
+                            />
+                          </div>
+
+                          <div class="relative">
+                            <span
+                              class="absolute left-4 top-1/2 -translate-y-1/2 text-red-500 pointer-events-none"
+                              >*</span
+                            >
+                            <input
+                              type="text"
+                              class="h-10 w-full bg-main-silver rounded-lg outline-none focus:ring-2 focus:bg-white ring-main-yellow pl-6 pr-4"
+                              placeholder="Адрес"
+                              id="address-out-moscow"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
+                  <!-- Address inputs for desktop (md: and above) -->
                   <div
-                    class="space-y-3 pt-1"
-                    x-show="deliveryOption === 'self-delivery'"
+                    class="space-y-3 pt-1 hidden md:block"
+                    x-show="deliveryOption === 'in-moscow' || deliveryOption === 'out-moscow'"
                   >
                     <p class="text-sm/4.75 font-rooftop-compact-book">
                       Адрес доставки
@@ -3587,6 +3669,46 @@
 
                         <p class="font-medium text-main-sm/4.5 hidden">0 ₽</p>
                       </label>
+
+                      <!-- Address inputs for mobile (below md:) -->
+                      <div
+                        class="space-y-3 pt-3 md:hidden"
+                        x-show="deliveryOption === 'in-moscow'"
+                      >
+                        <p class="text-sm/4.75 font-rooftop-compact-book">
+                          Адрес доставки
+                        </p>
+
+                        <div
+                          class="grid gap-3 text-sm/4.75 font-rooftop-compact-book"
+                        >
+                          <div class="relative">
+                            <span
+                              class="absolute left-4 top-1/2 -translate-y-1/2 text-red-500 pointer-events-none"
+                              >*</span
+                            >
+                            <input
+                              type="text"
+                              class="h-10 w-full bg-main-silver rounded-lg outline-none focus:ring-2 focus:bg-white ring-main-yellow pl-6 pr-4"
+                              placeholder="Город"
+                              id="city-in-moscow-individual"
+                            />
+                          </div>
+
+                          <div class="relative">
+                            <span
+                              class="absolute left-4 top-1/2 -translate-y-1/2 text-red-500 pointer-events-none"
+                              >*</span
+                            >
+                            <input
+                              type="text"
+                              class="h-10 w-full bg-main-silver rounded-lg outline-none focus:ring-2 focus:bg-white ring-main-yellow pl-6 pr-4"
+                              placeholder="Адрес"
+                              id="address-in-moscow-individual"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     <!-- Option 4 -->
@@ -3618,12 +3740,53 @@
 
                         <p class="font-medium text-main-sm/4.5 hidden">800 ₽</p>
                       </label>
+
+                      <!-- Address inputs for mobile (below md:) -->
+                      <div
+                        class="space-y-3 pt-3 md:hidden"
+                        x-show="deliveryOption === 'out-moscow'"
+                      >
+                        <p class="text-sm/4.75 font-rooftop-compact-book">
+                          Адрес доставки
+                        </p>
+
+                        <div
+                          class="grid gap-3 text-sm/4.75 font-rooftop-compact-book"
+                        >
+                          <div class="relative">
+                            <span
+                              class="absolute left-4 top-1/2 -translate-y-1/2 text-red-500 pointer-events-none"
+                              >*</span
+                            >
+                            <input
+                              type="text"
+                              class="h-10 w-full bg-main-silver rounded-lg outline-none focus:ring-2 focus:bg-white ring-main-yellow pl-6 pr-4"
+                              placeholder="Город"
+                              id="city-out-moscow-individual"
+                            />
+                          </div>
+
+                          <div class="relative">
+                            <span
+                              class="absolute left-4 top-1/2 -translate-y-1/2 text-red-500 pointer-events-none"
+                              >*</span
+                            >
+                            <input
+                              type="text"
+                              class="h-10 w-full bg-main-silver rounded-lg outline-none focus:ring-2 focus:bg-white ring-main-yellow pl-6 pr-4"
+                              placeholder="Адрес"
+                              id="address-out-moscow-individual"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
+                  <!-- Address inputs for desktop (md: and above) -->
                   <div
-                    class="space-y-3 pt-1"
-                    x-show="deliveryOption === 'self-delivery'"
+                    class="space-y-3 pt-1 hidden md:block"
+                    x-show="deliveryOption === 'in-moscow' || deliveryOption === 'out-moscow'"
                   >
                     <p class="text-sm/4.75 font-rooftop-compact-book">
                       Адрес доставки
