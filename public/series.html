@@ -512,14 +512,14 @@
                   <path d="M0.5 1.25L7.25 8L0.499999 14.75" stroke="#303030" />
                 </svg>
 
-                <span class="text-main-lg leading-6"> Каталог </span>
+                <span class="text-main-lg leading-6 pt-1"> Каталог </span>
               </button>
               <!-- Searchbar -->
               <div
                 class="relative max-w-153.25 w-full min-w-25 hidden min-[375px]:block"
               >
                 <input
-                  class="relative z-0 max-w-153.25 w-full bg-white border border-transparent rounded-lg focus:border-main-gray placeholder:text-main-gray-400/50 max-md:placeholder:font-light lg:text-lg/6.25 outline-none lg:h-10.25 py-1 lg:py-2 px-2.5 lg:px-4"
+                  class="relative z-0 max-w-153.25 w-full bg-white border border-transparent rounded-lg focus:border-main-gray placeholder:text-main-gray-400/50 max-md:placeholder:font-light lg:text-lg/6.25 outline-none lg:h-10.25 py-1 lg:pb-2 pt-2.5 px-2.5 lg:px-4"
                   type="text"
                   name="search"
                   id="search"
@@ -999,7 +999,7 @@
             <li>
               <a
                 href="#"
-                class="inline-block flex-center bg-[#17BFBF] text-white rounded-[2px] py-0.5 px-2"
+                class="inline-block flex-center bg-[#17BFBF] text-white rounded-[2px] pt-0.5 px-2"
               >
                 Распродажа
               </a>
@@ -2541,7 +2541,7 @@
                     <div class="flex items-center gap-1">
                       <span x-text="accordion.name"></span>
                       <span
-                        class="bg-main-yellow text-sm/4.75 rounded-full px-1"
+                        class="bg-main-yellow text-sm/4.75 rounded-full px-1.5 pt-0.5"
                         x-text="accordion.items.length"
                       ></span>
                     </div>
@@ -3384,7 +3384,7 @@
                         <div class="space-y-3 px-4 py-6">
                           <button
                             @click.stop="filterModalOpen = false"
-                            class="h-10 block w-full bg-main-yellow text-main-base/5 rounded-lg"
+                            class="h-10 block w-full bg-main-yellow uppercase text-main-base/5 rounded-lg"
                           >
                             Применить
                           </button>
@@ -3671,7 +3671,7 @@
                         >
                           <button
                             @click.stop="filterModalOpen = false"
-                            class="h-10 block w-full bg-main-yellow text-main-base/5 rounded-lg"
+                            class="h-10 block w-full bg-main-yellow uppercase text-main-base/5 rounded-lg"
                           >
                             Применить
                           </button>
@@ -4047,7 +4047,7 @@
                         </template>
                       </div>
 
-                      <div class="space-y-2.5 mt-3.5 p-2">
+                      <div class="space-y-2.5 mt-3.5 px-2 pb-2">
                         <p
                           class="text-main-base/5 text-main-gray"
                           x-text="item.country"
@@ -4290,7 +4290,7 @@
                           class="absolute top-2 left-2 z-10 w-full flex-between px-2"
                         >
                           <span
-                            class="text-[9px]/4.5 font-rooftop font-medium uppercase bg-[#B8D39C] rounded-[2px] px-1"
+                            class="text-[9px]/4.5 font-rooftop font-medium uppercase bg-[#B8D39C] rounded-[2px] px-1 pt-0.5"
                             >В наличии</span
                           >
 
@@ -4327,7 +4327,7 @@
                         </div>
 
                         <span
-                          class="absolute bottom-2 left-2 z-10 text-[9px]/4.5 font-rooftop font-medium uppercase bg-main-status-red text-white rounded-[2px] py-0.5 px-1"
+                          class="absolute bottom-2 left-2 z-10 text-[9px]/4.5 font-rooftop font-medium uppercase bg-main-status-red text-white rounded-[2px] py-0.5 px-1 pt-0.5"
                           >NEW</span
                         >
                         <div class="swiper-wrapper">
@@ -4400,7 +4400,7 @@
                           >
                             <button
                               @click="if (item.quantity > 0) item.quantity--"
-                              class="size-8 flex-center hover:opacity-70 smooth"
+                              class="size-full flex-center hover:opacity-70 smooth"
                               :class="{ 'opacity-50 cursor-not-allowed': item.quantity <= 0 }"
                             >
                               <svg
@@ -4420,12 +4420,12 @@
                               </svg>
                             </button>
                             <span
-                              class="h-8 w-9 text-rooftop font-medium py-1.25 flex items-center justify-center mt-1"
+                              class="size-full font-rooftop font-medium flex items-center justify-center"
                               x-text="item.quantity"
                             ></span>
                             <button
                               @click="item.quantity++"
-                              class="size-8 flex-center hover:opacity-70 smooth"
+                              class="size-full flex-center hover:opacity-70 smooth"
                             >
                               <svg
                                 width="32"
@@ -4457,7 +4457,9 @@
                             class="size-10 xs:h-8 xs:w-full flex-center uppercase text-xs/3 font-medium font-rooftop whitespace-nowrap border border-main-black rounded-lg smooth xs:px-2.5 transition-colors"
                             :class="item.quantity > 0 ? 'bg-main-black text-white hover:bg-main-gray' : 'bg-main-yellow xs:bg-transparent xs:hover:bg-main-black hover:text-white'"
                           >
-                            <span class="hidden xs:block">в корзину</span>
+                            <span class="hidden xs:block xs:mt-0.5"
+                              >в корзину</span
+                            >
                             <svg
                               width="32"
                               height="32"
@@ -4488,7 +4490,7 @@
 
                 <div class="px-4 lg:px-0">
                   <button
-                    class="w-full uppercase text-sm/3 font-medium font-rooftop bg-main-yellow rounded-lg hover:bg-main-silver smooth py-3.5"
+                    class="w-full uppercase text-xs/3 font-medium font-rooftop bg-main-yellow rounded-lg hover:bg-main-silver smooth py-3.5"
                   >
                     Загрузить еще
                   </button>
@@ -4725,7 +4727,7 @@
                     class="absolute top-2 left-2 z-10 w-full flex-between px-2"
                   >
                     <span
-                      class="text-[9px]/4.5 font-rooftop font-medium uppercase bg-main-status-green rounded-[2px] px-1"
+                      class="text-[9px]/4.5 font-rooftop font-medium uppercase bg-main-status-green rounded-[2px] px-1.5 pt-0.5"
                       >В наличии</span
                     >
 
@@ -4825,7 +4827,7 @@
                     >
                       <button
                         @click="if (item.quantity > 1) item.quantity--"
-                        class="size-8 flex-center hover:opacity-70 smooth"
+                        class="size-full flex-center hover:opacity-70 smooth"
                         :class="{ 'opacity-50 cursor-not-allowed': item.quantity <= 1 }"
                       >
                         <svg
@@ -4845,12 +4847,12 @@
                         </svg>
                       </button>
                       <span
-                        class="h-8 w-9 text-rooftop font-medium py-1.25 flex items-center justify-center"
+                        class="size-full font-rooftop font-medium py-1.25 flex items-center justify-center"
                         x-text="item.quantity"
                       ></span>
                       <button
                         @click="item.quantity++"
-                        class="size-8 flex-center hover:opacity-70 smooth"
+                        class="size-full flex-center hover:opacity-70 smooth"
                       >
                         <svg
                           width="32"
@@ -4881,7 +4883,7 @@
                     <button
                       class="size-10 xs:h-8 xs:w-full flex-center uppercase text-xs/3 font-medium font-rooftop whitespace-nowrap bg-main-yellow xs:bg-transparent border border-main-black rounded-lg hover:bg-main-black hover:text-white smooth xs:px-2.5"
                     >
-                      <span class="hidden xs:block">в корзину</span>
+                      <span class="hidden xs:block xs:mt-0.5">в корзину</span>
                       <svg
                         width="32"
                         height="32"
@@ -5052,55 +5054,55 @@
 
           <!-- Collections -->
           <div class="flex items-center gap-2 flex-wrap text-main-sm/4.5">
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Посуда для кафе
             </button>
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Оборудование и посуда для баров и ресторанов
             </button>
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Посуда для ресторанов и кафе
             </button>
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Корзинки для приборов для ресторана
             </button>
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Менажницы
             </button>
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Для общепита
             </button>
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Посуда для сервировки стола в ресторане
             </button>
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Hедорого
             </button>
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Перечницы
             </button>
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Дизайнерская
             </button>
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Оборудование и посуда для баров и ресторанов
             </button>
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Для ресторанов и кафе
             </button>
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Крафтовая
             </button>
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Посуда для ресторанов и кафе
             </button>
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Перечницы
             </button>
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Менажницы
             </button>
-            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5">
+            <button class="h-10 lg:h-8 bg-main-silver rounded-lg px-2.5 pt-0.5">
               Hедорого
             </button>
           </div>
@@ -5108,7 +5110,7 @@
       </section>
 
       <!-- Variety -->
-      <section id="variety" class="pb-12 lg:pb-16">
+      <section id="variety" class="pb-12 lg:pb-8">
         <div class="container-base">
           <div
             class="grid lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-9 bg-main-silver rounded-2xl p-4 lg:p-6"
