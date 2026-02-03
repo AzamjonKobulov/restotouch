@@ -453,7 +453,7 @@
 
         <!-- Bottom -->
         <div
-          :class="$store.mobileMenuOpen ? 'relative z-50 bg-main-yellow max-lg:rounded-t-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8' : 'relative z-50 bg-main-yellow max-lg:rounded-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8'"
+          :class="$store.mobileMenuOpen ? 'lg:h-17 relative z-50 bg-main-yellow max-lg:rounded-t-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8' : 'lg:h-17 relative z-50 bg-main-yellow max-lg:rounded-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8', ''"
         >
           <!-- Logo -->
           <a class="shrink-0 lg:flex items-end" href="#">
@@ -533,7 +533,7 @@
                 class="relative max-w-153.25 w-full min-w-25 hidden min-[375px]:block"
               >
                 <input
-                  class="relative z-0 max-w-153.25 w-full bg-white border border-transparent rounded-lg focus:border-main-gray placeholder:text-main-gray-400/50 max-md:placeholder:font-light lg:text-lg/6.25 outline-none lg:h-10.25 py-1 lg:pb-2 pt-2.5 px-2.5 lg:px-4"
+                  class="relative z-0 max-w-153.25 w-full bg-white border border-transparent rounded-lg focus:border-main-gray placeholder:text-main-gray-400/50 max-md:placeholder:font-light lg:text-lg/6.25 outline-none lg:h-10.25 py-1 lg:py-2 px-2.5 lg:px-4"
                   type="text"
                   name="search"
                   id="search"
@@ -630,11 +630,12 @@
                 <p class="text-main-sm/4.5">Войти</p>
               </a>
 
-              <a href="#" class="transition duration-200">
+              <!-- Cart Icon -->
+              <a href="#" class="relative transition duration-200">
                 <svg
                   width="32"
                   height="32"
-                  viewBox="0 0 34 36"
+                  viewBox="0 0 32 32"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -643,34 +644,18 @@
                     y="9"
                     width="20.0008"
                     height="16"
-                    stroke="currentColor"
+                    stroke="#303030"
                     stroke-linejoin="round"
                   />
                   <path
-                    d="M12.0005 12V9C12.0005 6.79086 13.7915 5 16.0007 5C18.2099 5 20.0009 6.79086 20.0009 9V12"
-                    stroke="currentColor"
-                  />
-                  <rect
-                    x="18.5"
-                    y="18.5"
-                    width="15"
-                    height="17"
-                    rx="4.5"
-                    fill="#FFE68D"
-                  />
-                  <rect
-                    x="18.5"
-                    y="18.5"
-                    width="15"
-                    height="17"
-                    rx="4.5"
-                    stroke="currentColor"
-                  />
-                  <path
-                    d="M25.9961 32.16C24.6308 32.16 23.5908 31.728 22.8761 30.864C22.1615 29.9893 21.8041 28.7147 21.8041 27.04V25.76C21.8041 24.0853 22.1615 22.816 22.8761 21.952C23.5908 21.0773 24.6308 20.64 25.9961 20.64C27.3615 20.64 28.4015 21.0773 29.1161 21.952C29.8415 22.816 30.2041 24.0853 30.2041 25.76V27.04C30.2041 28.7147 29.8415 29.9893 29.1161 30.864C28.4015 31.728 27.3615 32.16 25.9961 32.16ZM25.9961 30.928C27.7775 30.928 28.6681 29.6427 28.6681 27.072V25.728C28.6681 23.168 27.7775 21.888 25.9961 21.888C24.2148 21.888 23.3241 23.168 23.3241 25.728V27.072C23.3241 29.6427 24.2148 30.928 25.9961 30.928Z"
-                    fill="currentColor"
+                    d="M12.0005 12V9C12.0005 6.79086 13.7914 5 16.0007 5C18.2099 5 20.0008 6.79086 20.0008 9V12"
+                    stroke="#303030"
                   />
                 </svg>
+                <span
+                  class="h-4.75 flex-center absolute -bottom-1.5 -right-0.75 leading-none border border-main-black rounded-[5px] px-0.75"
+                  >0
+                </span>
               </a>
 
               <!-- Menu btn -->
@@ -1013,7 +998,7 @@
             <li>
               <a
                 href="#"
-                class="inline-block flex-center bg-[#17BFBF] text-white rounded-[2px] py-0.5 px-2"
+                class="inline-block h-5 flex-center bg-[#17BFBF] text-white rounded-[2px] py-0.5 px-2"
               >
                 Распродажа
               </a>
@@ -3008,7 +2993,7 @@
             <div
               id="series"
               x-show="activeTab === 'series'"
-              class="flex overflow-x-auto scroll-none gap-4 lg:gap-9 px-4 lg:px-0 pb-6"
+              class="flex overflow-x-auto scroll-none gap-4 lg:gap-6 px-4 lg:px-0 pb-6"
               x-data="{
                 series: [
                   {
@@ -3126,17 +3111,17 @@
             >
               <template x-for="(item, index) in series" :key="index">
                 <div
-                  class="w-50.5 lg:w-59 shrink-0 border border-main-silver rounded-2xl overflow-hidden"
+                  class="w-50.5 md:w-61.25 shrink-0 border border-main-silver rounded-2xl overflow-hidden"
                 >
                   <!-- Slider -->
                   <div
-                    class="swiper series-swiper h-55 sm:h-74 relative rounded-lg sm:rounded-2xl overflow-hidden"
+                    class="swiper series-swiper h-55 md:h-74 relative rounded-lg md:rounded-2xl overflow-hidden"
                   >
                     <div
                       class="absolute top-2 left-2 z-10 w-full flex-between px-2"
                     >
                       <span
-                        class="text-[9px]/4.5 font-rooftop font-medium uppercase bg-[#B8D39C] rounded-[2px] px-1"
+                        class="text-[9px]/4.5 font-rooftop font-medium uppercase bg-main-status-green rounded-[2px] px-1"
                         >В наличии</span
                       >
 
@@ -3210,7 +3195,7 @@
 
                   <div class="space-y-4 mt-4 px-2 pb-2">
                     <p
-                      class="text-main-sm/4.5 tracking-[0%] line-clamp-3"
+                      class="font-rooftop-compact-book text-main-sm/4.5 tracking-[0%] line-clamp-3"
                       x-text="item.name"
                     ></p>
                     <div class="space-y-2">
@@ -3240,14 +3225,13 @@
                     <!-- Count Button & Add To Cart Button -->
                     <div class="flex items-center xs:justify-between gap-2">
                       <div
-                        class="h-10 xs:h-8 w-2/3 xs:w-full grid grid-cols-3 rounded-lg hover:bg-main-yellow transition-colors"
-                        :class="item.quantity > 0 ? 'bg-main-yellow' : 'bg-main-gray/15'"
-                        x-init="if (typeof item.quantity === 'undefined') item.quantity = 0"
+                        class="h-10 xs:h-8 w-2/3 xs:w-full grid grid-cols-3 bg-main-gray/15 rounded-lg hover:bg-main-yellow"
+                        x-init="if (typeof item.quantity === 'undefined') item.quantity = 1"
                       >
                         <button
-                          @click="if (item.quantity > 0) item.quantity--"
+                          @click="if (item.quantity > 1) item.quantity--"
                           class="size-full flex-center hover:opacity-70 smooth"
-                          :class="{ 'opacity-50 cursor-not-allowed': item.quantity <= 0 }"
+                          :class="{ 'opacity-50 cursor-not-allowed': item.quantity <= 1 }"
                         >
                           <svg
                             width="32"
@@ -3266,7 +3250,7 @@
                           </svg>
                         </button>
                         <span
-                          class="size-full font-rooftop font-medium flex-center"
+                          class="font-rooftop font-medium flex-center text-main-sm/4.5"
                           x-text="item.quantity"
                         ></span>
                         <button
@@ -3300,8 +3284,7 @@
                       </div>
 
                       <button
-                        class="size-10 xs:h-8 xs:w-full flex-center uppercase text-xs/3 font-medium font-rooftop whitespace-nowrap border border-main-black rounded-lg smooth xs:px-2.5 transition-colors"
-                        :class="item.quantity > 0 ? 'bg-main-black text-white hover:bg-main-gray' : 'bg-main-yellow xs:bg-transparent xs:hover:bg-main-black hover:text-white'"
+                        class="size-10 xs:h-8 xs:w-full flex-center uppercase text-xs/3 font-medium font-rooftop whitespace-nowrap bg-main-yellow xs:bg-transparent border border-main-black rounded-lg hover:bg-main-black hover:text-white smooth xs:px-2.5"
                       >
                         <span class="hidden xs:block xs:pt-0.5">в корзину</span>
                         <svg
@@ -3336,7 +3319,7 @@
             <div
               id="products"
               x-show="activeTab === 'products'"
-              class="flex overflow-x-auto scroll-none gap-4 lg:gap-9 px-4 lg:px-0 pb-6"
+              class="flex overflow-x-auto scroll-none gap-4 lg:gap-6 px-4 lg:px-0 pb-6"
               x-data="{
                 series: [
                   {
@@ -3444,7 +3427,7 @@
             >
               <template x-for="(item, index) in series" :key="index">
                 <div
-                  class="w-50.5 lg:w-59 shrink-0 border border-main-silver rounded-lg sm:rounded-2xl"
+                  class="w-50.5 md:w-61.25 shrink-0 border border-main-silver rounded-lg sm:rounded-2xl"
                 >
                   <!-- Slider -->
                   <div
@@ -3510,7 +3493,7 @@
             <div
               id="other-series"
               x-show="activeTab === 'other-series'"
-              class="flex overflow-x-auto scroll-none gap-4 lg:gap-9 px-4 lg:px-0 pb-6"
+              class="flex overflow-x-auto scroll-none gap-4 lg:gap-6 px-4 lg:px-0 pb-6"
               x-data="{
                 series: [
                   {
@@ -3618,7 +3601,7 @@
             >
               <template x-for="(item, index) in series" :key="index">
                 <div
-                  class="w-50.5 lg:w-59 shrink-0 border border-main-silver rounded-lg sm:rounded-2xl"
+                  class="w-50.5 md:w-61.25 shrink-0 border border-main-silver rounded-lg sm:rounded-2xl"
                 >
                   <!-- Slider -->
                   <div
@@ -3693,130 +3676,127 @@
           <!-- Products -->
           <div
             id="products"
-            class="flex overflow-x-auto scroll-none gap-4 lg:gap-9 px-4 lg:px-0"
+            class="flex overflow-x-auto scroll-none gap-4 xl:gap-6 px-4 xl:px-0"
             x-data="{
-          products: [
-            {
-              name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
-              price: 'От 1820 ₽',
-              images: [
-                './assets/images/plate.png',
-                './assets/images/plate.png',
-                './assets/images/plate.png',
-                './assets/images/plate.png'
-              ],
-              art: '81250112',
-              oldCost: '2000 ₽',
-              cost: '1820 ₽',
-            },
-            {
-              name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
-              price: 'От 1820 ₽',
-              images: [
-                './assets/images/plate.png',
-                './assets/images/plate.png',
-                './assets/images/plate.png',
-                './assets/images/plate.png'
-              ],
-              art: '81250112',
-              oldCost: '2000 ₽',
-              cost: '1820 ₽',
-            },
-            {
-              name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
-              price: 'От 1820 ₽',
-              images: [
-                './assets/images/plate.png',
-                './assets/images/plate.png',
-                './assets/images/plate.png',
-                './assets/images/plate.png'
-              ],
-              art: '81250112',
-              oldCost: '2000 ₽',
-              cost: '1820 ₽',
-            },
-            {
-              name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
-              price: 'От 1820 ₽',
-              images: [
-                './assets/images/plate.png',
-                './assets/images/plate.png',
-                './assets/images/plate.png',
-                './assets/images/plate.png'
-              ],
-              art: '81250112',
-              oldCost: '2000 ₽',
-              cost: '1820 ₽',
-            },
-            {
-              name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
-              price: 'От 1820 ₽',
-              images: [
-                './assets/images/plate.png',
-                './assets/images/plate.png',
-                './assets/images/plate.png',
-                './assets/images/plate.png'
-              ],
-              art: '81250112',
-              oldCost: '2000 ₽',
-              cost: '1820 ₽',
-            },
-          ],
-          init() {
-            this.$nextTick(() => {
-              // Initialize swipers after Alpine renders
-              const swipers = document.querySelectorAll('.series-swiper');
-              swipers.forEach((swiperEl) => {
-                const swiperContainer = swiperEl.closest('.border');
-                const paginationContainer = swiperContainer
-                  ? swiperContainer.querySelector('.custom-pagination')
-                  : null;
-                if (!paginationContainer) return;
-                
-                const swiper = new Swiper(swiperEl, {
-                  loop: true,
-                  on: {
-                    init: function () {
-                      updateCustomPagination(this, paginationContainer);
-                    },
-                    slideChange: function () {
-                      updateCustomPagination(this, paginationContainer);
-                    },
-                  },
-                });
-                
-                function updateCustomPagination(swiperInstance, paginationEl) {
-                  const bullets = paginationEl.querySelectorAll('.pagination-bullet');
-                  const realIndex = swiperInstance.realIndex;
-                  bullets.forEach((bullet, index) => {
-                    if (index === realIndex) {
-                      bullet.classList.remove('bg-main-silver');
-                      bullet.classList.add('bg-main-yellow');
-                    } else {
-                      bullet.classList.remove('bg-main-yellow');
-                      bullet.classList.add('bg-main-silver');
-                    }
-                  });
-                }
-                
-                const bullets = paginationContainer.querySelectorAll('.pagination-bullet');
-                bullets.forEach((bullet, index) => {
-                  bullet.addEventListener('click', () => {
-                    swiper.slideToLoop(index);
-                  });
-                });
-              });
-            });
-          }
-        }"
+           products: [
+             {
+               name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
+               price: 'От 1820 ₽',
+               images: [
+                 './assets/images/plate.png',
+                 './assets/images/plate.png',
+                 './assets/images/plate.png',
+                 './assets/images/plate.png'
+               ],
+               art: '81250112',
+               oldCost: '2000 ₽',
+               cost: '1820 ₽',
+             },
+             {
+               name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
+               price: 'От 1820 ₽',
+               images: [
+                 './assets/images/plate.png',
+                 './assets/images/plate.png',
+                 './assets/images/plate.png',
+                 './assets/images/plate.png'
+               ],
+               art: '81250112',
+               oldCost: '2000 ₽',
+               cost: '1820 ₽',
+             },
+             {
+               name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
+               price: 'От 1820 ₽',
+               images: [
+                 './assets/images/plate.png',
+                 './assets/images/plate.png',
+                 './assets/images/plate.png',
+                 './assets/images/plate.png'
+               ],
+               art: '81250112',
+               oldCost: '2000 ₽',
+               cost: '1820 ₽',
+             },
+             {
+               name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
+               price: 'От 1820 ₽',
+               images: [
+                 './assets/images/plate.png',
+                 './assets/images/plate.png',
+                 './assets/images/plate.png',
+                 './assets/images/plate.png'
+               ],
+               art: '81250112',
+               oldCost: '2000 ₽',
+               cost: '1820 ₽',
+             },
+             {
+               name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
+               price: 'От 1820 ₽',
+               images: [
+                 './assets/images/plate.png',
+                 './assets/images/plate.png',
+                 './assets/images/plate.png',
+                 './assets/images/plate.png'
+               ],
+               art: '81250112',
+               oldCost: '2000 ₽',
+               cost: '1820 ₽',
+             },
+           ],
+           init() {
+             this.$nextTick(() => {
+               if (typeof Swiper === 'undefined') return;
+               const swipers = this.$el.querySelectorAll('.series-swiper');
+               swipers.forEach((swiperEl) => {
+                 const swiperContainer = swiperEl.closest('.border');
+                 const paginationContainer = swiperContainer
+                   ? swiperContainer.querySelector('.custom-pagination')
+                   : null;
+                 if (!paginationContainer) return;
+                 const swiper = new Swiper(swiperEl, {
+                   loop: true,
+                   on: {
+                     init: function () {
+                       updateCustomPagination(this, paginationContainer);
+                     },
+                     slideChange: function () {
+                       updateCustomPagination(this, paginationContainer);
+                     },
+                   },
+                 });
+                 function updateCustomPagination(swiperInstance, paginationEl) {
+                   const bullets = paginationEl.querySelectorAll('.pagination-bullet');
+                   const realIndex = swiperInstance.realIndex;
+                   bullets.forEach((bullet, index) => {
+                     if (index === realIndex) {
+                       bullet.classList.remove('bg-main-silver');
+                       bullet.classList.add('bg-main-yellow');
+                     } else {
+                       bullet.classList.remove('bg-main-yellow');
+                       bullet.classList.add('bg-main-silver');
+                     }
+                   });
+                 }
+                 const bullets = paginationContainer.querySelectorAll('.pagination-bullet');
+                 bullets.forEach((bullet, index) => {
+                   bullet.addEventListener('click', () => {
+                     swiper.slideToLoop(index);
+                   });
+                 });
+               });
+             });
+           }
+         }"
           >
             <template x-for="(item, index) in products" :key="index">
               <div
-                class="w-50.5 lg:w-59 shrink-0 border border-main-silver rounded-2xl overflow-hidden"
+                class="w-50.5 md:w-61.25 shrink-0 border border-main-silver rounded-2xl overflow-hidden"
               >
                 <!-- Slider -->
                 <div
-                  class="swiper series-swiper h-55 sm:h-74 relative rounded-lg sm:rounded-2xl overflow-hidden"
+                  class="swiper series-swiper h-55 md:h-74 relative rounded-lg md:rounded-2xl overflow-hidden"
                 >
                   <div
                     class="absolute top-2 left-2 z-10 w-full flex-between px-2"
@@ -3917,7 +3897,7 @@
                   <!-- Count Button & Add To Cart Button -->
                   <div class="flex items-center xs:justify-between gap-2">
                     <div
-                      class="h-10 xs:h-8 w-2/3 xs:w-full grid grid-cols-3 bg-main-gray/15 rounded-lg hover:bg-main-yellow py-1"
+                      class="h-10 xs:h-8 w-2/3 xs:w-full grid grid-cols-3 bg-main-gray/15 rounded-lg hover:bg-main-yellow"
                       x-init="if (typeof item.quantity === 'undefined') item.quantity = 1"
                     >
                       <button
@@ -3942,7 +3922,7 @@
                         </svg>
                       </button>
                       <span
-                        class="size-full font-rooftop font-medium flex-center"
+                        class="font-rooftop font-medium flex-center text-main-sm/4.5"
                         x-text="item.quantity"
                       ></span>
                       <button
@@ -4304,7 +4284,7 @@
           <!-- Products Row 1(Desktop/Mobile) -->
           <div
             id="products"
-            class="flex overflow-x-auto scroll-none gap-4 lg:gap-9 px-4 lg:px-0"
+            class="flex overflow-x-auto scroll-none gap-4 lg:gap-6 px-4 lg:px-0"
             x-data="{
             products: [
               {
@@ -4423,11 +4403,11 @@
           >
             <template x-for="(item, index) in products" :key="index">
               <div
-                class="w-45 lg:w-59 shrink-0 border border-main-silver rounded-2xl overflow-hidden"
+                class="w-50.5 md:w-61.25 shrink-0 border border-main-silver rounded-2xl overflow-hidden"
               >
                 <!-- Slider -->
                 <div
-                  class="swiper series-swiper h-55 sm:h-74 relative rounded-lg sm:rounded-2xl overflow-hidden"
+                  class="swiper series-swiper h-55 md:h-74 relative rounded-lg md:rounded-2xl overflow-hidden"
                 >
                   <div
                     class="absolute top-2 left-2 z-10 w-full flex-between px-2"
@@ -4498,7 +4478,7 @@
 
                 <div class="space-y-4 mt-4 px-2 pb-2">
                   <p
-                    class="font-rooftop text-main-sm/4.5 tracking-[0%] line-clamp-3"
+                    class="font-rooftop-compact-book text-main-sm/4.5 tracking-[0%] line-clamp-3"
                     x-text="item.name"
                   ></p>
                   <div class="space-y-2">
@@ -4528,7 +4508,7 @@
                   <!-- Count Button & Add To Cart Button -->
                   <div class="flex items-center xs:justify-between gap-2">
                     <div
-                      class="h-10 xs:h-8 w-2/3 xs:w-full grid grid-cols-3 bg-main-gray/15 rounded-lg hover:bg-main-yellow py-1"
+                      class="h-10 xs:h-8 w-2/3 xs:w-full grid grid-cols-3 bg-main-gray/15 rounded-lg hover:bg-main-yellow"
                       x-init="if (typeof item.quantity === 'undefined') item.quantity = 1"
                     >
                       <button
@@ -4553,7 +4533,7 @@
                         </svg>
                       </button>
                       <span
-                        class="size-full font-rooftop font-medium flex-center"
+                        class="font-rooftop font-medium flex-center text-main-sm/4.5"
                         x-text="item.quantity"
                       ></span>
                       <button
@@ -4845,12 +4825,12 @@
                   <!-- Count Button & Add To Cart Button -->
                   <div class="flex items-center xs:justify-between gap-2">
                     <div
-                      class="h-10 xs:h-8 w-2/3 xs:w-full grid grid-cols-3 bg-main-gray/15 rounded-lg hover:bg-main-yellow py-1"
+                      class="h-10 xs:h-8 w-2/3 xs:w-full grid grid-cols-3 bg-main-gray/15 rounded-lg hover:bg-main-yellow"
                       x-init="if (typeof item.quantity === 'undefined') item.quantity = 1"
                     >
                       <button
                         @click="if (item.quantity > 1) item.quantity--"
-                        class="size-8 flex-center hover:opacity-70 smooth"
+                        class="size-full flex-center hover:opacity-70 smooth"
                         :class="{ 'opacity-50 cursor-not-allowed': item.quantity <= 1 }"
                       >
                         <svg
@@ -4870,7 +4850,7 @@
                         </svg>
                       </button>
                       <span
-                        class="size-full font-rooftop font-medium flex-center"
+                        class="font-rooftop font-medium flex-center text-main-sm/4.5"
                         x-text="item.quantity"
                       ></span>
                       <button
@@ -4984,7 +4964,7 @@
 
           <div class="w-full flex max-md:flex-col gap-10 lg:gap-9">
             <!-- 2 -->
-            <div x-data="{ open: false }" class="w-full max-w-55">
+            <div x-data="{ open: false }" class="w-full">
               <div
                 @click="open = !open"
                 class="max-md:cursor-pointer w-full flex items-center gap-3"
@@ -5013,7 +4993,7 @@
 
               <!-- kontent -->
               <div
-                :class="open ? 'max-h-96 mt-6' : 'max-h-0 mt-0'"
+                :class="open ? 'max-h-120 mt-6' : 'max-h-0 mt-0'"
                 class="transition-all duration-500 overflow-hidden md:!max-h-full md:!overflow-visible md:mt-8"
               >
                 <div
@@ -5055,7 +5035,7 @@
             </div>
 
             <!-- 3 -->
-            <div x-data="{ open: false }" class="w-full max-w-87.5">
+            <div x-data="{ open: false }" class="w-full">
               <div
                 @click="open = !open"
                 class="max-md:cursor-pointer w-full flex items-center gap-3"
@@ -5084,7 +5064,7 @@
 
               <!-- kontent -->
               <div
-                :class="open ? 'max-h-96 mt-6' : 'max-h-0 mt-0'"
+                :class="open ? 'max-h-120 mt-6' : 'max-h-0 mt-0'"
                 class="transition-all duration-500 overflow-hidden md:!max-h-full md:!overflow-visible md:mt-8"
               >
                 <div

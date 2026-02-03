@@ -41,6 +41,12 @@
     <link rel="stylesheet" href="./css/styles.css" />
     <script defer src="./js/loader.js"></script>
 
+    <!-- Swiper CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+
     <!-- Alpine.js -->
     <script
       defer
@@ -375,20 +381,21 @@
       <nav class="container-base relative z-50">
         <!-- Top -->
         <div class="max-xl:hidden flex items-center justify-between gap-5 py-1">
-          <div class="flex items-center gap-2.25">
+          <div class="flex items-center gap-1">
             <svg
-              width="11"
-              height="16"
-              viewBox="0 0 11 16"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M5.6875 1C8.34537 1 10.5 3.15463 10.5 5.8125C10.5 6.42947 10.2101 7.34458 9.71484 8.42676C9.22854 9.48945 8.57593 10.6466 7.91699 11.7227C7.25925 12.7967 6.60104 13.7814 6.10645 14.498C5.94915 14.7259 5.80598 14.9253 5.6875 15.0928C5.56902 14.9253 5.42585 14.7259 5.26855 14.498C4.77396 13.7814 4.11575 12.7967 3.45801 11.7227C2.79907 10.6466 2.14646 9.48945 1.66016 8.42676C1.16493 7.34458 0.875 6.42947 0.875 5.8125C0.875 3.15463 3.02963 1 5.6875 1Z"
+                d="M9.6875 3C12.3454 3 14.5 5.15463 14.5 7.8125C14.5 8.42947 14.2101 9.34458 13.7148 10.4268C13.2285 11.4894 12.5759 12.6466 11.917 13.7227C11.2592 14.7967 10.601 15.7814 10.1064 16.498C9.94915 16.7259 9.80598 16.9253 9.6875 17.0928C9.56902 16.9253 9.42585 16.7259 9.26855 16.498C8.77396 15.7814 8.11575 14.7967 7.45801 13.7227C6.79907 12.6466 6.14646 11.4894 5.66016 10.4268C5.16493 9.34458 4.875 8.42947 4.875 7.8125C4.875 5.15463 7.02963 3 9.6875 3Z"
                 stroke="#898989"
               />
-              <circle cx="5.68752" cy="5.81289" r="2.39773" stroke="#898989" />
+              <circle cx="9.68751" cy="7.81289" r="2.39773" stroke="#898989" />
             </svg>
+
             <p class="text-main-gray text-sm leading-4.75">
               Москва, Котельническая набережная 25с1.
             </p>
@@ -396,23 +403,21 @@
 
           <div class="flex items-center gap-9">
             <a href="#" class="flex items-center gap-1">
-              <div
-                class="shrink-0 size-5 flex items-center justify-center bg-main-yellow rounded-full"
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 15 15"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M3.36621 1.39648L5.62891 3.66016L5.98242 4.01367L5.62891 4.36719L4.38281 5.61426C4.31718 5.68006 4.28039 5.76921 4.28027 5.8623C4.28027 5.95558 4.31705 6.04542 4.38281 6.11133L6.63867 8.36719L8.89355 10.623L8.94629 10.666C9.00344 10.7042 9.07099 10.7246 9.14062 10.7246C9.23314 10.7246 9.32203 10.6884 9.3877 10.623L10.6338 9.37598L10.9873 9.02246L11.3408 9.37598L13.6035 11.6406L13.957 11.9932L13.6035 12.3467L12.4375 13.5137C11.637 14.3147 10.4304 14.2675 9.15625 13.7207C7.86466 13.1663 6.33382 12.04 4.65527 10.3613L4.61426 10.3203C2.93351 8.63851 1.81281 7.1135 1.2666 5.82715C0.727088 4.55647 0.694336 3.36132 1.49121 2.56348H1.49219L3.0127 1.04297L3.36621 1.39648Z"
-                    stroke="#303030"
-                    stroke-miterlimit="10"
-                  />
-                </svg>
-              </div>
+                <rect width="20" height="20" rx="10" fill="#FFE68D" />
+                <path
+                  d="M6.36621 3.39648L8.62891 5.66016L8.98242 6.01367L8.62891 6.36719L7.38281 7.61426C7.31718 7.68006 7.28039 7.76921 7.28027 7.8623C7.28027 7.95558 7.31705 8.04542 7.38281 8.11133L9.63867 10.3672L11.8936 12.623L11.9463 12.666C12.0034 12.7042 12.071 12.7246 12.1406 12.7246C12.2331 12.7246 12.322 12.6884 12.3877 12.623L13.6338 11.376L13.9873 11.0225L14.3408 11.376L16.6035 13.6406L16.957 13.9932L16.6035 14.3467L15.4375 15.5137C14.637 16.3147 13.4304 16.2675 12.1562 15.7207C10.8647 15.1663 9.33382 14.04 7.65527 12.3613L7.61426 12.3203C5.93351 10.6385 4.81281 9.1135 4.2666 7.82715C3.72709 6.55647 3.69434 5.36132 4.49121 4.56348H4.49219L6.0127 3.04297L6.36621 3.39648Z"
+                  stroke="#303030"
+                  stroke-miterlimit="10"
+                />
+              </svg>
+
               <span class="text-main-sm/4.5"> Заказать звонок </span>
             </a>
 
@@ -432,7 +437,7 @@
 
         <!-- Bottom -->
         <div
-          :class="$store.mobileMenuOpen ? 'relative z-50 bg-main-yellow max-lg:rounded-t-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8' : 'relative z-50 bg-main-yellow max-lg:rounded-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8'"
+          :class="$store.mobileMenuOpen ? 'lg:h-17 relative z-50 bg-main-yellow max-lg:rounded-t-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8' : 'lg:h-17 relative z-50 bg-main-yellow max-lg:rounded-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8', ''"
         >
           <!-- Logo -->
           <a class="shrink-0 lg:flex items-end" href="#">
@@ -512,7 +517,7 @@
                 class="relative max-w-153.25 w-full min-w-25 hidden min-[375px]:block"
               >
                 <input
-                  class="relative z-0 max-w-153.25 w-full bg-white border border-transparent rounded-lg focus:border-main-gray placeholder:text-main-gray-400/50 max-md:placeholder:font-light lg:text-lg/6.25 outline-none lg:h-10.25 py-1 lg:pb-2 pt-2.5 px-2.5 lg:px-4"
+                  class="relative z-0 max-w-153.25 w-full bg-white border border-transparent rounded-lg focus:border-main-gray placeholder:text-main-gray-400/50 max-md:placeholder:font-light lg:text-lg/6.25 outline-none lg:h-10.25 py-1 lg:py-2 px-2.5 lg:px-4"
                   type="text"
                   name="search"
                   id="search"
@@ -609,11 +614,12 @@
                 <p class="text-main-sm/4.5">Войти</p>
               </a>
 
-              <a href="#" class="transition duration-200">
+              <!-- Cart Icon -->
+              <a href="#" class="relative transition duration-200">
                 <svg
                   width="32"
                   height="32"
-                  viewBox="0 0 34 36"
+                  viewBox="0 0 32 32"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -622,34 +628,18 @@
                     y="9"
                     width="20.0008"
                     height="16"
-                    stroke="currentColor"
+                    stroke="#303030"
                     stroke-linejoin="round"
                   />
                   <path
-                    d="M12.0005 12V9C12.0005 6.79086 13.7915 5 16.0007 5C18.2099 5 20.0009 6.79086 20.0009 9V12"
-                    stroke="currentColor"
-                  />
-                  <rect
-                    x="18.5"
-                    y="18.5"
-                    width="15"
-                    height="17"
-                    rx="4.5"
-                    fill="#FFE68D"
-                  />
-                  <rect
-                    x="18.5"
-                    y="18.5"
-                    width="15"
-                    height="17"
-                    rx="4.5"
-                    stroke="currentColor"
-                  />
-                  <path
-                    d="M25.9961 32.16C24.6308 32.16 23.5908 31.728 22.8761 30.864C22.1615 29.9893 21.8041 28.7147 21.8041 27.04V25.76C21.8041 24.0853 22.1615 22.816 22.8761 21.952C23.5908 21.0773 24.6308 20.64 25.9961 20.64C27.3615 20.64 28.4015 21.0773 29.1161 21.952C29.8415 22.816 30.2041 24.0853 30.2041 25.76V27.04C30.2041 28.7147 29.8415 29.9893 29.1161 30.864C28.4015 31.728 27.3615 32.16 25.9961 32.16ZM25.9961 30.928C27.7775 30.928 28.6681 29.6427 28.6681 27.072V25.728C28.6681 23.168 27.7775 21.888 25.9961 21.888C24.2148 21.888 23.3241 23.168 23.3241 25.728V27.072C23.3241 29.6427 24.2148 30.928 25.9961 30.928Z"
-                    fill="currentColor"
+                    d="M12.0005 12V9C12.0005 6.79086 13.7914 5 16.0007 5C18.2099 5 20.0008 6.79086 20.0008 9V12"
+                    stroke="#303030"
                   />
                 </svg>
+                <span
+                  class="h-4.75 flex-center absolute -bottom-1.5 -right-0.75 leading-none border border-main-black rounded-[5px] px-0.75"
+                  >0
+                </span>
               </a>
 
               <!-- Menu btn -->
@@ -966,7 +956,7 @@
         <!-- Pages Links -->
         <div class="hidden lg:block border-b border-main-silver py-4">
           <ul
-            class="flex-center gap-8 xl:gap-10.5 text-xs/3.5 xl:text-main-sm/4.5"
+            class="w-fit mx-auto flex-center gap-8 xl:gap-10.5 text-xs/3.5 xl:text-main-sm/4.5"
           >
             <li>
               <a
@@ -992,7 +982,7 @@
             <li>
               <a
                 href="#"
-                class="inline-block flex-center bg-[#17BFBF] text-white rounded-[2px] py-0.5 px-2"
+                class="inline-block h-5 flex-center bg-[#17BFBF] text-white rounded-[2px] py-0.5 px-2"
               >
                 Распродажа
               </a>
@@ -2042,9 +2032,9 @@
     </header>
 
     <!-- Main -->
-    <main class="container-base">
+    <main>
       <!-- Path -->
-      <div class="mb-4 md:mb-6 lg:mb-8.5">
+      <div class="container-base pb-4 pd:pb-6 lg:pb-8.5">
         <div
           class="text-main-sm/4.5 flex items-center gap-2 lg:gap-3 flex-wrap"
         >
@@ -2065,8 +2055,20 @@
           </svg>
 
           <a href="#" class="transition duration-200 hover:text-main-gray">
-            Статьи
+            Новости
           </a>
+          <svg
+            width="5"
+            height="10"
+            viewBox="0 0 5 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3.21754 0.899999H4.38754L1.78754 10H0.630539L3.21754 0.899999Z"
+              fill="#303030"
+            />
+          </svg>
 
           <p>Тема новости</p>
         </div>
@@ -2074,17 +2076,17 @@
 
       <!-- Article -->
       <section
-        class="flex flex-col lg:flex-row gap-5 lg:gap-9 mb-16 lg:mb-24 md:px-16 lg:px-0"
+        class="container-base flex flex-col lg:flex-row gap-5 lg:gap-9 pb-6 md:pb-10.5"
       >
         <div class="max-w-189.25">
           <!-- Title -->
           <div class="lg:space-y-3">
-            <span class="leading-5.5 text-main-gray">15 июля 2024</span>
-            <h1 class="font-rooftop-wide font-medium text-2xl/7.5">
+            <span class="block leading-5.5 text-main-gray">15 июля 2024</span>
+            <h1 class="font-rooftop-wide font-medium text-2xl/7.25">
               Как рассчитать количество посуды <br />
               для ресторана или кафе
             </h1>
-            <p class="text-5/7">
+            <p class="text-xl/6.75">
               Рассказываем о базовых принципах <br />
               и наших решениях
             </p>
@@ -2102,7 +2104,7 @@
                 class="size-full object-cover"
               />
             </div>
-            <div class="mt-6 lg:mt-8 space-y-4.5 font-normal">
+            <div class="mt-6 lg:mt-8 space-y-3 md:space-y-4.5 font-normal">
               <p>
                 На первый взгляд закупка посуды кажется простым делом: купил
                 столько, сколько посадочных мест, и можно открываться. Но
@@ -2120,7 +2122,7 @@
               </p>
             </div>
             <div
-              class="aspect-video lg:aspect-auto lg:h-110 rounded-2xl overflow-hidden mt-5"
+              class="aspect-video lg:aspect-auto lg:h-112.5 rounded-2xl overflow-hidden mt-5"
             >
               <img
                 src="./assets/images/articles/img-article-2.jpg"
@@ -2128,25 +2130,30 @@
                 class="size-full object-cover"
               />
             </div>
-            <div class="space-y-3 lg:space-y-5 mt-5">
-              <h4 class="font-medium">
-                Как рассчитать количество посуды для ресторана или кафе
-              </h4>
+            <div class="space-y-3 md:space-y-5 mt-3 md:mt-5">
+              <h4 class="font-medium">Важно: закажи посуду заранее</h4>
               <p class="font-normal">
-                На основе опыта я выработал чёткую систему расчёта количества
-                посуды, которая позволяет избежать нехватки и при этом не
-                переплачивать. В каждом заведении есть нюансы, но базовые
-                принципы работают всегда.
+                Посуды в нужном количестве может просто не оказаться в наличии.
+                Большинство товаров везут из-за границы, а сроки поставки сейчас
+                — та ещё лотерея. Если вам нужны редкие или кастомные позиции,
+                их ещё придётся производить. А с брендированием и вовсе можно
+                ждать вечность. Международная логистика — тот ещё квест:
+                доставка может занять недели, а иногда и месяцы. Поэтому я
+                рекомендую закладывать минимум 3 месяца на закупку. Это позволит
+                избежать паники перед открытием и спокойно доукомплектовать
+                посуду в первые полгода работы. Лучше заранее уточнить сроки
+                поставок и оставить себе запас по времени, чтобы избежать
+                задержек.
               </p>
             </div>
-            <div class="space-y-3 lg:space-y-5 mt-5">
+            <div class="space-y-3 md:space-y-5 mt-3 md:mt-5">
               <h4 class="font-medium">Формулы для расчета</h4>
               <p class="font-normal">
                 Для точного расчёта количества я разделяю всю посуду на три
                 группы, каждая из которых имеет свои особенности:
               </p>
             </div>
-            <p class="font-normal mt-5">
+            <p class="font-normal mt-3 md:mt-5">
               <span class="font-medium">Группа A</span> — основная посуда
               Необходима для подачи ключевых блюд и напитков. Сюда входят:
               тарелки под горячее, подстановочные тарелки, салатники, столовые
@@ -2155,7 +2162,7 @@
               вы открываете раменную, паста-боулы — для итальянской остерии,
               коктейльные бокалы — для бара.
             </p>
-            <p class="font-normal mt-5">
+            <p class="font-normal mt-3 md:mt-5">
               <span class="font-medium">Группа A</span> — основная посуда
               Необходима для подачи ключевых блюд и напитков. Сюда входят:
               тарелки под горячее, подстановочные тарелки, салатники, столовые
@@ -2164,7 +2171,7 @@
               вы открываете раменную, паста-боулы — для итальянской остерии,
               коктейльные бокалы — для бара.
             </p>
-            <p class="font-normal mt-5">
+            <p class="font-normal mt-3 md:mt-5">
               <span class="font-medium">Группа C</span>  — элементы сервировки,
               которые рассчитываются из количества столов. К ним относятся
               сахарницы, салфетницы, подставки для сумок, ведёрки для охлаждения
@@ -2172,10 +2179,10 @@
               без привязки к количеству человек за столом.
             </p>
             <div
-              class="aspect-video lg:aspect-auto lg:h-110 rounded-2xl overflow-hidden mt-5"
+              class="aspect-video lg:aspect-auto lg:h-112.5 rounded-2xl overflow-hidden mt-5"
             >
               <img
-                src="./assets/images/articles/img-article-2.jpg"
+                src="./assets/images/articles/img-article-3.jpg"
                 alt="Article"
                 class="size-full object-cover"
               />
@@ -2232,10 +2239,10 @@
                 </ul>
               </div>
               <div
-                class="aspect-video lg:aspect-auto lg:h-110 rounded-2xl overflow-hidden mt-5"
+                class="aspect-video lg:aspect-auto lg:h-112.5 rounded-2xl overflow-hidden mt-5"
               >
                 <img
-                  src="./assets/images/articles/img-article-3.jpg"
+                  src="./assets/images/articles/img-article-4.jpg"
                   alt="Article"
                   class="size-full object-cover"
                 />
@@ -2258,9 +2265,10 @@
             </div>
           </div>
         </div>
+
         <!-- Articles -->
         <div
-          class="h-fit grid xs:grid-cols-2 lg:grid-cols-1 lg:w-66 shrink-0 gap-6 mt-11.5 lg:mt-44"
+          class="h-fit grid xs:grid-cols-2 lg:grid-cols-1 lg:w-66 shrink-0 gap-6 mt-8 lg:mt-50"
         >
           <a href="#" class="group space-y-4">
             <div class="h-50 overflow-hidden rounded-2xl">
@@ -2304,6 +2312,377 @@
           </a>
         </div>
       </section>
+
+      <!-- New Items -->
+      <section class="pb-12 lg:pb-16">
+        <div class="container-base space-y-6 lg:space-y-8 px-0 xl:px-4">
+          <div class="flex-between px-4 xl:px-0">
+            <h2 class="font-rooftop-wide font-medium text-2xl/7.25">Новинки</h2>
+
+            <button
+              class="hidden md:inline h-8 uppercase text-xs/3 font-rooftop text-main-black border border-main-black rounded-lg hover:opacity-70 transition-opacity duration-200 px-5"
+            >
+              Смотреть все новинки
+            </button>
+          </div>
+
+          <!-- Products -->
+          <div
+            id="products"
+            class="flex overflow-x-auto scroll-none gap-4 xl:gap-6 px-4 xl:px-0"
+            x-data="{
+            products: [
+              {
+                name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
+                price: 'От 1820 ₽',
+                images: [
+                  './assets/images/plate.png',
+                  './assets/images/plate.png',
+                  './assets/images/plate.png',
+                  './assets/images/plate.png'
+                ],
+                art: '81250112',
+                oldCost: '2000 ₽',
+                cost: '1820 ₽',
+              },
+              {
+                name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
+                price: 'От 1820 ₽',
+                images: [
+                  './assets/images/plate.png',
+                  './assets/images/plate.png',
+                  './assets/images/plate.png',
+                  './assets/images/plate.png'
+                ],
+                art: '81250112',
+                oldCost: '2000 ₽',
+                cost: '1820 ₽',
+              },
+              {
+                name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
+                price: 'От 1820 ₽',
+                images: [
+                  './assets/images/plate.png',
+                  './assets/images/plate.png',
+                  './assets/images/plate.png',
+                  './assets/images/plate.png'
+                ],
+                art: '81250112',
+                oldCost: '2000 ₽',
+                cost: '1820 ₽',
+              },
+              {
+                name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
+                price: 'От 1820 ₽',
+                images: [
+                  './assets/images/plate.png',
+                  './assets/images/plate.png',
+                  './assets/images/plate.png',
+                  './assets/images/plate.png'
+                ],
+                art: '81250112',
+                oldCost: '2000 ₽',
+                cost: '1820 ₽',
+              },
+              {
+                name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
+                price: 'От 1820 ₽',
+                images: [
+                  './assets/images/plate.png',
+                  './assets/images/plate.png',
+                  './assets/images/plate.png',
+                  './assets/images/plate.png'
+                ],
+                art: '81250112',
+                oldCost: '2000 ₽',
+                cost: '1820 ₽',
+              },
+            ],
+            init() {
+              this.$nextTick(() => {
+                if (typeof Swiper === 'undefined') return;
+                const swipers = this.$el.querySelectorAll('.series-swiper');
+                swipers.forEach((swiperEl) => {
+                  const swiperContainer = swiperEl.closest('.border');
+                  const paginationContainer = swiperContainer
+                    ? swiperContainer.querySelector('.custom-pagination')
+                    : null;
+                  if (!paginationContainer) return;
+                  const swiper = new Swiper(swiperEl, {
+                    loop: true,
+                    on: {
+                      init: function () {
+                        updateCustomPagination(this, paginationContainer);
+                      },
+                      slideChange: function () {
+                        updateCustomPagination(this, paginationContainer);
+                      },
+                    },
+                  });
+                  function updateCustomPagination(swiperInstance, paginationEl) {
+                    const bullets = paginationEl.querySelectorAll('.pagination-bullet');
+                    const realIndex = swiperInstance.realIndex;
+                    bullets.forEach((bullet, index) => {
+                      if (index === realIndex) {
+                        bullet.classList.remove('bg-main-silver');
+                        bullet.classList.add('bg-main-yellow');
+                      } else {
+                        bullet.classList.remove('bg-main-yellow');
+                        bullet.classList.add('bg-main-silver');
+                      }
+                    });
+                  }
+                  const bullets = paginationContainer.querySelectorAll('.pagination-bullet');
+                  bullets.forEach((bullet, index) => {
+                    bullet.addEventListener('click', () => {
+                      swiper.slideToLoop(index);
+                    });
+                  });
+                });
+              });
+            }
+          }"
+          >
+            <template x-for="(item, index) in products" :key="index">
+              <div
+                class="w-50.5 md:w-61.25 shrink-0 border border-main-silver rounded-2xl overflow-hidden"
+              >
+                <!-- Slider -->
+                <div
+                  class="swiper series-swiper h-55 md:h-74 relative rounded-lg md:rounded-2xl overflow-hidden"
+                >
+                  <div
+                    class="absolute top-2 left-2 z-10 w-full flex-between px-2"
+                  >
+                    <span
+                      class="text-[9px]/4.5 font-rooftop font-medium uppercase bg-main-status-green rounded-[2px] px-1"
+                      >В наличии</span
+                    >
+
+                    <button class="mr-2">
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g clip-path="url(#clip0_13474_7966)">
+                          <path
+                            d="M16.5005 5C17.9913 5.00017 19.2285 5.82425 19.8501 7.06738C20.4695 8.30635 20.4923 10.0005 19.4467 11.7432C18.3464 13.577 16.4316 15.4075 14.7592 16.7969C13.9285 17.4871 13.1672 18.0601 12.6147 18.46C12.3622 18.6427 12.1532 18.7887 12.0014 18.8936C11.8483 18.7868 11.6362 18.6377 11.3803 18.4512C10.8244 18.0458 10.0595 17.467 9.22604 16.7725C7.54739 15.3736 5.63401 13.5425 4.55417 11.7432C3.50851 10.0005 3.53044 8.30635 4.14987 7.06738C4.77153 5.82412 6.00939 5 7.50046 5C9.53017 5.00015 10.5264 5.98396 11.646 7.10352L12.0034 7.46094L12.353 7.10254L12.354 7.10352C13.4737 5.98386 14.4705 5 16.5005 5Z"
+                            stroke="#303030"
+                          />
+                          <path
+                            d="M23 91.8603C19.6406 91.8603 16.2812 90.7393 12.922 88.5009C-45.879 47.6219 -132.118 -41.9791 -138.278 -112.539C-140.516 -137.18 -133.239 -157.34 -116.997 -173.578C-101.317 -189.258 -83.395 -196.539 -63.235 -195.418C-23.473 -193.18 12.367 -157.898 22.445 -144.457C33.086 -157.898 68.925 -192.617 108.683 -195.418C128.843 -196.539 147.324 -189.258 162.445 -173.578C178.683 -157.34 185.965 -136.617 183.726 -112.539C177.566 -41.9801 91.328 47.6209 32.526 88.5009C29.7174 90.7393 26.358 91.8603 22.9987 91.8603H23ZM-67.16 -183.66C-82.84 -183.66 -96.84 -177.499 -109.16 -165.18C-123.16 -151.18 -129.32 -133.821 -127.082 -113.102C-123.723 -72.7817 -75.562 13.4583 19.638 79.5383C21.8763 81.218 24.6771 81.218 26.9192 79.5383C122.118 13.4603 169.719 -72.7817 173.639 -113.102C175.319 -133.821 169.717 -151.743 155.717 -165.18C142.276 -178.621 127.158 -184.782 110.358 -183.66C75.0771 -181.421 41.4792 -148.379 32.5182 -137.18C28.0377 -131.578 18.5182 -131.578 14.5962 -137.18C5.63525 -148.379 -27.4038 -181.418 -63.2438 -183.66H-67.1579H-67.16Z"
+                            fill="#303030"
+                          />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_13474_7966">
+                            <rect width="24" height="24" rx="8" fill="white" />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    </button>
+                  </div>
+
+                  <span
+                    class="absolute bottom-2 left-2 z-10 text-[9px]/4.5 font-rooftop font-medium uppercase bg-main-status-red text-white rounded-[2px] py-0.5 px-1"
+                    >NEW</span
+                  >
+                  <div class="swiper-wrapper">
+                    <template
+                      x-for="(image, imgIndex) in item.images"
+                      :key="imgIndex"
+                    >
+                      <div class="swiper-slide">
+                        <img :src="image" :alt="item.name" class="size-full" />
+                      </div>
+                    </template>
+                  </div>
+                </div>
+
+                <!-- Custom Pagination -->
+                <div
+                  class="custom-pagination flex items-center gap-1 mt-2 px-2"
+                >
+                  <template
+                    x-for="(image, bulletIndex) in item.images"
+                    :key="bulletIndex"
+                  >
+                    <div
+                      class="pagination-bullet w-full h-0.5 rounded-full cursor-pointer"
+                      :class="bulletIndex === 0 ? 'bg-main-yellow' : 'bg-main-silver'"
+                      :data-index="bulletIndex"
+                    ></div>
+                  </template>
+                </div>
+
+                <div class="space-y-4 mt-4 px-2 pb-2">
+                  <p
+                    class="font-rooftop-compact-book text-main-sm/4.5 tracking-[0%] line-clamp-3"
+                    x-text="item.name"
+                  ></p>
+                  <div class="space-y-2">
+                    <p class="text-main-base/5 text-main-gray">
+                      Арт. <span x-text="item.art"></span>
+                    </p>
+
+                    <div class="flex gap-2">
+                      <p
+                        x-text="item.cost"
+                        class="font-rooftop-wide font-medium leading-5"
+                      >
+                        1820 ₽
+                      </p>
+                      <span
+                        x-text="item.oldCost"
+                        class="text-main-gray text-main-sm/4.5 line-through"
+                        >2000 ₽</span
+                      >
+                      <span
+                        class="size-4.5 flex-center font-rooftop bg-main-black text-white text-xs/4.75 rounded"
+                        >%</span
+                      >
+                    </div>
+                  </div>
+
+                  <!-- Count Button & Add To Cart Button -->
+                  <div class="flex items-center xs:justify-between gap-2">
+                    <div
+                      class="h-10 xs:h-8 w-2/3 xs:w-full grid grid-cols-3 bg-main-gray/15 rounded-lg hover:bg-main-yellow"
+                      x-init="if (typeof item.quantity === 'undefined') item.quantity = 1"
+                    >
+                      <button
+                        @click="if (item.quantity > 1) item.quantity--"
+                        class="size-full flex-center hover:opacity-70 smooth"
+                        :class="{ 'opacity-50 cursor-not-allowed': item.quantity <= 1 }"
+                      >
+                        <svg
+                          width="32"
+                          height="32"
+                          viewBox="0 0 32 32"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <rect
+                            x="11"
+                            y="16"
+                            width="9"
+                            height="1"
+                            fill="#303030"
+                          />
+                        </svg>
+                      </button>
+                      <span
+                        class="font-rooftop font-medium flex-center text-main-sm/4.5"
+                        x-text="item.quantity"
+                      ></span>
+                      <button
+                        @click="item.quantity++"
+                        class="size-full flex-center hover:opacity-70 smooth"
+                      >
+                        <svg
+                          width="32"
+                          height="32"
+                          viewBox="0 0 32 32"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <rect
+                            x="11"
+                            y="16"
+                            width="9"
+                            height="1"
+                            fill="#303030"
+                          />
+                          <rect
+                            x="15"
+                            y="21"
+                            width="9"
+                            height="1"
+                            transform="rotate(-90 15 21)"
+                            fill="#303030"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+
+                    <button
+                      class="size-10 xs:h-8 xs:w-full flex-center uppercase text-xs/3 font-medium font-rooftop whitespace-nowrap bg-main-yellow xs:bg-transparent border border-main-black rounded-lg hover:bg-main-black hover:text-white smooth xs:px-2.5"
+                    >
+                      <span class="hidden xs:block xs:pt-0.5">в корзину</span>
+                      <svg
+                        width="32"
+                        height="32"
+                        viewBox="0 0 32 32"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="xs:hidden"
+                      >
+                        <rect
+                          x="6.00049"
+                          y="9"
+                          width="20.0008"
+                          height="16"
+                          stroke="#303030"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M12.0005 12V9C12.0005 6.79086 13.7914 5 16.0007 5C18.2099 5 20.0008 6.79086 20.0008 9V12"
+                          stroke="#303030"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <!-- Mobile Button -->
+          <div class="grid xs:grid-cols-2 gap-6 px-4 md:px-0">
+            <button
+              class="inline h-10 w-full md:hidden uppercase text-xs/3 font-rooftop text-main-black border border-main-black rounded-lg hover:opacity-70 transition-opacity duration-200 px-5"
+            >
+              Смотреть все новинки
+            </button>
+            <button
+              class="inline h-8 xs:h-10 w-full md:hidden uppercase text-xs/3 font-rooftop text-main-black border border-main-black rounded-lg hover:opacity-70 transition-opacity duration-200 px-5"
+            >
+              читать все статьи
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <div class="container-base">
+        <!-- Top on Scroll -->
+        <button
+          class="group flex items-center gap-4 mb-16"
+          @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
+        >
+          <div
+            class="shrink-0 size-10 lg:size-8 flex items-center justify-center border bordermain-black rounded-full transition duration-200 group-hover:border-main-gray group-hover:text-main-gray"
+          >
+            <svg
+              class="rotate-90"
+              width="10"
+              height="16"
+              viewBox="0 0 10 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M9 17L1 9L9 1" stroke="currentColor" />
+            </svg>
+          </div>
+          <span
+            class="font-rooftop-wide font-medium text-3xl/9 transition duration-200 group-hover:text-main-gray"
+          >
+            Наверх
+          </span>
+        </button>
+      </div>
     </main>
 
     <!-- Footer -->
@@ -2352,7 +2731,7 @@
 
           <div class="w-full flex max-md:flex-col gap-10 lg:gap-9">
             <!-- 2 -->
-            <div x-data="{ open: false }" class="w-full max-w-55">
+            <div x-data="{ open: false }" class="w-full">
               <div
                 @click="open = !open"
                 class="max-md:cursor-pointer w-full flex items-center gap-3"
@@ -2381,7 +2760,7 @@
 
               <!-- kontent -->
               <div
-                :class="open ? 'max-h-96 mt-6' : 'max-h-0 mt-0'"
+                :class="open ? 'max-h-120 mt-6' : 'max-h-0 mt-0'"
                 class="transition-all duration-500 overflow-hidden md:!max-h-full md:!overflow-visible md:mt-8"
               >
                 <div
@@ -2423,7 +2802,7 @@
             </div>
 
             <!-- 3 -->
-            <div x-data="{ open: false }" class="w-full max-w-87.5">
+            <div x-data="{ open: false }" class="w-full">
               <div
                 @click="open = !open"
                 class="max-md:cursor-pointer w-full flex items-center gap-3"
@@ -2452,7 +2831,7 @@
 
               <!-- kontent -->
               <div
-                :class="open ? 'max-h-96 mt-6' : 'max-h-0 mt-0'"
+                :class="open ? 'max-h-120 mt-6' : 'max-h-0 mt-0'"
                 class="transition-all duration-500 overflow-hidden md:!max-h-full md:!overflow-visible md:mt-8"
               >
                 <div
@@ -2550,5 +2929,8 @@
         </div>
       </div>
     </footer>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   </body>
 </html>
