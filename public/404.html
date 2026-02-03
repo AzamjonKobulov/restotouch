@@ -381,7 +381,7 @@
           </div>
         </div>
 
-         <!-- Bottom -->
+        <!-- Bottom -->
         <div
           :class="$store.mobileMenuOpen ? 'lg:h-17 relative z-50 bg-main-yellow max-lg:rounded-t-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8' : 'lg:h-17 relative z-50 bg-main-yellow max-lg:rounded-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8', ''"
         >
@@ -559,7 +559,7 @@
                 <p class="text-main-sm/4.5">Войти</p>
               </a>
 
-             <!-- Cart Icon -->
+              <!-- Cart Icon -->
               <a href="#" class="relative transition duration-200">
                 <svg
                   width="32"
@@ -582,10 +582,9 @@
                   />
                 </svg>
                 <span
-                  class="h-4.75 flex-center absolute -bottom-1.5 -right-0.75 leading-none border border-main-black rounded-[5px] px-0.75"
+                  class="h-4.5 flex-center absolute -bottom-1 -right-0.75 bg-main-yellow leading-none border border-main-black rounded-[5px] pt-0.5 px-0.5"
                   >0
                 </span>
-              </a>
               </a>
 
               <!-- Menu btn -->
@@ -893,7 +892,7 @@
               >
             </li>
             <li>
-               <a
+              <a
                 href="#"
                 class="inline-block h-5 flex-center bg-[#17BFBF] text-white rounded-[2px] py-0.5 px-2"
               >
@@ -1947,7 +1946,7 @@
     <!-- Main -->
     <main class="container-base">
       <!-- Path -->
-      <div class="mb-4 md:mb-6 lg:mb-8.5">
+      <div class="pb-4 md:pb-6 lg:pb-8.5">
         <div
           class="text-main-sm/4.5 flex items-center gap-2 lg:gap-3 flex-wrap"
         >
@@ -1971,23 +1970,30 @@
 
       <!-- Not Found -->
       <section
-        class="flex flex-col lg:flex-row items-start gap-6 lg:gap-22.5 pb-12 lg:pb-24 md:px-16 lg:px-0"
+        class="flex flex-col lg:flex-row items-start gap-6 lg:gap-27.75 pb-16 lg:pb-24 md:px-16 lg:px-0"
       >
+        <h1
+          class="lg:hidden text-2xl/7.25 font-rooftop-wide font-medium text-main-dark"
+        >
+          Ой! Кажется, что-то пошло не так...
+        </h1>
         <div
-          class="sm:max-w-142 mx-auto lg:mx-0 w-full aspect-video flex-center bg-main-silver rounded-2xl p-12"
+          class="sm:max-w-142 h-60 max-h-82 mx-auto lg:mx-0 w-full flex-center bg-main-silver rounded-2xl"
         >
           <img src="./assets/images/404.png" alt="404" />
         </div>
 
         <div
-          class="sm:max-w-142 lg:max-w-125 mx-auto lg:mx-0 space-y-3 lg:pr-20"
+          class="sm:max-w-142 lg:max-w-125 mx-auto lg:mx-0 space-y-3 -mt-2 md:mt-0"
         >
           <h1
-            class="text-2xl/7.25 font-rooftop-wide font-medium text-main-dark"
+            class="hidden lg:block text-2xl/7.25 font-rooftop-wide font-medium text-main-dark"
           >
             Ой! Кажется, что-то пошло не так...
           </h1>
-          <div class="space-y-3 lg:space-y-5 leading-5 lg:text-lg/6.25">
+          <div
+            class="space-y-3 lg:space-y-6 leading-5 lg:text-lg/6.25 lg:pr-20"
+          >
             <p>
               Но не переживайте, даже если эта страница недоступна, у нас есть
               всё нужное для HoReCa.
@@ -2061,7 +2067,7 @@
 
           <div class="w-full flex max-md:flex-col gap-10 lg:gap-9">
             <!-- 2 -->
-            <div x-data="{ open: false }" class="w-full">
+            <div x-data="{ open: false }" class="xl:w-50 xl:shrink-0">
               <div
                 @click="open = !open"
                 class="max-md:cursor-pointer w-full flex items-center gap-3"

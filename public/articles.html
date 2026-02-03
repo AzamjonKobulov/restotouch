@@ -381,7 +381,7 @@
           </div>
         </div>
 
-         <!-- Bottom -->
+        <!-- Bottom -->
         <div
           :class="$store.mobileMenuOpen ? 'lg:h-17 relative z-50 bg-main-yellow max-lg:rounded-t-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8' : 'lg:h-17 relative z-50 bg-main-yellow max-lg:rounded-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8', ''"
         >
@@ -560,7 +560,7 @@
                 <p class="text-main-sm/4.5">Войти</p>
               </a>
 
-             <!-- Cart Icon -->
+              <!-- Cart Icon -->
               <a href="#" class="relative transition duration-200">
                 <svg
                   width="32"
@@ -583,10 +583,9 @@
                   />
                 </svg>
                 <span
-                  class="h-4.75 flex-center absolute -bottom-1.5 -right-0.75 leading-none border border-main-black rounded-[5px] px-0.75"
+                  class="h-4.5 flex-center absolute -bottom-1 -right-0.75 bg-main-yellow leading-none border border-main-black rounded-[5px] pt-0.5 px-0.5"
                   >0
                 </span>
-              </a>
               </a>
 
               <!-- Menu btn -->
@@ -927,7 +926,7 @@
               >
             </li>
             <li>
-               <a
+              <a
                 href="#"
                 class="inline-block h-5 flex-center bg-[#17BFBF] text-white rounded-[2px] py-0.5 px-2"
               >
@@ -1981,7 +1980,7 @@
     <!-- Main -->
     <main class="container-base">
       <!-- Hero -->
-      <section class="mb-4 md:mb-6 lg:mb-8.5">
+      <section class="pb-4 md:pb-6 lg:pb-8.5">
         <div
           class="text-main-sm/4.5 flex items-center gap-2 lg:gap-3 flex-wrap"
         >
@@ -2017,7 +2016,7 @@
 
         <!-- Grid -->
         <div
-          class="grid xs:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 lg:gap-x-9 gap-y-8 lg:gap-y-10 mb-8 md:mb-12 l:mb-16"
+          class="grid xs:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 lg:gap-x-9 gap-y-8 lg:gap-y-10 mb-8 md:mb-12 lg:mb-16"
           x-data="{
           articles: [
             {
@@ -2132,34 +2131,6 @@
               title: 'Провели лекцию среди сотрудников по новым товарам',
               description: 'Представляем вашему вниманию новые коллекции тарелок и кастрюль от ведущих производителей.'
             },
-            {
-              id: 17,
-              image: './assets/images/articles/article-1.jpg',
-              date: '15 июля 2024',
-              title: 'Провели лекцию среди сотрудников по новым товарам',
-              description: 'Представляем вашему вниманию новые коллекции тарелок и кастрюль от ведущих производителей.'
-            },
-            {
-              id: 18,
-              image: './assets/images/articles/article-2.jpg',
-              date: '15 июля 2024',
-              title: 'Провели лекцию среди сотрудников по новым товарам',
-              description: 'Представляем вашему вниманию новые коллекции тарелок и кастрюль от ведущих производителей.'
-            },
-            {
-              id: 19,
-              image: './assets/images/articles/article-3.jpg',
-              date: '15 июля 2024',
-              title: 'Провели лекцию среди сотрудников по новым товарам',
-              description: 'Представляем вашему вниманию новые коллекции тарелок и кастрюль от ведущих производителей.'
-            },
-            {
-              id: 20,
-              image: './assets/images/articles/article-4.jpg',
-              date: '15 июля 2024',
-              title: 'Провели лекцию среди сотрудников по новым товарам',
-              description: 'Представляем вашему вниманию новые коллекции тарелок и кастрюль от ведущих производителей.'
-            }
           ]
         }"
         >
@@ -2174,8 +2145,7 @@
               </div>
 
               <div class="leading-5.5 space-y-1">
-                <span class="text-main-gray" x-text="article.date"></span>
-
+                <span class="block text-main-gray" x-text="article.date"></span>
                 <h4 x-text="article.title"></h4>
                 <p
                   class="text-sm/4.75 text-main-gray"
@@ -2346,7 +2316,7 @@
 
           <div class="w-full flex max-md:flex-col gap-10 lg:gap-9">
             <!-- 2 -->
-            <div x-data="{ open: false }" class="w-full">
+            <div x-data="{ open: false }" class="xl:w-50 xl:shrink-0">
               <div
                 @click="open = !open"
                 class="max-md:cursor-pointer w-full flex items-center gap-3"
