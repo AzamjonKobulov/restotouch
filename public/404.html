@@ -64,7 +64,7 @@
             this.$store.mobileMenuOpen = true;
           } else {
             // Back to previous level - check what the previous level was
-            const previousLevel = this.navigationStack[this.navigationStack.length - 1];
+            let previousLevel = this.navigationStack[this.navigationStack.length - 1];
             if (previousLevel.type === 'products') {
               this.showProducts = true;
               this.selectedCategory = previousLevel.name;
@@ -102,15 +102,22 @@
       },
       truncateWords(text, maxWords = 4) {
         if (!text) return '';
-        const words = text.split(' ');
+        let words = text.split(' ');
         if (words.length <= maxWords) return text;
         return words.slice(0, maxWords).join(' ') + '...';
       },
+      getParentCategory() {
+        const subcategories = ['Наплитная посуда', 'Кухонный инвентарь', 'Кондитерский инвентарь', 'Ножи и аксессуары', 'Инвентарь для пиццы'];
+        if (subcategories.includes(this.selectedCategory)) {
+          return 'Наплитная посуда, кухонный инвентарь';
+        }
+        return null;
+      },
       checkScrollbar() {
         this.$nextTick(() => {
-          const scrollContainer = this.$el.querySelector('.custom-scroll');
+          let scrollContainer = this.$el.querySelector('.custom-scroll');
           if (scrollContainer) {
-            const hasScrollbar = scrollContainer.scrollHeight > scrollContainer.clientHeight;
+            let hasScrollbar = scrollContainer.scrollHeight > scrollContainer.clientHeight;
             if (hasScrollbar) {
               scrollContainer.classList.remove('no-scrollbar');
               scrollContainer.classList.add('has-scrollbar');
@@ -250,44 +257,44 @@
           { name: 'Инвентарь для пиццы', image: 'stove-5.png' },
         ],
         'Наплитная посуда': [
-          { name: 'Сковороды', image: 'stove-1.png' },
-          { name: 'Кастрюли', image: 'stove-2.png' },
-          { name: 'Сотейники', image: 'stove-3.png' },
-          { name: 'Ковши', image: 'stove-4.png' },
-          { name: 'Грили', image: 'stove-5.png' },
-          { name: 'Воки', image: 'stove-6.png' },
+          { name: 'Кастрюли', image: 'stove-1.png' },
+          { name: 'Котлы', image: 'stove-2.png' },
+          { name: 'Сковороды', image: 'stove-3.png' },
+          { name: 'Ножи и аксессуары', image: 'stove-4.png' },
+          { name: 'Посуда для чая и кофе', image: 'stove-5.png' },
+          { name: 'Казаны', image: 'stove-6.png' },
+          { name: 'Крышки для наплитной посуды', image: 'stove-1.png' },
         ],
         'Кухонный инвентарь': [
-          { name: 'Сковороды', image: 'stove-1.png' },
-          { name: 'Кастрюли', image: 'stove-2.png' },
-          { name: 'Сотейники', image: 'stove-3.png' },
-          { name: 'Ковши', image: 'stove-4.png' },
-          { name: 'Грили', image: 'stove-5.png' },
-          { name: 'Воки', image: 'stove-6.png' },
+          { name: 'Лопатки и половники', image: 'stove-2.png' },
+          { name: 'Шумовки и дуршлаги', image: 'stove-3.png' },
+          { name: 'Тёрки и тёрки-шинковки', image: 'stove-4.png' },
+          { name: 'Мерные чашки и ложки', image: 'stove-5.png' },
+          { name: 'Открывалки и штопоры', image: 'stove-6.png' },
+          { name: 'Таймеры и термометры', image: 'stove-1.png' },
         ],
         'Кондитерский инвентарь': [
-          { name: 'Сковороды', image: 'stove-1.png' },
-          { name: 'Кастрюли', image: 'stove-2.png' },
-          { name: 'Сотейники', image: 'stove-3.png' },
-          { name: 'Ковши', image: 'stove-4.png' },
-          { name: 'Грили', image: 'stove-5.png' },
-          { name: 'Воки', image: 'stove-6.png' },
+          { name: 'Формы для выпечки', image: 'stove-2.png' },
+          { name: 'Кондитерские мешки и насадки', image: 'stove-3.png' },
+          { name: 'Скалки и доски', image: 'stove-4.png' },
+          { name: 'Венчики и миксеры', image: 'stove-5.png' },
+          { name: 'Системы для кремов', image: 'stove-6.png' },
+          { name: 'Инвентарь для декора', image: 'stove-1.png' },
         ],
         'Ножи и аксессуары': [
-          { name: 'Сковороды', image: 'stove-1.png' },
-          { name: 'Кастрюли', image: 'stove-2.png' },
-          { name: 'Сотейники', image: 'stove-3.png' },
-          { name: 'Ковши', image: 'stove-4.png' },
-          { name: 'Грили', image: 'stove-5.png' },
-          { name: 'Воки', image: 'stove-6.png' },
+          { name: 'Ножи поварские', image: 'stove-2.png' },
+          { name: 'Ножи для нарезки', image: 'stove-3.png' },
+          { name: 'Топоры и тесаки', image: 'stove-4.png' },
+          { name: 'Точилки и мусаты', image: 'stove-5.png' },
+          { name: 'Разделочные доски', image: 'stove-6.png' },
+          { name: 'Подставки для ножей', image: 'stove-1.png' },
         ],
         'Инвентарь для пиццы': [
-          { name: 'Сковороды', image: 'stove-1.png' },
-          { name: 'Кастрюли', image: 'stove-2.png' },
-          { name: 'Сотейники', image: 'stove-3.png' },
-          { name: 'Ковши', image: 'stove-4.png' },
-          { name: 'Грили', image: 'stove-5.png' },
-          { name: 'Воки', image: 'stove-6.png' },
+          { name: 'Лопаты для пиццы', image: 'stove-2.png' },
+          { name: 'Кольца и формы для пиццы', image: 'stove-3.png' },
+          { name: 'Ножи для пиццы', image: 'stove-4.png' },
+          { name: 'Столы и печи для пиццы', image: 'stove-5.png' },
+          { name: 'Аксессуары для пиццы', image: 'stove-6.png' },
         ],
         'Текстиль': [
           { name: 'Салфетки и плейсматы', image: 'textile-1.png' },
@@ -308,8 +315,8 @@
         this.checkScrollbar();
         
         window.addEventListener('scroll', () => {
-          const scrollY = window.scrollY;
-          const width = window.innerWidth;
+          let scrollY = window.scrollY;
+          let width = window.innerWidth;
           
           // Only apply scroll detection on lg and above screens (overlay is hidden under lg)
           if (width >= 1024) {
@@ -458,11 +465,12 @@
 
                 <span class="text-main-lg leading-6 pt-1"> Каталог </span>
               </button>
-
               <!-- Searchbar -->
-              <div class="relative max-w-153.25 w-full min-w-25">
+              <div
+                class="relative max-w-153.25 w-full min-w-25 hidden min-[375px]:block"
+              >
                 <input
-                  class="relative z-0 max-w-153.25 w-full bg-white border border-transparent rounded-lg focus:border-main-gray placeholder:text-main-gray-400/50 max-md:placeholder:font-light lg:text-lg/6.25 outline-none lg:h-10.25 py-1 lg:pb-2 pt-2.5 px-2.5 lg:px-4"
+                  class="relative z-0 max-w-153.25 w-full bg-white border border-transparent rounded-lg focus:border-main-gray placeholder:text-main-gray-400/50 max-md:placeholder:font-light lg:text-lg/6.25 outline-none lg:h-10.25 py-1 lg:py-2 px-2.5 lg:px-4"
                   type="text"
                   name="search"
                   id="search"
@@ -663,202 +671,235 @@
             @click.outside="$store.mobileMenuOpen = false"
           >
             <div
-              class="size-full h-[calc(100vh-84px)] flex flex-col justify-between gap-8 bg-main-yellow rounded-b-lg overflow-auto pb-10 px-4 custom-scroll"
+              class="size-full h-[calc(100vh-84px)] bg-main-yellow rounded-b-lg overflow-auto px-4 custom-scroll pb-20 lg:pb-10"
             >
-              <ul
-                class="divide-y divide-white text-2xl/7.25 font-medium font-rooftop"
-              >
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="catalogOpen = true; $store.mobileMenuOpen = false"
-                    >Каталог товаров</a
+              <!-- Searchbar for mobile (under 375px) -->
+              <div class="max-[374px]:block min-[375px]:hidden mt-4 mb-2">
+                <div class="relative w-full">
+                  <input
+                    class="relative z-0 w-full bg-white border border-transparent rounded-lg focus:border-main-gray placeholder:text-main-gray-400/50 placeholder:font-light text-base outline-none h-10 py-2 px-4"
+                    type="text"
+                    name="search-mobile"
+                    id="search-mobile"
+                    placeholder="Поиск"
+                  />
+                  <div
+                    class="absolute z-10 top-1/2 -translate-y-1/2 right-4 size-6 flex items-center justify-center"
                   >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >О компании</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Наше производство</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Бренды</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Доставка</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Оплата</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Контакты</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Новинки</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Акции</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Избранное</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Для партнеров</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block py-4"
-                    @click="$store.mobileMenuOpen = false"
-                    >Личный кабинет</a
-                  >
-                </li>
-              </ul>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 17 18"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M10.2536 11.0375C11.1355 10.1559 11.5765 9.09587 11.5765 7.85753C11.5765 6.6192 11.1355 5.5592 10.2536 4.67753C9.37326 3.79753 8.31374 3.35753 7.07498 3.35753C5.83456 3.35753 4.77419 3.79753 3.89389 4.67753C3.01359 5.5592 2.57344 6.6192 2.57344 7.85753C2.57344 9.09587 3.01359 10.1559 3.89389 11.0375C4.77419 11.9175 5.83456 12.3575 7.07498 12.3575C8.31374 12.3575 9.37326 11.9175 10.2536 11.0375ZM16.7208 16.215C16.7208 16.5634 16.5932 16.8642 16.3381 17.1175C16.0831 17.3725 15.7813 17.5 15.4328 17.5C15.071 17.5 14.7701 17.3725 14.53 17.1175L11.0838 13.6825C9.88344 14.5125 8.54715 14.9275 7.07498 14.9275C6.11632 14.9275 5.20017 14.7417 4.32654 14.37C3.45124 13.9984 2.69765 13.4967 2.06577 12.865C1.43222 12.2317 0.929545 11.4784 0.557752 10.605C0.185958 9.73003 6.10352e-05 8.8142 6.10352e-05 7.85753C6.10352e-05 6.8992 0.185958 5.98337 0.557752 5.11003C0.929545 4.2367 1.43222 3.48337 2.06577 2.85003C2.69765 2.2167 3.45124 1.7142 4.32654 1.34253C5.20017 0.970868 6.11632 0.785034 7.07498 0.785034C8.03197 0.785034 8.94729 0.970868 9.82092 1.34253C10.6962 1.7142 11.4498 2.2167 12.0817 2.85003C12.7152 3.48337 13.2179 4.2367 13.5897 5.11003C13.9615 5.98337 14.1474 6.8992 14.1474 7.85753C14.1474 9.33087 13.7323 10.6667 12.902 11.865L16.3481 15.31C16.5966 15.5584 16.7208 15.86 16.7208 16.215Z"
+                        fill="#333333"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
 
-              <!-- Bottom Contacts -->
-              <div class="space-y-8">
-                <ul class="space-y-4 leading-5.5">
+              <div class="flex flex-col justify-between gap-8">
+                <ul
+                  class="divide-y divide-white text-2xl/7.25 font-medium font-rooftop"
+                >
                   <li>
-                    <a href="tel:+74994305605"
-                      >+7 499 430 5605 (10:00—19:00 пн-пт)</a
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="catalogOpen = true; $store.mobileMenuOpen = false"
+                      >Каталог товаров</a
                     >
                   </li>
                   <li>
-                    <a href="tel:+880043478743"
-                      >8 800 434 78743 (Бесплатный звонок по России)</a
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >О компании</a
                     >
                   </li>
                   <li>
-                    Москва, Котельническая набережная 25с1 (10:00—21:00 пн-пт)
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Наше производство</a
+                    >
                   </li>
                   <li>
-                    <a href="mailto:zakaz@restotouch.ru">zakaz@restotouch.ru</a>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Бренды</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Доставка</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Оплата</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Контакты</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Новинки</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Акции</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Избранное</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Для партнеров</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block py-4"
+                      @click="$store.mobileMenuOpen = false"
+                      >Личный кабинет</a
+                    >
                   </li>
                 </ul>
 
-                <!-- Socials -->
-                <div class="space-y-6">
-                  <p class="font-rooftop-wide font-medium leading-5">
-                    Следите за нами
-                  </p>
-                  <ul class="flex items-center gap-2">
-                    <!-- Telegram -->
+                <!-- Bottom Contacts -->
+                <div class="space-y-8">
+                  <ul class="space-y-4 leading-5.5">
                     <li>
-                      <a
-                        href="#"
-                        class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
-                        @click="$store.mobileMenuOpen = false"
+                      <a href="tel:+74994305605"
+                        >+7 499 430 5605 (10:00—19:00 пн-пт)</a
                       >
-                        <svg
-                          width="21"
-                          height="19"
-                          viewBox="0 0 21 19"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M20.75 0.664441L17.5868 17.9695C17.5868 17.9695 17.1444 19.1696 15.9279 18.5936L11.4272 14.8494L8.53992 17.7058C8.53992 17.7058 8.31417 17.8916 8.06731 17.7752L8.62015 12.4695L8.63883 12.4853L8.65052 12.3771C8.65052 12.3771 16.7464 4.4807 17.0782 4.14465C17.41 3.80861 17.2993 3.73661 17.2993 3.73661C17.3214 3.32863 16.7021 3.73661 16.7021 3.73661L5.97399 11.1291L1.50578 9.49694C1.50578 9.49694 0.820092 9.23297 0.753732 8.65694C0.687373 8.0809 1.52788 7.76884 1.52788 7.76884L19.2901 0.208364C19.2901 0.208364 20.75 -0.487631 20.75 0.664441Z"
-                            fill="#FFE68D"
-                          />
-                        </svg>
-                      </a>
                     </li>
-                    <!-- Whatsapp -->
                     <li>
-                      <a
-                        href="#"
-                        class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
-                        @click="$store.mobileMenuOpen = false"
+                      <a href="tel:+880043478743"
+                        >8 800 434 78743 (Бесплатный звонок по России)</a
                       >
-                        <svg
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M17.0856 2.90944C15.3786 1.20723 13.108 0.180898 10.6971 0.0217388C8.28617 -0.137421 5.89933 0.58145 3.98148 2.04436C2.06362 3.50728 0.745597 5.61442 0.273064 7.97306C-0.19947 10.3317 0.205728 12.7809 1.41314 14.8642L0 20L5.2789 18.6209C6.73696 19.4122 8.37082 19.8276 10.0315 19.8292C12.0017 19.8311 13.9282 19.2513 15.5673 18.1631C17.2063 17.0749 18.4843 15.5272 19.2394 13.7159C19.9946 11.9046 20.193 9.91102 19.8096 7.98742C19.4262 6.06381 18.4782 4.29662 17.0856 2.90944ZM10.0417 18.1535C8.55823 18.1551 7.10175 17.7587 5.82555 17.0059L5.5246 16.8279L2.39157 17.6455L3.22899 14.6066L3.03126 14.2954C2.05557 12.7485 1.62402 10.9226 1.80444 9.10496C1.98486 7.28727 2.76703 5.58079 4.02798 4.2538C5.28894 2.92681 6.95717 2.05455 8.77044 1.77415C10.5837 1.49374 12.4392 1.82108 14.0452 2.70472C15.6512 3.58836 16.9166 4.97819 17.6426 6.65571C18.3685 8.33324 18.5138 10.2033 18.0556 11.972C17.5975 13.7407 16.5618 15.3077 15.1114 16.4266C13.661 17.5456 11.8782 18.153 10.0431 18.1535H10.0417ZM14.5806 11.9858C14.332 11.8628 13.1093 11.2623 12.881 11.1812C12.6528 11.1002 12.4871 11.0568 12.3213 11.3042C12.1556 11.5517 11.6787 12.1103 11.5333 12.2752C11.388 12.4402 11.2426 12.4619 10.994 12.3375C10.2605 12.0468 9.58348 11.631 8.99347 11.1089C8.44971 10.6083 7.98331 10.0304 7.60941 9.39401C7.46403 9.14511 7.59342 9.01197 7.71845 8.88752C7.84348 8.76306 7.96706 8.59809 8.09209 8.45338C8.19403 8.3277 8.27772 8.18837 8.3407 8.0395C8.37392 7.97112 8.38934 7.89552 8.38553 7.81966C8.38172 7.74379 8.3588 7.6701 8.31889 7.60536C8.25783 7.48091 7.75916 6.26243 7.55271 5.76607C7.34627 5.2697 7.14564 5.35798 6.99298 5.34495C6.84033 5.33193 6.68186 5.33627 6.51612 5.33627C6.38976 5.33944 6.26544 5.36874 6.15106 5.4223C6.03668 5.47586 5.93474 5.55252 5.85172 5.6474C5.57036 5.91255 5.34752 6.23308 5.19734 6.58859C5.04716 6.94411 4.97295 7.32684 4.97941 7.71245C4.97941 8.93093 5.87207 10.1089 5.9971 10.2739C6.12213 10.4388 7.75189 12.938 10.2481 14.0103C10.7109 14.2091 11.1841 14.383 11.6656 14.5313C12.1732 14.6855 12.7099 14.7192 13.2329 14.6297C13.7112 14.5588 14.7056 14.0306 14.9121 13.4532C15.1185 12.8758 15.12 12.378 15.0575 12.2752C14.9949 12.1725 14.8292 12.1103 14.5806 11.9858Z"
-                            fill="#FFE68D"
-                          />
-                        </svg>
-                      </a>
                     </li>
-                    <!-- VK -->
                     <li>
-                      <a
-                        href="#"
-                        class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
-                        @click="$store.mobileMenuOpen = false"
+                      Москва, Котельническая набережная 25с1 (10:00—21:00 пн-пт)
+                    </li>
+                    <li>
+                      <a href="mailto:zakaz@restotouch.ru"
+                        >zakaz@restotouch.ru</a
                       >
-                        <svg
-                          width="26"
-                          height="15"
-                          viewBox="0 0 26 15"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M24.9194 1.68432C25.0932 1.14166 24.9194 0.752763 24.093 0.752763H21.358C21.1015 0.735782 20.846 0.797421 20.631 0.928174C20.416 1.05893 20.2534 1.25154 20.1683 1.4763C20.1683 1.4763 18.7833 4.60742 16.8121 6.6478C16.1753 7.23748 15.8861 7.4256 15.5384 7.4256C15.3646 7.4256 15.1125 7.24471 15.1125 6.70206V1.68432C15.1125 1.04037 14.9172 0.752763 14.3311 0.752763H10.0333C9.9462 0.748133 9.85897 0.759584 9.77668 0.78645C9.69439 0.813316 9.61868 0.85506 9.55397 0.909256C9.48926 0.963452 9.43683 1.02902 9.39973 1.10214C9.36263 1.17527 9.34159 1.25449 9.33785 1.33521C9.33785 1.94479 10.3146 2.08588 10.424 3.80248V7.53232C10.424 8.34992 10.2638 8.49825 9.9161 8.49825C8.99012 8.49825 6.73377 5.34543 5.39755 1.73678C5.13382 1.03675 4.87204 0.752763 4.17267 0.752763H1.4377C0.656284 0.752763 0.5 1.09283 0.5 1.4763C0.5 2.14738 1.42794 5.47385 4.81734 9.87297C7.0776 12.872 10.2677 14.5 13.159 14.5C14.8977 14.5 15.1125 14.1382 15.1125 13.5142V11.2441C15.1125 10.5205 15.2766 10.3758 15.8275 10.3758C16.2339 10.3758 16.9293 10.5567 18.5508 12.0038C20.4067 13.7294 20.7114 14.5 21.7546 14.5H24.4896C25.271 14.5 25.6617 14.1382 25.437 13.4147C25.2124 12.6912 24.304 11.671 23.1299 10.4482C22.4911 9.74997 21.5358 9.0011 21.2467 8.62306C20.8403 8.14009 20.9556 7.92484 21.2467 7.49614C21.2467 7.49614 24.5677 3.15491 24.9252 1.67527L24.9194 1.68432Z"
-                            fill="#FFE68D"
-                          />
-                        </svg>
-                      </a>
                     </li>
                   </ul>
+
+                  <!-- Socials -->
+                  <div class="space-y-6">
+                    <p class="font-rooftop-wide font-medium leading-5">
+                      Следите за нами
+                    </p>
+                    <ul class="flex items-center gap-2">
+                      <!-- Telegram -->
+                      <li>
+                        <a
+                          href="#"
+                          class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
+                          @click="$store.mobileMenuOpen = false"
+                        >
+                          <svg
+                            width="21"
+                            height="19"
+                            viewBox="0 0 21 19"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M20.75 0.664441L17.5868 17.9695C17.5868 17.9695 17.1444 19.1696 15.9279 18.5936L11.4272 14.8494L8.53992 17.7058C8.53992 17.7058 8.31417 17.8916 8.06731 17.7752L8.62015 12.4695L8.63883 12.4853L8.65052 12.3771C8.65052 12.3771 16.7464 4.4807 17.0782 4.14465C17.41 3.80861 17.2993 3.73661 17.2993 3.73661C17.3214 3.32863 16.7021 3.73661 16.7021 3.73661L5.97399 11.1291L1.50578 9.49694C1.50578 9.49694 0.820092 9.23297 0.753732 8.65694C0.687373 8.0809 1.52788 7.76884 1.52788 7.76884L19.2901 0.208364C19.2901 0.208364 20.75 -0.487631 20.75 0.664441Z"
+                              fill="#FFE68D"
+                            />
+                          </svg>
+                        </a>
+                      </li>
+                      <!-- Whatsapp -->
+                      <li>
+                        <a
+                          href="#"
+                          class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
+                          @click="$store.mobileMenuOpen = false"
+                        >
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M17.0856 2.90944C15.3786 1.20723 13.108 0.180898 10.6971 0.0217388C8.28617 -0.137421 5.89933 0.58145 3.98148 2.04436C2.06362 3.50728 0.745597 5.61442 0.273064 7.97306C-0.19947 10.3317 0.205728 12.7809 1.41314 14.8642L0 20L5.2789 18.6209C6.73696 19.4122 8.37082 19.8276 10.0315 19.8292C12.0017 19.8311 13.9282 19.2513 15.5673 18.1631C17.2063 17.0749 18.4843 15.5272 19.2394 13.7159C19.9946 11.9046 20.193 9.91102 19.8096 7.98742C19.4262 6.06381 18.4782 4.29662 17.0856 2.90944ZM10.0417 18.1535C8.55823 18.1551 7.10175 17.7587 5.82555 17.0059L5.5246 16.8279L2.39157 17.6455L3.22899 14.6066L3.03126 14.2954C2.05557 12.7485 1.62402 10.9226 1.80444 9.10496C1.98486 7.28727 2.76703 5.58079 4.02798 4.2538C5.28894 2.92681 6.95717 2.05455 8.77044 1.77415C10.5837 1.49374 12.4392 1.82108 14.0452 2.70472C15.6512 3.58836 16.9166 4.97819 17.6426 6.65571C18.3685 8.33324 18.5138 10.2033 18.0556 11.972C17.5975 13.7407 16.5618 15.3077 15.1114 16.4266C13.661 17.5456 11.8782 18.153 10.0431 18.1535H10.0417ZM14.5806 11.9858C14.332 11.8628 13.1093 11.2623 12.881 11.1812C12.6528 11.1002 12.4871 11.0568 12.3213 11.3042C12.1556 11.5517 11.6787 12.1103 11.5333 12.2752C11.388 12.4402 11.2426 12.4619 10.994 12.3375C10.2605 12.0468 9.58348 11.631 8.99347 11.1089C8.44971 10.6083 7.98331 10.0304 7.60941 9.39401C7.46403 9.14511 7.59342 9.01197 7.71845 8.88752C7.84348 8.76306 7.96706 8.59809 8.09209 8.45338C8.19403 8.3277 8.27772 8.18837 8.3407 8.0395C8.37392 7.97112 8.38934 7.89552 8.38553 7.81966C8.38172 7.74379 8.3588 7.6701 8.31889 7.60536C8.25783 7.48091 7.75916 6.26243 7.55271 5.76607C7.34627 5.2697 7.14564 5.35798 6.99298 5.34495C6.84033 5.33193 6.68186 5.33627 6.51612 5.33627C6.38976 5.33944 6.26544 5.36874 6.15106 5.4223C6.03668 5.47586 5.93474 5.55252 5.85172 5.6474C5.57036 5.91255 5.34752 6.23308 5.19734 6.58859C5.04716 6.94411 4.97295 7.32684 4.97941 7.71245C4.97941 8.93093 5.87207 10.1089 5.9971 10.2739C6.12213 10.4388 7.75189 12.938 10.2481 14.0103C10.7109 14.2091 11.1841 14.383 11.6656 14.5313C12.1732 14.6855 12.7099 14.7192 13.2329 14.6297C13.7112 14.5588 14.7056 14.0306 14.9121 13.4532C15.1185 12.8758 15.12 12.378 15.0575 12.2752C14.9949 12.1725 14.8292 12.1103 14.5806 11.9858Z"
+                              fill="#FFE68D"
+                            />
+                          </svg>
+                        </a>
+                      </li>
+                      <!-- VK -->
+                      <li>
+                        <a
+                          href="#"
+                          class="size-10 shrink-0 flex-center rounded-full bg-main-black hover:opacity-80 transition-opacity duration-200"
+                          @click="$store.mobileMenuOpen = false"
+                        >
+                          <svg
+                            width="26"
+                            height="15"
+                            viewBox="0 0 26 15"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M24.9194 1.68432C25.0932 1.14166 24.9194 0.752763 24.093 0.752763H21.358C21.1015 0.735782 20.846 0.797421 20.631 0.928174C20.416 1.05893 20.2534 1.25154 20.1683 1.4763C20.1683 1.4763 18.7833 4.60742 16.8121 6.6478C16.1753 7.23748 15.8861 7.4256 15.5384 7.4256C15.3646 7.4256 15.1125 7.24471 15.1125 6.70206V1.68432C15.1125 1.04037 14.9172 0.752763 14.3311 0.752763H10.0333C9.9462 0.748133 9.85897 0.759584 9.77668 0.78645C9.69439 0.813316 9.61868 0.85506 9.55397 0.909256C9.48926 0.963452 9.43683 1.02902 9.39973 1.10214C9.36263 1.17527 9.34159 1.25449 9.33785 1.33521C9.33785 1.94479 10.3146 2.08588 10.424 3.80248V7.53232C10.424 8.34992 10.2638 8.49825 9.9161 8.49825C8.99012 8.49825 6.73377 5.34543 5.39755 1.73678C5.13382 1.03675 4.87204 0.752763 4.17267 0.752763H1.4377C0.656284 0.752763 0.5 1.09283 0.5 1.4763C0.5 2.14738 1.42794 5.47385 4.81734 9.87297C7.0776 12.872 10.2677 14.5 13.159 14.5C14.8977 14.5 15.1125 14.1382 15.1125 13.5142V11.2441C15.1125 10.5205 15.2766 10.3758 15.8275 10.3758C16.2339 10.3758 16.9293 10.5567 18.5508 12.0038C20.4067 13.7294 20.7114 14.5 21.7546 14.5H24.4896C25.271 14.5 25.6617 14.1382 25.437 13.4147C25.2124 12.6912 24.304 11.671 23.1299 10.4482C22.4911 9.74997 21.5358 9.0011 21.2467 8.62306C20.8403 8.14009 20.9556 7.92484 21.2467 7.49614C21.2467 7.49614 24.5677 3.15491 24.9252 1.67527L24.9194 1.68432Z"
+                              fill="#FFE68D"
+                            />
+                          </svg>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
@@ -894,7 +935,7 @@
             <li>
               <a
                 href="#"
-                class="inline-block h-5 flex-center bg-[#17BFBF] text-white rounded-[2px] py-0.5 px-2"
+                class="inline-block flex-center bg-[#17BFBF] text-white rounded-[2px] pt-0.5 px-2"
               >
                 Распродажа
               </a>
@@ -946,7 +987,7 @@
 
         <!-- Catalog -->
         <div
-          class="custom-scroll container-base w-full absolute top-full inset-x-0 right-0 lg:right-auto z-50 bg-white lg:bg-transparent"
+          class="custom-scroll container-base w-full absolute inset-x-0 top-17 xl:top-24 right-0 lg:right-auto z-50 bg-white lg:bg-transparent"
           x-show="catalogOpen"
           x-transition:enter="transition-all ease-out duration-300"
           x-transition:enter-start="opacity-0 transform -translate-y-4"
@@ -957,7 +998,7 @@
           @click.outside="catalogOpen = false"
         >
           <div
-            class="catalog-mobile-scroll overflow-auto h-[calc(100vh-64px)] lg:h-auto w-full grid lg:flex !items-stretch bg-white rounded-b-lg lg:px-6 relative"
+            class="catalog-mobile-scroll overflow-auto h-[calc(100vh-64px)] lg:h-auto w-full grid lg:flex !items-stretch bg-white rounded-b-lg lg:px-6 relative pb-20 lg:pb-0"
           >
             <!-- Left Categories -->
             <div class="lg:border-r border-main-gray/20 lg:pt-6 lg:pr-1">
@@ -1492,13 +1533,44 @@
             </div>
             <!-- Center Products -->
             <div class="hidden lg:block space-y-5 flex-1 pl-6 pr-3 pt-6 pb-10">
-              <p
-                class="font-rooftop-wide font-medium text-main-dark transition-all duration-300 ease-out"
-                x-text="selectedCategory"
-              ></p>
+              <div
+                class="font-rooftop-wide font-medium leading-5 transition-all duration-300 ease-out flex items-center gap-2 flex-wrap"
+              >
+                <template x-if="getParentCategory()">
+                  <span class="flex items-center gap-2">
+                    <span
+                      class="text-main-gray"
+                      x-text="getParentCategory()"
+                    ></span>
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="shrink-0"
+                    >
+                      <path
+                        d="M19 10C19.2761 10 19.5 10.2239 19.5 10.5C19.5 10.7761 19.2761 11 19 11V10ZM19 10.5V11H1V10.5V10H19V10.5Z"
+                        fill="#303030"
+                      />
+                      <path
+                        d="M13.1464 5.35355C12.9512 5.15829 12.9512 4.84171 13.1464 4.64645C13.3417 4.45118 13.6583 4.45118 13.8536 4.64645L13.1464 5.35355ZM19 10.5L18.6464 10.8536L13.1464 5.35355L13.5 5L13.8536 4.64645L19.3536 10.1464L19 10.5Z"
+                        fill="#303030"
+                      />
+                      <path
+                        d="M13.1464 15.6464C12.9512 15.8417 12.9512 16.1583 13.1464 16.3536C13.3417 16.5488 13.6583 16.5488 13.8536 16.3536L13.1464 15.6464ZM13.5 16L13.8536 16.3536L19.3536 10.8536L19 10.5L18.6464 10.1464L13.1464 15.6464L13.5 16Z"
+                        fill="#303030"
+                      />
+                    </svg>
+                  </span>
+                </template>
+                <span class="text-main-dark" x-text="selectedCategory"></span>
+              </div>
 
               <div
-                class="custom-scroll max-h-[calc(100vh-180px)] overflow-y-auto"
+                class="custom-scroll overflow-y-auto"
+                style="max-height: calc(3 * 10.875rem + 2 * 0.75rem)"
               >
                 <div
                   class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 transition-all duration-300 ease-out"
@@ -1533,24 +1605,24 @@
             >
               <!-- Search By Brands -->
               <div
-                class="space-y-6 lg:space-y-3"
+                class="relative z-20 space-y-6 lg:space-y-3"
                 x-data="{ 
                 showMoreBrands: false,
+                brandsScrollAtEnd: false,
                 selectedBrands: [],
                 brands: [
-                  'TUDOR', 'PORLAND', 'KUNSTWERK', 'P.L. PROFF CUISINE', 'COSY & TRENDY',
-                  'ARIANO DARO', '.L. PROFF CUISINE', 'SUMMA'
+                  'Tudor', 'Porland', 'Kunstwerk', 'P.L. Proff Cuisine', 'Cosy & Trendy',
+                  'Arianodaro', '.L. Proff Cuisine', 'Summa'
                 ],
                 additionalBrands: [
-                  'BRAND A', 'BRAND B', 'BRAND C', 'BRAND D', 'BRAND E',
-                  'BRAND F', 'BRAND G', 'BRAND H', 'BRAND I', 'BRAND J',
-                  'BRAND K', 'BRAND L', 'BRAND M', 'BRAND N', 'BRAND O',
-                  'BRAND P', 'BRAND Q', 'BRAND R', 'BRAND S', 'BRAND T',
-                  'BRAND U', 'BRAND V', 'BRAND W', 'BRAND X', 'BRAND Y',
-                  'BRAND Z', 'BRAND AA', 'BRAND BB', 'BRAND CC', 'BRAND DD',
-                  'BRAND EE', 'BRAND FF', 'BRAND GG', 'BRAND HH', 'BRAND II',
-                  'BRAND JJ', 'BRAND KK', 'BRAND LL', 'BRAND MM', 'BRAND NN',
-                  'BRAND OO', 'BRAND PP', 'BRAND QQ', 'BRAND RR', 'BRAND SS'
+                  'Eclat', 'Fine 2 Dine', 'Hario', 'Lucaris', 'Luigi Bormioli', 'MGline',
+                  'Arc International', 'Bormioli Rocco', 'Cristel', 'De Buyer', 'Emile Henry',
+                  'Fissler', 'Guy Degrenne', 'Hackman', 'Iittala', 'Joseph Joseph', 'Kuhn Rikon',
+                  'Le Creuset', 'Mauviel', 'Nambé', 'Oberto', 'Peugeot', 'Rösle', 'Sambonet',
+                  'Staub', 'Tefal', 'Villeroy & Boch', 'WMF', 'Zwilling', 'Alessi',
+                  'Bodum', 'Chantal', 'Duralex', 'Eva Solo', 'Falcon', 'Global', 'Heston Blumenthal',
+                  'Jamie Oliver', 'KitchenAid', 'Lodge', 'Mason Cash', 'Nordic Ware', 'OXO',
+                  'Pyrex', 'Riedel', 'Sabatier', 'Tala', 'Vacu Vin', 'Zyliss'
                 ],
                 toggleBrand(brandName) {
                   if (this.selectedBrands.includes(brandName)) {
@@ -1558,62 +1630,101 @@
                   } else {
                     this.selectedBrands.push(brandName);
                   }
+                },
+                checkBrandsScroll(el) {
+                  if (!el) return;
+                  const threshold = 4;
+                  const atEnd = el.scrollHeight - el.scrollTop - el.clientHeight < threshold;
+                  this.brandsScrollAtEnd = atEnd;
                 }
               }"
               >
                 <p
-                  class="text-2xl/7.25 lg:text-lg/5.75 font-rooftop-wide font-medium text-main-dark"
+                  class="text-2xl/7.25 lg:text-base/5 font-rooftop-wide font-medium text-main-dark"
                 >
-                  Поиск по брендам
+                  Популярные бренды
                 </p>
 
-                <!-- Brands -->
-                <div
-                  class="flex items-center flex-wrap gap-x-1 gap-y-2 uppercase text-xs xl:text-main-sm/4.5"
-                >
-                  <!-- Main brands -->
-                  <template x-for="brand in brands" :key="brand">
-                    <button
-                      :class="selectedBrands.includes(brand) ? 'bg-main-yellow' : 'bg-main-silver hover:bg-main-yellow'"
-                      class="rounded-[5px] transition-colors duration-200 py-0.75 px-2"
-                      @click="toggleBrand(brand)"
-                      x-text="brand"
-                    ></button>
-                  </template>
+                <!-- Brands (full-width wrapper so popup fits parent width) -->
+                <div class="relative w-full">
+                  <div
+                    class="flex items-center flex-wrap gap-x-1 gap-y-2 text-main-base/5 lg:text-main-sm/4.5"
+                  >
+                    <!-- Main brands -->
+                    <template x-for="brand in brands" :key="brand">
+                      <button
+                        :class="selectedBrands.includes(brand) ? 'bg-main-yellow' : 'bg-main-silver hover:bg-main-yellow'"
+                        class="rounded-lg lg:rounded-[5px] transition-colors duration-200 py-2.5 px-4 lg:py-0.75 lg:px-2"
+                        @click="toggleBrand(brand)"
+                        x-text="brand"
+                      ></button>
+                    </template>
 
-                  <!-- Additional hidden brands -->
-                  <template x-for="brand in additionalBrands" :key="brand">
+                    <!-- Еще +N button (only ЗАКРЫТЬ closes the popup) -->
                     <button
-                      x-show="showMoreBrands"
-                      x-transition:enter="transition-all ease-out duration-300"
-                      x-transition:enter-start="opacity-0 transform scale-95"
-                      x-transition:enter-end="opacity-100 transform scale-100"
-                      x-transition:leave="transition-all ease-in duration-200"
-                      x-transition:leave-start="opacity-100 transform scale-100"
-                      x-transition:leave-end="opacity-0 transform scale-95"
-                      :class="selectedBrands.includes(brand) ? 'bg-main-yellow' : 'bg-main-silver hover:bg-main-yellow'"
-                      class="rounded-[5px] transition-colors duration-200 py-0.75 px-2"
-                      @click="toggleBrand(brand)"
-                      x-text="brand"
+                      class="bg-main-yellow rounded-lg lg:rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-2.5 px-4 lg:py-0.75 lg:px-2"
+                      @click="showMoreBrands = !showMoreBrands"
+                      x-text="showMoreBrands ? 'Скрыть' : `Еще +${additionalBrands.length}`"
                     ></button>
-                  </template>
+                  </div>
 
-                  <button
-                    class="bg-main-yellow rounded-[5px] hover:bg-main-silver/50 transition-colors duration-200 py-0.75 px-2"
-                    @click="showMoreBrands = !showMoreBrands"
-                    x-text="showMoreBrands ? 'Скрыть' : `Еще +${additionalBrands.length}`"
-                  ></button>
+                  <!-- Other brands popup list (full width of parent) -->
+                  <div
+                    x-show="showMoreBrands"
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                    x-transition:leave="transition ease-in duration-150"
+                    x-transition:leave-start="opacity-100"
+                    x-transition:leave-end="opacity-0"
+                    x-effect="showMoreBrands && $nextTick(() => { const el = $el.querySelector('.custom-scroll-brands'); if (el) checkBrandsScroll(el); })"
+                    class="absolute top-full left-1/2 -translate-x-1/2 lg:translate-x-0 lg:left-0 right-0 z-10 w-[95%] lg:w-full mt-2.5 p-4 bg-white rounded-lg shadow-tab-scoll-btn space-y-4"
+                  >
+                    <!-- Scrollable list with visible scrollbar and bottom gradient -->
+                    <div class="relative">
+                      <div
+                        class="custom-scroll-brands brands-popup-scroll max-h-52 overflow-y-auto flex flex-wrap gap-2"
+                        @scroll="checkBrandsScroll($event.target)"
+                      >
+                        <template
+                          x-for="brand in additionalBrands"
+                          :key="brand"
+                        >
+                          <button
+                            type="button"
+                            :class="selectedBrands.includes(brand) ? 'bg-main-yellow' : 'bg-main-silver hover:bg-main-yellow'"
+                            class="text-main-sm/4.5 rounded-lg lg:rounded-[5px] transition-colors duration-200 py-2.5 px-4 lg:py-0.75 lg:px-2"
+                            @click="toggleBrand(brand)"
+                            x-text="brand"
+                          ></button>
+                        </template>
+                      </div>
+                      <!-- Bottom gradient shadow: visible when not at end, hidden smoothly at end -->
+                      <div
+                        class="absolute bottom-0 left-0 right-0 h-1/2 pointer-events-none bg-gradient-to-t from-white via-white/80 to-transparent transition-opacity duration-300 ease-out"
+                        :class="brandsScrollAtEnd ? 'opacity-0' : 'opacity-100'"
+                        aria-hidden="true"
+                      ></div>
+                    </div>
+                    <button
+                      type="button"
+                      class="h-8 w-full bg-main-yellow text-xs/3 uppercase font-rooftop font-medium rounded-lg hover:bg-main-silver/50 transition-colors duration-200"
+                      @click="showMoreBrands = false"
+                    >
+                      ЗАКРЫТЬ
+                    </button>
+                  </div>
                 </div>
               </div>
 
               <!-- Search By Series -->
               <div class="space-y-3">
                 <p
-                  class="text-2xl/7.25 lg:text-lg/5.75 font-rooftop-wide font-medium text-main-dark"
+                  class="text-2xl/7.25 lg:text-base/5 font-rooftop-wide font-medium text-main-dark"
                 >
-                  Поиск по сериям
+                  Поиск по бренду и серии
                 </p>
-                <div class="space-y-3">
+                <div class="space-y-2">
                   <div class="space-y-1">
                     <span class="text-main-sm/4.5 text-main-gray"
                       >Выберите бренд</span
@@ -1737,156 +1848,186 @@
                           </ul>
                         </div>
                       </div>
+                      <button
+                        type="button"
+                        x-cloak
+                        x-show="selectedBrand"
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0"
+                        x-transition:enter-end="opacity-100"
+                        x-transition:leave="transition ease-in duration-150"
+                        x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0"
+                        class="mt-2 w-full h-8 bg-main-black text-white text-xs/3 uppercase font-rooftop font-medium rounded-lg hover:bg-main-black/90 transition-colors duration-200"
+                      >
+                        НАЙТИ ВЫБРАННЫЙ БРЕНД
+                      </button>
                     </div>
                   </div>
                 </div>
 
-                <div class="space-y-1">
-                  <span class="text-main-sm/4.5 text-main-gray"
-                    >Выберите серию</span
-                  >
-                  <div
-                    class="relative"
-                    x-data="{ seriesOpen: false, selectedSeries: '', searchQuerySeries: '' }"
-                  >
-                    <!-- Input that acts like button -->
-                    <div
-                      class="relative w-full bg-main-silver rounded-lg overflow-hidden"
-                      @click.outside="seriesOpen = false"
+                <div class="space-y-2">
+                  <div class="space-y-1">
+                    <span class="text-main-sm/4.5 text-main-gray"
+                      >Выберите серию</span
                     >
-                      <div class="relative">
-                        <input
-                          type="text"
-                          :placeholder="seriesOpen ? 'Поиск по сериям' : 'Серии'"
-                          :value="seriesOpen ? searchQuerySeries : (selectedSeries || '')"
-                          @input="searchQuerySeries = $event.target.value"
-                          @focus="seriesOpen = true"
-                          @click="seriesOpen = true"
-                          :readonly="!seriesOpen"
-                          class="w-full h-12 text-sm/4.75 outline-none pl-5 pr-10 py-3.5 bg-transparent"
-                          :class="seriesOpen ? 'cursor-text placeholder:text-gray-400' : ' font-rooftop-wide font-medium cursor-pointer placeholder:text-main-gray'"
-                        />
-                        <div
-                          class="absolute h-full top-0 right-5 flex items-center gap-2"
-                        >
-                          <!-- Clear Input -->
-                          <button
-                            x-show="seriesOpen && searchQuerySeries"
-                            @click="searchQuerySeries = ''"
-                            class="p-1 hover:bg-gray-200 rounded transition-colors duration-200"
+                    <div
+                      class="relative"
+                      x-data="{ seriesOpen: false, selectedSeries: '', searchQuerySeries: '' }"
+                    >
+                      <!-- Input that acts like button -->
+                      <div
+                        class="relative w-full bg-main-silver rounded-lg overflow-hidden"
+                        @click.outside="seriesOpen = false"
+                      >
+                        <div class="relative">
+                          <input
+                            type="text"
+                            :placeholder="seriesOpen ? 'Поиск по сериям' : 'Серии'"
+                            :value="seriesOpen ? searchQuerySeries : (selectedSeries || '')"
+                            @input="searchQuerySeries = $event.target.value"
+                            @focus="seriesOpen = true"
+                            @click="seriesOpen = true"
+                            :readonly="!seriesOpen"
+                            class="w-full h-12 text-sm/4.75 outline-none pl-5 pr-10 py-3.5 bg-transparent"
+                            :class="seriesOpen ? 'cursor-text placeholder:text-gray-400' : ' font-rooftop-wide font-medium cursor-pointer placeholder:text-main-gray'"
+                          />
+                          <div
+                            class="absolute h-full top-0 right-5 flex items-center gap-2"
                           >
+                            <!-- Clear Input -->
+                            <button
+                              x-show="seriesOpen && searchQuerySeries"
+                              @click="searchQuerySeries = ''"
+                              class="p-1 hover:bg-gray-200 rounded transition-colors duration-200"
+                            >
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 14 14"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M10.9375 10.9375L7 7L10.9375 3.0625"
+                                  stroke="#303030"
+                                />
+                                <path
+                                  d="M3.0625 3.0625L7 7L3.0625 10.9375"
+                                  stroke="#303030"
+                                />
+                              </svg>
+                            </button>
+                            <!-- Arrow Icon -->
                             <svg
-                              width="14"
-                              height="14"
-                              viewBox="0 0 14 14"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
+                              :class="seriesOpen ? 'rotate-180' : ''"
+                              class="transition-transform duration-200"
                             >
                               <path
-                                d="M10.9375 10.9375L7 7L10.9375 3.0625"
+                                d="M18.75 9L12.75 15L6.75 9"
                                 stroke="#303030"
-                              />
-                              <path
-                                d="M3.0625 3.0625L7 7L3.0625 10.9375"
-                                stroke="#303030"
+                                stroke-width="1.02857"
                               />
                             </svg>
-                          </button>
-                          <!-- Arrow Icon -->
-                          <svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            :class="seriesOpen ? 'rotate-180' : ''"
-                            class="transition-transform duration-200"
+                          </div>
+                        </div>
+
+                        <!-- Series list -->
+                        <div
+                          x-show="seriesOpen"
+                          x-transition:enter="transition-all ease-out duration-300"
+                          x-transition:enter-start="opacity-0 max-h-0 transform -translate-y-2"
+                          x-transition:enter-end="opacity-100 max-h-[500px] transform translate-y-0"
+                          x-transition:leave="transition-all ease-in duration-250"
+                          x-transition:leave-start="opacity-100 max-h-[500px] transform translate-y-0"
+                          x-transition:leave-end="opacity-0 max-h-0 transform -translate-y-2"
+                          class="divide-y divide-main-gray-100 border-t border-gray-200 overflow-hidden"
+                        >
+                          <ul
+                            class="custom-scroll-brands leading-5.5 max-h-48 overflow-y-auto"
                           >
-                            <path
-                              d="M18.75 9L12.75 15L6.75 9"
-                              stroke="#303030"
-                              stroke-width="1.02857"
-                            />
-                          </svg>
+                            <template
+                              x-for="series in [
+                                'Ariane Prime',
+                                'Ariane Slide',
+                                'Ariana Vital',
+                                'Ariana Selas',
+                                'Ariane Daro',
+                                'Ariane Classic',
+                                'Ariane Premium',
+                                'Ariane Sport',
+                                'Ariane Business',
+                                'Ariane Elegant',
+                                'Ariane Modern',
+                                'Ariane Vintage',
+                                'Ariane Urban',
+                                'Ariane Outdoor',
+                                'Ariane Luxury',
+                                'Ariane Basic',
+                                'Ariane Pro',
+                                'Ariane Elite',
+                                'Ariane Standard',
+                                'Ariane Collection',
+                                'Ariane Signature',
+                                'Ariane Limited',
+                                'Ariane Exclusive',
+                                'Ariane Master',
+                                'Ariane Supreme'
+                              ].filter(s => s.toLowerCase().includes(searchQuerySeries.toLowerCase()))"
+                              :key="series"
+                            >
+                              <li class="hover:bg-main-gray-100 pl-6 pr-3">
+                                <button
+                                  @click="selectedSeries = series; seriesOpen = false"
+                                  class="w-full text-left border-b border-main-gray-100 py-1.25 flex items-center justify-between"
+                                >
+                                  <span x-text="series"></span>
+                                  <svg
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M9.75 6L15.75 12L9.75 18"
+                                      stroke="#303030"
+                                      stroke-width="1.02857"
+                                    />
+                                  </svg>
+                                </button>
+                              </li>
+                            </template>
+
+                            <!-- No results message -->
+                            <li
+                              x-show="searchQuerySeries && !['Ariane Prime', 'Ariane Slide', 'Ariana Vital', 'Ariana Selas', 'Ariane Daro', 'Ariane Classic', 'Ariane Premium', 'Ariane Sport', 'Ariane Business', 'Ariane Elegant', 'Ariane Modern', 'Ariane Vintage', 'Ariane Urban', 'Ariane Outdoor', 'Ariane Luxury', 'Ariane Basic', 'Ariane Pro', 'Ariane Elite', 'Ariane Standard', 'Ariane Collection', 'Ariane Signature', 'Ariane Limited', 'Ariane Exclusive', 'Ariane Master', 'Ariane Supreme'].filter(s => s.toLowerCase().includes(searchQuerySeries.toLowerCase())).length"
+                              class="px-6 py-2 text-gray-500 text-sm text-center"
+                            >
+                              Серии не найдены
+                            </li>
+                          </ul>
                         </div>
                       </div>
-
-                      <!-- Series list -->
-                      <div
-                        x-show="seriesOpen"
-                        x-transition:enter="transition-all ease-out duration-300"
-                        x-transition:enter-start="opacity-0 max-h-0 transform -translate-y-2"
-                        x-transition:enter-end="opacity-100 max-h-[500px] transform translate-y-0"
-                        x-transition:leave="transition-all ease-in duration-250"
-                        x-transition:leave-start="opacity-100 max-h-[500px] transform translate-y-0"
-                        x-transition:leave-end="opacity-0 max-h-0 transform -translate-y-2"
-                        class="divide-y divide-main-gray-100 border-t border-gray-200 overflow-hidden"
+                      <button
+                        type="button"
+                        x-cloak
+                        x-show="selectedSeries"
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0"
+                        x-transition:enter-end="opacity-100"
+                        x-transition:leave="transition ease-in duration-150"
+                        x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0"
+                        class="mt-2 w-full h-8 bg-main-black text-white text-xs/3 uppercase font-rooftop font-medium rounded-lg hover:bg-main-black/90 transition-colors duration-200"
                       >
-                        <ul
-                          class="custom-scroll-brands leading-5.5 max-h-48 overflow-y-auto"
-                        >
-                          <template
-                            x-for="series in [
-                              'Ariane Prime',
-                              'Ariane Slide',
-                              'Ariana Vital',
-                              'Ariana Selas',
-                              'Ariane Daro',
-                              'Ariane Classic',
-                              'Ariane Premium',
-                              'Ariane Sport',
-                              'Ariane Business',
-                              'Ariane Elegant',
-                              'Ariane Modern',
-                              'Ariane Vintage',
-                              'Ariane Urban',
-                              'Ariane Outdoor',
-                              'Ariane Luxury',
-                              'Ariane Basic',
-                              'Ariane Pro',
-                              'Ariane Elite',
-                              'Ariane Standard',
-                              'Ariane Collection',
-                              'Ariane Signature',
-                              'Ariane Limited',
-                              'Ariane Exclusive',
-                              'Ariane Master',
-                              'Ariane Supreme'
-                            ].filter(s => s.toLowerCase().includes(searchQuerySeries.toLowerCase()))"
-                            :key="series"
-                          >
-                            <li class="hover:bg-main-gray-100 pl-6 pr-3">
-                              <button
-                                @click="selectedSeries = series; seriesOpen = false"
-                                class="w-full text-left border-b border-main-gray-100 py-1.25 flex items-center justify-between"
-                              >
-                                <span x-text="series"></span>
-                                <svg
-                                  width="24"
-                                  height="24"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    d="M9.75 6L15.75 12L9.75 18"
-                                    stroke="#303030"
-                                    stroke-width="1.02857"
-                                  />
-                                </svg>
-                              </button>
-                            </li>
-                          </template>
-
-                          <!-- No results message -->
-                          <li
-                            x-show="searchQuerySeries && !['Ariane Prime', 'Ariane Slide', 'Ariana Vital', 'Ariana Selas', 'Ariane Daro', 'Ariane Classic', 'Ariane Premium', 'Ariane Sport', 'Ariane Business', 'Ariane Elegant', 'Ariane Modern', 'Ariane Vintage', 'Ariane Urban', 'Ariane Outdoor', 'Ariane Luxury', 'Ariane Basic', 'Ariane Pro', 'Ariane Elite', 'Ariane Standard', 'Ariane Collection', 'Ariane Signature', 'Ariane Limited', 'Ariane Exclusive', 'Ariane Master', 'Ariane Supreme'].filter(s => s.toLowerCase().includes(searchQuerySeries.toLowerCase())).length"
-                            class="px-6 py-2 text-gray-500 text-sm text-center"
-                          >
-                            Серии не найдены
-                          </li>
-                        </ul>
-                      </div>
+                        НАЙТИ ВЫБРАННУЮ СЕРИЮ
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -1895,16 +2036,16 @@
               <!-- Search By Article -->
               <div class="space-y-3">
                 <p
-                  class="text-2xl/7.25 lg:text-lg/5.75 font-rooftop-wide font-medium text-main-dark"
+                  class="text-2xl/7.25 lg:text-base/5 font-rooftop-wide font-medium text-main-dark"
                 >
-                  Поиск по сериям
+                  Поиск по артикулу
                 </p>
 
                 <div class="relative">
                   <input
                     type="text"
                     placeholder="Поиск"
-                    class="w-full h-10 text-lg/6.25 bg-main-silver rounded-lg outline-none placeholder:text-main-gray-400/50 pl-5 pr-12 py-2"
+                    class="w-full h-14 lg:h-10 text-lg/6.25 bg-main-silver rounded-lg outline-none placeholder:text-main-gray-400/50 pl-5 pr-12 py-2"
                   />
                   <div class="absolute right-2 top-1/2 -translate-y-1/2">
                     <svg
@@ -1930,7 +2071,7 @@
         </div>
         <!-- Catalog overlay -->
         <div
-          :class="isScrolled ? 'fixed top-0 inset-x-0 bottom-0 w-full hidden lg:block bg-main-black/50 transition-all duration-150 ease-out' : 'fixed top-16 lg:top-33.25 xl:top-38.5 inset-x-0 bottom-0 w-full hidden lg:block bg-main-black/50 transition-all duration-150 ease-out'"
+          :class="isScrolled ? 'fixed top-0 inset-x-0 bottom-0 w-full hidden lg:block bg-main-black/50 transition-all duration-150 ease-out' : 'fixed top-21 xl:top-24 inset-x-0 bottom-0 w-full hidden lg:block bg-main-black/50 transition-all duration-150 ease-out'"
           x-show="catalogOpen"
           @click="catalogOpen = false"
           x-transition:enter="transition-opacity ease-out duration-300"
@@ -1942,6 +2083,118 @@
         ></div>
       </nav>
     </header>
+
+    <!-- Bottom Menu -->
+    <div
+      class="fixed inset-x-0 bottom-0 z-50 flex lg:hidden items-center justify-evenly gap-4 bg-white text-main-sm/4.5 rounded-t-[20px] shadow-tab-scoll-btn px-4 py-3"
+    >
+      <a href="/" class="flex flex-col items-center">
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15.5244 3.08203C15.6741 2.62138 16.3259 2.62137 16.4756 3.08203L18.8926 10.5195C19.0935 11.1372 19.6688 11.5555 20.3184 11.5557H28.1396C28.6235 11.556 28.8247 12.1752 28.4336 12.46L22.1064 17.0566C21.5807 17.4386 21.3607 18.1163 21.5615 18.7344L23.9775 26.1719C24.1272 26.6325 23.6008 27.015 23.209 26.7305L16.8818 22.1338C16.3561 21.7518 15.6439 21.7518 15.1182 22.1338L8.79102 26.7305C8.39918 27.015 7.8728 26.6325 8.02246 26.1719L10.4385 18.7344C10.6393 18.1163 10.4193 17.4386 9.89355 17.0566L3.56641 12.46C3.17526 12.1752 3.37648 11.556 3.86035 11.5557H11.6816C12.3312 11.5555 12.9065 11.1372 13.1074 10.5195L15.5244 3.08203Z"
+            stroke="#898989"
+          />
+        </svg>
+        <span>Главная</span>
+      </a>
+      <a href="/catalog" class="flex flex-col items-center">
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="3.5"
+            y="4.11719"
+            width="11"
+            height="11"
+            rx="1.5"
+            fill="#303030"
+            stroke="#303030"
+          />
+          <rect
+            x="22.3018"
+            y="3.70221"
+            width="8.42363"
+            height="8.42363"
+            rx="1.5"
+            transform="rotate(38.2533 22.3018 3.70221)"
+            fill="#303030"
+            stroke="#303030"
+          />
+          <rect
+            x="3.5"
+            y="17.1172"
+            width="11"
+            height="11"
+            rx="1.5"
+            fill="#303030"
+            stroke="#303030"
+          />
+          <rect
+            x="16.5"
+            y="17.1172"
+            width="11"
+            height="11"
+            rx="1.5"
+            fill="#303030"
+            stroke="#303030"
+          />
+        </svg>
+
+        <span>Каталог</span>
+      </a>
+      <a href="/favorites" class="flex flex-col items-center">
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clip-path="url(#clip0_14125_57030)">
+            <path
+              d="M21.9971 6.5C24.0505 6.5001 25.7563 7.6367 26.6123 9.34863C27.4661 11.0564 27.489 13.3755 26.0684 15.7432C24.5862 18.2134 22.0154 20.6691 19.7822 22.5244C18.6713 23.4474 17.6539 24.2132 16.915 24.748C16.5457 25.0154 16.2457 25.225 16.0391 25.3672C16.0251 25.3768 16.0112 25.3855 15.998 25.3945C15.9839 25.3848 15.9692 25.3747 15.9541 25.3643C15.746 25.2197 15.4438 25.0073 15.0723 24.7363C14.3289 24.1943 13.3069 23.42 12.1924 22.4912C9.9512 20.6235 7.38064 18.1675 5.92578 15.7432C4.50506 13.3754 4.52794 11.0564 5.38184 9.34863C6.2379 7.63671 7.94357 6.5 9.99707 6.5C12.7771 6.50009 14.1489 7.85883 15.6436 9.35352L16 9.70996L16.3506 9.35352C17.8453 7.85882 19.217 6.5 21.9971 6.5Z"
+              stroke="#898989"
+            />
+            <path
+              d="M30.6666 122.484C26.1874 122.484 21.7082 120.99 17.2292 118.005C-61.1721 63.4998 -176.157 -55.9682 -184.371 -150.048C-187.355 -182.903 -177.652 -209.783 -155.996 -231.434C-135.089 -252.34 -111.193 -262.048 -84.3134 -260.554C-31.2974 -257.569 16.4893 -210.527 29.9266 -192.606C44.1146 -210.527 91.8999 -256.819 144.911 -260.554C171.791 -262.048 196.432 -252.34 216.593 -231.434C238.244 -209.783 247.953 -182.152 244.968 -150.048C236.754 -55.9695 121.771 63.4985 43.3679 118.005C39.6231 120.99 35.1439 122.484 30.6648 122.484H30.6666ZM-89.5467 -244.876C-110.453 -244.876 -129.12 -236.662 -145.547 -220.236C-164.213 -201.569 -172.427 -178.424 -169.443 -150.798C-164.964 -97.0383 -100.749 17.9483 26.1839 106.055C29.1683 108.295 32.9027 108.295 35.8922 106.055C162.824 17.951 226.292 -97.0383 231.519 -150.798C233.758 -178.424 226.29 -202.32 207.623 -220.236C189.702 -238.157 169.544 -246.372 147.144 -244.876C100.103 -241.891 55.3055 -197.834 43.3575 -182.902C37.3835 -175.434 24.6908 -175.434 19.4615 -182.902C7.51364 -197.834 -36.5385 -241.886 -84.3251 -244.876H-89.5439H-89.5467Z"
+              fill="#898989"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_14125_57030">
+              <rect width="32" height="32" rx="8" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+
+        <span>Избранное</span>
+      </a>
+      <a href="/more" class="flex flex-col items-center">
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="7.5" cy="16.5" r="1.5" fill="#898989" />
+          <circle cx="15.5" cy="16.5" r="1.5" fill="#898989" />
+          <circle cx="23.5" cy="16.5" r="1.5" fill="#898989" />
+        </svg>
+
+        <span>Еще</span>
+      </a>
+    </div>
 
     <!-- Main -->
     <main class="container-base">
