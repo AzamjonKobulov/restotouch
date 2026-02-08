@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -17,7 +17,9 @@
         align-items: center;
         justify-content: center;
         z-index: 9999;
-        transition: opacity 200ms ease, visibility 200ms ease;
+        transition:
+          opacity 200ms ease,
+          visibility 200ms ease;
       }
       #page-loader.page-loader--hide {
         opacity: 0;
@@ -2662,7 +2664,7 @@
           >
             <template x-for="(item, index) in products" :key="index">
               <div
-                class="w-50.5 md:w-61.25 shrink-0 border border-main-silver rounded-2xl overflow-hidden"
+                class="w-45.5 sm:w-50.5 md:w-61.25 shrink-0 border border-main-silver rounded-2xl overflow-hidden"
               >
                 <!-- Slider -->
                 <div
