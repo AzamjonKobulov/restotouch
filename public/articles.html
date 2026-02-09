@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -336,26 +336,28 @@
       <nav class="container-base relative z-50">
         <!-- Top -->
         <div class="max-xl:hidden flex items-center justify-between gap-5 py-1">
-          <div class="flex items-center gap-2.25">
+          <div class="flex items-center gap-1">
             <svg
-              width="11"
-              height="16"
-              viewBox="0 0 11 16"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              class="shrink-0"
             >
               <path
-                d="M5.6875 1C8.34537 1 10.5 3.15463 10.5 5.8125C10.5 6.42947 10.2101 7.34458 9.71484 8.42676C9.22854 9.48945 8.57593 10.6466 7.91699 11.7227C7.25925 12.7967 6.60104 13.7814 6.10645 14.498C5.94915 14.7259 5.80598 14.9253 5.6875 15.0928C5.56902 14.9253 5.42585 14.7259 5.26855 14.498C4.77396 13.7814 4.11575 12.7967 3.45801 11.7227C2.79907 10.6466 2.14646 9.48945 1.66016 8.42676C1.16493 7.34458 0.875 6.42947 0.875 5.8125C0.875 3.15463 3.02963 1 5.6875 1Z"
+                d="M9.6875 3C12.3454 3 14.5 5.15463 14.5 7.8125C14.5 8.42947 14.2101 9.34458 13.7148 10.4268C13.2285 11.4894 12.5759 12.6466 11.917 13.7227C11.2592 14.7967 10.601 15.7814 10.1064 16.498C9.94915 16.7259 9.80598 16.9253 9.6875 17.0928C9.56902 16.9253 9.42585 16.7259 9.26855 16.498C8.77396 15.7814 8.11575 14.7967 7.45801 13.7227C6.79907 12.6466 6.14646 11.4894 5.66016 10.4268C5.16493 9.34458 4.875 8.42947 4.875 7.8125C4.875 5.15463 7.02963 3 9.6875 3Z"
                 stroke="#898989"
               />
-              <circle cx="5.68752" cy="5.81289" r="2.39773" stroke="#898989" />
+              <circle cx="9.68752" cy="7.81289" r="2.39773" stroke="#898989" />
             </svg>
-            <p class="text-main-gray text-sm leading-4.75">
+
+            <p class="text-main-gray text-sm text-sm/4.75">
               Москва, Котельническая набережная 25с1.
             </p>
           </div>
 
-          <div class="flex items-center gap-9">
+          <div class="flex items-center gap-9 pt-0.5">
             <a href="#" class="flex items-center gap-1">
               <svg
                 width="20"
@@ -390,7 +392,7 @@
 
         <!-- Bottom -->
         <div
-          :class="$store.mobileMenuOpen ? 'lg:h-17 relative z-50 bg-main-yellow max-lg:rounded-t-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8' : 'lg:h-17 relative z-50 bg-main-yellow max-lg:rounded-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8', ''"
+          :class="$store.mobileMenuOpen ? 'lg:h-17 relative z-50 bg-main-yellow max-lg:rounded-t-lg flex max-lg:items-center justify-between gap-2 3xs:gap-4 md:gap-7 lg:gap-10 pl-4 pr-2 md:pr-4 lg:pr-8' : 'lg:h-17 relative z-50 bg-main-yellow max-lg:rounded-lg flex max-lg:items-center justify-between gap-4 md:gap-7 lg:gap-10 pl-3 3xs:pl-4 pr-2 md:pr-4 lg:pr-8', ''"
         >
           <!-- Logo -->
           <a class="shrink-0 lg:flex items-end" href="#">
@@ -466,9 +468,7 @@
                 <span class="text-main-lg leading-6 pt-1"> Каталог </span>
               </button>
               <!-- Searchbar -->
-              <div
-                class="relative max-w-153.25 w-full min-w-25 hidden min-[375px]:block"
-              >
+              <div class="relative max-w-153.25 w-full min-w-25">
                 <input
                   class="relative z-0 max-w-153.25 w-full bg-white border border-transparent rounded-lg focus:border-main-gray placeholder:text-main-gray-400/50 max-md:placeholder:font-light lg:text-lg/6.25 outline-none lg:h-10.25 py-1 lg:py-2 px-2.5 lg:px-4"
                   type="text"
@@ -673,35 +673,6 @@
             <div
               class="size-full h-[calc(100vh-84px)] bg-main-yellow rounded-b-lg overflow-auto px-4 custom-scroll pb-20 lg:pb-10"
             >
-              <!-- Searchbar for mobile (under 375px) -->
-              <div class="max-[374px]:block min-[375px]:hidden mt-4 mb-2">
-                <div class="relative w-full">
-                  <input
-                    class="relative z-0 w-full bg-white border border-transparent rounded-lg focus:border-main-gray placeholder:text-main-gray-400/50 placeholder:font-light text-base outline-none h-10 py-2 px-4"
-                    type="text"
-                    name="search-mobile"
-                    id="search-mobile"
-                    placeholder="Поиск"
-                  />
-                  <div
-                    class="absolute z-10 top-1/2 -translate-y-1/2 right-4 size-6 flex items-center justify-center"
-                  >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 17 18"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M10.2536 11.0375C11.1355 10.1559 11.5765 9.09587 11.5765 7.85753C11.5765 6.6192 11.1355 5.5592 10.2536 4.67753C9.37326 3.79753 8.31374 3.35753 7.07498 3.35753C5.83456 3.35753 4.77419 3.79753 3.89389 4.67753C3.01359 5.5592 2.57344 6.6192 2.57344 7.85753C2.57344 9.09587 3.01359 10.1559 3.89389 11.0375C4.77419 11.9175 5.83456 12.3575 7.07498 12.3575C8.31374 12.3575 9.37326 11.9175 10.2536 11.0375ZM16.7208 16.215C16.7208 16.5634 16.5932 16.8642 16.3381 17.1175C16.0831 17.3725 15.7813 17.5 15.4328 17.5C15.071 17.5 14.7701 17.3725 14.53 17.1175L11.0838 13.6825C9.88344 14.5125 8.54715 14.9275 7.07498 14.9275C6.11632 14.9275 5.20017 14.7417 4.32654 14.37C3.45124 13.9984 2.69765 13.4967 2.06577 12.865C1.43222 12.2317 0.929545 11.4784 0.557752 10.605C0.185958 9.73003 6.10352e-05 8.8142 6.10352e-05 7.85753C6.10352e-05 6.8992 0.185958 5.98337 0.557752 5.11003C0.929545 4.2367 1.43222 3.48337 2.06577 2.85003C2.69765 2.2167 3.45124 1.7142 4.32654 1.34253C5.20017 0.970868 6.11632 0.785034 7.07498 0.785034C8.03197 0.785034 8.94729 0.970868 9.82092 1.34253C10.6962 1.7142 11.4498 2.2167 12.0817 2.85003C12.7152 3.48337 13.2179 4.2367 13.5897 5.11003C13.9615 5.98337 14.1474 6.8992 14.1474 7.85753C14.1474 9.33087 13.7323 10.6667 12.902 11.865L16.3481 15.31C16.5966 15.5584 16.7208 15.86 16.7208 16.215Z"
-                        fill="#333333"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
               <div class="flex flex-col justify-between gap-8">
                 <ul
                   class="divide-y divide-white text-2xl/7.25 font-medium font-rooftop"
@@ -998,7 +969,7 @@
           @click.outside="catalogOpen = false"
         >
           <div
-            class="catalog-mobile-scroll overflow-auto h-[calc(100vh-64px)] lg:h-auto w-full grid lg:flex !items-stretch bg-white rounded-b-lg lg:px-6 relative pb-20 lg:pb-0"
+            class="catalog-mobile-scroll overflow-auto h-[calc(100vh-64px)] lg:h-auto w-full grid lg:flex !items-stretch bg-white rounded-b-lg lg:px-6 relative pb-40 3xs:pb-20 lg:pb-0"
           >
             <!-- Left Categories -->
             <div class="lg:border-r border-main-gray/20 lg:pt-6 lg:pr-1">
