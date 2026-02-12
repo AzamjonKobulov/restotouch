@@ -2898,7 +2898,7 @@
                         <input
                           type="text"
                           class="h-10 w-full bg-main-silver rounded-lg outline-none focus:ring-2 focus:bg-white ring-main-yellow pl-6 pr-4"
-                          placeholder="Названиaе проекта"
+                          placeholder="Название проекта"
                           id="project-name"
                         />
                       </div>
@@ -3020,7 +3020,7 @@
                     />
                     <button
                       @click="$refs.fileInput.click()"
-                      class="h-10 bg-main-black text-white w-full rounded-lg hover:bg-main-black/80 smooth"
+                      class="h-10 bg-main-black text-white w-full font-rooftop font-medium rounded-lg hover:bg-main-black/80 smooth"
                     >
                       <span x-show="!selectedFile" class="text-xs/3 uppercase"
                         >Выбрать файл (Jpg, Pdf, Doc)</span
@@ -3206,6 +3206,46 @@
 
                         <p class="font-medium text-main-sm/4.5 hidden">0 ₽</p>
                       </label>
+
+                      <!-- Address inputs for mobile (below md:) -->
+                      <div
+                        class="space-y-3 pt-3 md:hidden"
+                        x-show="deliveryOption === 'transport-company'"
+                      >
+                        <p class="text-sm/4.75 font-rooftop-compact-book">
+                          Адрес доставки
+                        </p>
+
+                        <div
+                          class="grid gap-3 text-sm/4.75 font-rooftop-compact-book"
+                        >
+                          <div class="relative">
+                            <span
+                              class="absolute left-4 top-1/2 -translate-y-1/2 text-red-500 pointer-events-none"
+                              >*</span
+                            >
+                            <input
+                              type="text"
+                              class="h-10 w-full bg-main-silver rounded-lg outline-none focus:ring-2 focus:bg-white ring-main-yellow pl-6 pr-4"
+                              placeholder="Город"
+                              id="city-transport-company"
+                            />
+                          </div>
+
+                          <div class="relative">
+                            <span
+                              class="absolute left-4 top-1/2 -translate-y-1/2 text-red-500 pointer-events-none"
+                              >*</span
+                            >
+                            <input
+                              type="text"
+                              class="h-10 w-full bg-main-silver rounded-lg outline-none focus:ring-2 focus:bg-white ring-main-yellow pl-6 pr-4"
+                              placeholder="Адрес"
+                              id="address-transport-company"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     <!-- Option 3 -->
@@ -3354,7 +3394,7 @@
                   <!-- Address inputs for desktop (md: and above) -->
                   <div
                     class="space-y-3 pt-1 hidden md:block"
-                    x-show="deliveryOption === 'in-moscow' || deliveryOption === 'out-moscow'"
+                    x-show="deliveryOption === 'in-moscow' || deliveryOption === 'out-moscow' || deliveryOption === 'transport-company'"
                   >
                     <p class="text-sm/4.75 font-rooftop-compact-book">
                       Адрес доставки
@@ -3434,7 +3474,11 @@
                       Важно: Restotouch отправляет платёжные ссылки только от
                       лица ИП Маслов К.С.
                     </div>
+                  </div>
 
+                  <div
+                    class="space-y-4 text-sm/4.75 font-rooftop-compact-book bg-main-yellow-100 rounded-lg mt-6 p-4"
+                  >
                     <div class="flex items-center gap-4">
                       <svg
                         width="24"
@@ -3467,7 +3511,7 @@
 
                   <!-- Options -->
                   <div
-                    class="grid sm:grid-cols-2 gap-2 text-sm/4.75 font-rooftop-compact-book"
+                    class="grid sm:grid-cols-2 gap-2 text-sm/4.75 font-rooftop-compact-book mt-6"
                   >
                     <!-- Option 1 -->
                     <div>
@@ -3858,6 +3902,46 @@
 
                         <p class="font-medium text-main-sm/4.5 hidden">0 ₽</p>
                       </label>
+
+                      <!-- Address inputs for mobile (below md:) -->
+                      <div
+                        class="space-y-3 pt-3 md:hidden"
+                        x-show="deliveryOption === 'transport-company'"
+                      >
+                        <p class="text-sm/4.75 font-rooftop-compact-book">
+                          Адрес доставки
+                        </p>
+
+                        <div
+                          class="grid gap-3 text-sm/4.75 font-rooftop-compact-book"
+                        >
+                          <div class="relative">
+                            <span
+                              class="absolute left-4 top-1/2 -translate-y-1/2 text-red-500 pointer-events-none"
+                              >*</span
+                            >
+                            <input
+                              type="text"
+                              class="h-10 w-full bg-main-silver rounded-lg outline-none focus:ring-2 focus:bg-white ring-main-yellow pl-6 pr-4"
+                              placeholder="Город"
+                              id="city-transport-company-individual"
+                            />
+                          </div>
+
+                          <div class="relative">
+                            <span
+                              class="absolute left-4 top-1/2 -translate-y-1/2 text-red-500 pointer-events-none"
+                              >*</span
+                            >
+                            <input
+                              type="text"
+                              class="h-10 w-full bg-main-silver rounded-lg outline-none focus:ring-2 focus:bg-white ring-main-yellow pl-6 pr-4"
+                              placeholder="Адрес"
+                              id="address-transport-company-individual"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     <!-- Option 3 -->
@@ -4006,7 +4090,7 @@
                   <!-- Address inputs for desktop (md: and above) -->
                   <div
                     class="space-y-3 pt-1 hidden md:block"
-                    x-show="deliveryOption === 'in-moscow' || deliveryOption === 'out-moscow'"
+                    x-show="deliveryOption === 'in-moscow' || deliveryOption === 'out-moscow' || deliveryOption === 'transport-company'"
                   >
                     <p class="text-sm/4.75 font-rooftop-compact-book">
                       Адрес доставки
@@ -4083,7 +4167,10 @@
                       Важно: Restotouch отправляет платёжные ссылки только от
                       лица ИП Маслов К.С.
                     </div>
-
+                  </div>
+                  <div
+                    class="space-y-4 text-sm/4.75 font-rooftop-compact-book bg-main-yellow-100 rounded-lg mt-6 p-4"
+                  >
                     <div class="flex items-center gap-4">
                       <svg
                         width="24"
@@ -4116,7 +4203,7 @@
 
                   <!-- Options -->
                   <div
-                    class="grid sm:grid-cols-2 gap-2 text-sm/4.75 font-rooftop-compact-book"
+                    class="grid sm:grid-cols-2 gap-2 text-sm/4.75 font-rooftop-compact-book mt-6"
                   >
                     <!-- Option 1 -->
                     <div>
