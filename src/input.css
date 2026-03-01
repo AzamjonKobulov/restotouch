@@ -1,0 +1,321 @@
+@font-face {
+  font-family: "Rooftop Wide";
+  src: url("../assets/fonts/rooftop/Rooftop-WideMedium.eot");
+  src: url("../assets/fonts/rooftop/Rooftop-WideMedium.eot?#iefix")
+      format("embedded-opentype"),
+    url("../assets/fonts/rooftop/Rooftop-WideMedium.woff2") format("woff2"),
+    url("../assets/fonts/rooftop/Rooftop-WideMedium.woff") format("woff"),
+    url("../assets/fonts/rooftop/Rooftop-WideMedium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rooftop Compact Book";
+  src: url("../assets/fonts/rooftop/Rooftop-CompactBook.eot");
+  src: url("../assets/fonts/rooftop/Rooftop-CompactBook.eot?#iefix")
+      format("embedded-opentype"),
+    url("../assets/fonts/rooftop/Rooftop-CompactBook.woff2") format("woff2"),
+    url("../assets/fonts/rooftop/Rooftop-CompactBook.woff") format("woff"),
+    url("../assets/fonts/rooftop/Rooftop-CompactBook.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rooftop";
+  src: url("../assets/fonts/rooftop/Rooftop-Regular.eot");
+  src: url("../assets/fonts/rooftop/Rooftop-Regular.eot?#iefix")
+      format("embedded-opentype"),
+    url("../assets/fonts/rooftop/Rooftop-Regular.woff2") format("woff2"),
+    url("../assets/fonts/rooftop/Rooftop-Regular.woff") format("woff"),
+    url("../assets/fonts/rooftop/Rooftop-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rooftop";
+  src: url("../assets/fonts/rooftop/Rooftop-Medium.eot");
+  src: url("../assets/fonts/rooftop/Rooftop-Medium.eot?#iefix")
+      format("embedded-opentype"),
+    url("../assets/fonts/rooftop/Rooftop-Medium.woff2") format("woff2"),
+    url("../assets/fonts/rooftop/Rooftop-Medium.woff") format("woff"),
+    url("../assets/fonts/rooftop/Rooftop-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@import "tailwindcss";
+
+@theme {
+  --breakpoint-3xs: 375px;
+  --breakpoint-2xs: 425px;
+  --breakpoint-xs: 576px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1440px;
+
+  --font-rooftop: "Rooftop";
+  --font-rooftop-compact-book: "Rooftop Compact Book";
+  --font-rooftop-wide: "Rooftop Wide";
+  --color-main-black: #303030;
+  --color-main-gray-dark: #575756;
+  --color-main-gray: #898989;
+  --color-main-gray-100: #e5e5e5;
+  --color-main-gray-200: #e1e1e1;
+  --color-main-gray-400: #555555;
+  --color-main-gray-500: #e2e2e2;
+  --color-main-yellow: #ffe68d;
+  --color-main-yellow-100: #fcf1c5;
+  --color-main-silver: #efefef;
+  --color-main-light-blue: #c6e7ff;
+  --color-main-whitish: #f9f9f9;
+  --color-main-status-red: #ff5151;
+  --color-main-mistake: #ff1515;
+  --color-main-status-green: #b8d39c;
+
+  /* Custom text sizes - additional to Tailwind defaults */
+  --text-main-sm: 0.8125rem; /* 13px */
+  --text-main-base: 0.9375rem; /* 15px */
+  --text-main-lg: 1.1875rem; /* 19px */
+
+  --background-image-list: linear-gradient(
+    180deg,
+    rgba(249, 249, 249, 0) 0%,
+    #f9f9f9 100%
+  );
+
+  --shadow-tab-scoll-btn: 0px 0px 20px 0px #30303033;
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply font-rooftop-compact-book font-[450] text-main-black tracking-[0%] overflow-x-hidden;
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
+}
+
+@utility container-base {
+  @apply w-full max-w-339 mx-auto px-4;
+}
+
+@utility flex-between {
+  @apply flex items-center justify-between;
+}
+
+@utility flex-center {
+  @apply flex items-center justify-center;
+}
+
+@utility smooth {
+  @apply transition-all duration-200;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+}
+.accordion-content.open {
+  max-height: 500px;
+  opacity: 1;
+}
+
+/* Scrollbar: custom-scroll-brands */
+.custom-scroll-brands::-webkit-scrollbar {
+  width: 11px;
+  background-color: transparent;
+}
+
+.custom-scroll-brands::-webkit-scrollbar-thumb {
+  background: #e4e4e4;
+  border-right: 8px solid transparent;
+  background-clip: content-box;
+  transition: all 0.2s ease;
+}
+
+.custom-scroll-brands::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 5px 0;
+  border-radius: 6px;
+}
+
+/* Allow hover effects to show through the scrollbar area */
+.custom-scroll-brands {
+  padding-right: 0;
+  margin-right: 0;
+  position: relative;
+}
+
+/* Create a pseudo-element to position scrollbar 5px from right edge */
+.custom-scroll-brands::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 5px;
+  width: 8px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Scrollbar: custom-scroll */
+.custom-scroll {
+  contain: layout style paint;
+}
+
+/* Reserve space when scrollbar is not needed */
+.custom-scroll.no-scrollbar {
+  padding-right: 15px;
+}
+
+/* Remove reserved space when scrollbar is visible */
+.custom-scroll.has-scrollbar {
+  padding-right: 0;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 15px;
+  background-color: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #e4e4e4;
+  border-left: 12px solid transparent;
+  background-clip: content-box;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+.custom-scroll::-webkit-scrollbar-track-piece {
+  border: 0 1px #ffffff;
+}
+
+.custom-scroll::-webkit-scrollbar-button {
+  display: none;
+}
+
+.scroll-none::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  /* Scrollbar: custom-scroll */
+  .custom-scroll::-webkit-scrollbar {
+    width: 8px;
+    background-color: transparent;
+  }
+
+  .custom-scroll::-webkit-scrollbar-thumb {
+    background-color: #ffffff;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    border-radius: 8px;
+  }
+
+  .custom-scroll::-webkit-scrollbar-track {
+    background: #ffe68d;
+  }
+
+  .custom-scroll::-webkit-scrollbar-track-piece {
+    border: 0 1px #ffe68d;
+  }
+
+  .custom-scroll::-webkit-scrollbar-button {
+    display: none;
+  }
+}
+
+/* Scrollbar: custom-scroll */
+
+.catalog-mobile-scroll::-webkit-scrollbar-thumb {
+  background-color: #ffe68d;
+}
+
+/* Optimize scroll performance */
+.custom-scroll * {
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Scrollbar: accordion-list-scroll */
+.accordion-list-scroll::-webkit-scrollbar {
+  width: 4px;
+  background-color: transparent;
+}
+
+.accordion-list-scroll::-webkit-scrollbar-thumb {
+  background-color: #898989;
+  border-radius: 2px;
+  transition: background-color 0.2s ease;
+}
+
+.accordion-list-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #303030;
+}
+
+.accordion-list-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.accordion-list-scroll::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.accordion-list-scroll::-webkit-scrollbar-button:start:decrement,
+.accordion-list-scroll::-webkit-scrollbar-button:end:increment {
+  display: none !important;
+}
+
+/* Firefox scrollbar */
+.accordion-list-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #898989 transparent;
+}
+
+/* .series-swiper .swiper-wrapper {
+  @apply !pb-10;
+}
+
+.series-swiper .swiper-pagination {
+  @apply !-bottom-10 !z-10;
+}
+
+.series-swiper .swiper-pagination-bullets {
+  @apply flex items-center gap-1 px-2;
+}
+
+.series-swiper .swiper-pagination-bullet {
+  @apply h-0.5 w-full bg-main-gray-200 rounded-full;
+}
+
+.series-swiper .swiper-pagination-bullet-active {
+  @apply bg-main-yellow;
+} */
+
+input[type="radio"]:checked + label {
+  @apply bg-white border-main-black smooth;
+}
+
+input[type="radio"]:checked + label span {
+  @apply opacity-100;
+}
