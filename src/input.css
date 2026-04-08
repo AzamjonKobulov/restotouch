@@ -1,7 +1,8 @@
 @font-face {
   font-family: "Rooftop Wide";
   src: url("../assets/fonts/rooftop/Rooftop-WideMedium.eot");
-  src: url("../assets/fonts/rooftop/Rooftop-WideMedium.eot?#iefix")
+  src:
+    url("../assets/fonts/rooftop/Rooftop-WideMedium.eot?#iefix")
       format("embedded-opentype"),
     url("../assets/fonts/rooftop/Rooftop-WideMedium.woff2") format("woff2"),
     url("../assets/fonts/rooftop/Rooftop-WideMedium.woff") format("woff"),
@@ -14,7 +15,8 @@
 @font-face {
   font-family: "Rooftop Compact Book";
   src: url("../assets/fonts/rooftop/Rooftop-CompactBook.eot");
-  src: url("../assets/fonts/rooftop/Rooftop-CompactBook.eot?#iefix")
+  src:
+    url("../assets/fonts/rooftop/Rooftop-CompactBook.eot?#iefix")
       format("embedded-opentype"),
     url("../assets/fonts/rooftop/Rooftop-CompactBook.woff2") format("woff2"),
     url("../assets/fonts/rooftop/Rooftop-CompactBook.woff") format("woff"),
@@ -27,7 +29,8 @@
 @font-face {
   font-family: "Rooftop";
   src: url("../assets/fonts/rooftop/Rooftop-Regular.eot");
-  src: url("../assets/fonts/rooftop/Rooftop-Regular.eot?#iefix")
+  src:
+    url("../assets/fonts/rooftop/Rooftop-Regular.eot?#iefix")
       format("embedded-opentype"),
     url("../assets/fonts/rooftop/Rooftop-Regular.woff2") format("woff2"),
     url("../assets/fonts/rooftop/Rooftop-Regular.woff") format("woff"),
@@ -40,7 +43,8 @@
 @font-face {
   font-family: "Rooftop";
   src: url("../assets/fonts/rooftop/Rooftop-Medium.eot");
-  src: url("../assets/fonts/rooftop/Rooftop-Medium.eot?#iefix")
+  src:
+    url("../assets/fonts/rooftop/Rooftop-Medium.eot?#iefix")
       format("embedded-opentype"),
     url("../assets/fonts/rooftop/Rooftop-Medium.woff2") format("woff2"),
     url("../assets/fonts/rooftop/Rooftop-Medium.woff") format("woff"),
@@ -70,7 +74,7 @@
   --color-main-gray: #898989;
   --color-main-gray-100: #e5e5e5;
   --color-main-gray-200: #e1e1e1;
-  --color-main-gray-400: #555555;
+  --color-main-gray-400: #55 5555;
   --color-main-gray-500: #e2e2e2;
   --color-main-yellow: #ffe68d;
   --color-main-yellow-100: #fcf1c5;
@@ -85,6 +89,8 @@
   --text-main-sm: 0.8125rem; /* 13px */
   --text-main-base: 0.9375rem; /* 15px */
   --text-main-lg: 1.1875rem; /* 19px */
+
+  --shadow-brand-dropdown: 0px 0px 6px 0px #00000040;
 
   --background-image-list: linear-gradient(
     180deg,
@@ -128,7 +134,9 @@
 .accordion-content {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.4s ease, opacity 0.4s ease;
+  transition:
+    max-height 0.4s ease,
+    opacity 0.4s ease;
   opacity: 0;
 }
 .accordion-content.open {
