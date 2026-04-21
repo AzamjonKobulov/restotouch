@@ -3061,10 +3061,14 @@
 
                 <!-- Sort by -->
                 <div
-                  x-show="activeTab === 'products'"
+                  x-show="activeTab === 'products' || activeTab === 'series'"
                   class="space-y-3 text-sm/4.75"
                 >
-                  <div class="hidden lg:flex-between">
+                  <div
+                    class="hidden lg:flex-between"
+                    x-show="activeTab === 'products'"
+                    x-transition.opacity.duration.250ms
+                  >
                     <p>Найдено 30456 результатов</p>
 
                     <div class="hidden lg:flex items-center gap-5">
@@ -3320,7 +3324,11 @@
                     </div>
                   </div>
 
-                  <div class="hidden lg:block h-px bg-main-gray/15"></div>
+                  <div
+                    class="hidden lg:block h-px bg-main-gray/15"
+                    x-show="activeTab === 'products'"
+                    x-transition.opacity.duration.250ms
+                  ></div>
 
                   <!-- Sort by Tabs -->
                   <div
@@ -4049,16 +4057,18 @@
                       :key="index"
                     >
                       <button
-                        x-show="index < initialVisibleCount || showMore || !isDesktop"
+                        x-show="activeTab === 'products' && (index < initialVisibleCount || showMore || !isDesktop)"
                         x-transition
+                        x-transition.opacity.duration.250ms
                         class="w-max h-10 lg:h-8 bg-main-silver rounded-full hover:bg-main-yellow smooth p-2"
                         x-text="button"
                       ></button>
                     </template>
 
                     <button
-                      x-show="filterButtons.length > initialVisibleCount && isDesktop"
+                      x-show="activeTab === 'products' && filterButtons.length > initialVisibleCount && isDesktop"
                       @click="showMore = !showMore"
+                      x-transition.opacity.duration.250ms
                       class="w-max h-10 lg:h-8 bg-main-yellow rounded-full hover:bg-main-yellow p-2"
                     >
                       <span

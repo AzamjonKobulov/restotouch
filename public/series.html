@@ -2994,11 +2994,13 @@
 
                       let swiper = new Swiper(swiperEl, {
                         loop: true,
-                        slidesPerView: 1.5,
                         spaceBetween: 12,
                         breakpoints: {
-                          768: {
+                          0: {
                             slidesPerView: 1.2,
+                          },
+                          768: {
+                            slidesPerView: 1.5,
                           },
                         },
                         on: {
@@ -4101,9 +4103,9 @@
                       :key="index"
                     >
                       <button
-                        x-show="index < initialVisibleCount || showMore || !isDesktop"
+                        x-show="index < initialVisibleCount || showMore"
                         x-transition
-                        class="w-max h-10 lg:h-8 bg-main-silver rounded-full hover:bg-main-yellow smooth p-2"
+                        class="hidden lg:block w-max h-10 lg:h-8 bg-main-silver rounded-full hover:bg-main-yellow smooth p-2"
                         x-text="button"
                       ></button>
                     </template>
@@ -4111,7 +4113,7 @@
                     <button
                       x-show="filterButtons.length > initialVisibleCount && isDesktop"
                       @click="showMore = !showMore"
-                      class="w-max h-10 lg:h-8 bg-main-yellow rounded-full hover:bg-main-yellow p-2"
+                      class="hidden lg:block w-max h-10 lg:h-8 bg-main-yellow rounded-full hover:bg-main-yellow p-2"
                     >
                       <span
                         x-text="showMore ? 'Скрыть' : 'Смотреть еще'"
