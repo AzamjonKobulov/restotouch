@@ -2972,11 +2972,6 @@
       margin-top: calc(var(--spacing) * 8);
     }
   }
-  .lg\:mt-50 {
-    @media (width >= 1024px) {
-      margin-top: calc(var(--spacing) * 50);
-    }
-  }
   .lg\:mb-3 {
     @media (width >= 1024px) {
       margin-bottom: calc(var(--spacing) * 3);
