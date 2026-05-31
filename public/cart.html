@@ -2243,9 +2243,10 @@
           </div>
         </div>
 
-        <!-- Cart + checkout: sidebar sticks for full left column height -->
+        <!-- Cart + checkout: price card sticks via js/script.js (no sticky class) -->
         <div
-          class="container-base flex flex-col md:flex-row md:items-start gap-8"
+          class="container-base flex flex-col md:flex-row md:items-stretch gap-8"
+          data-cart-price-sticky
         >
           <div class="flex-1 min-w-0">
             <section class="pb-12">
@@ -4331,10 +4332,12 @@
             </div>
           </div>
 
-          <!-- Price Card (md+: sticky beside cart + checkout) -->
-          <aside
-            class="w-full md:w-85 shrink-0 md:sticky md:top-5 md:self-start space-y-4 md:mt-20 xl:mt-30"
+          <!-- Price Card (md+: JS sticky — data-cart-price-track / data-cart-price-card) -->
+          <div
+            data-cart-price-track
+            class="relative w-full md:w-85 shrink-0 md:mt-20 xl:mt-30"
           >
+            <aside data-cart-price-card class="space-y-4">
             <ul class="space-y-4">
               <li class="flex-between">
                 <span>Сумма:</span>
@@ -4438,7 +4441,8 @@
                 </label>
               </div>
             </div>
-          </aside>
+            </aside>
+          </div>
         </div>
       </div>
     </main>
@@ -4687,5 +4691,6 @@
         </div>
       </div>
     </footer>
+    <script defer src="./js/script.js"></script>
   </body>
 </html>
