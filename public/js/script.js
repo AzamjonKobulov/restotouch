@@ -63,13 +63,164 @@ function initCartPriceSticky() {
   update();
 }
 
+function initBrandGridSwipers() {
+  document.querySelectorAll("[data-brand-grid-slider]").forEach((root) => {
+    const swiperEl = root.querySelector(".brand-grid-swiper");
+    const paginationEl = root.querySelector(".brand-grid-pagination");
+    if (!swiperEl || !paginationEl || typeof Swiper === "undefined") return;
+
+    const swiper = new Swiper(swiperEl, {
+      loop: true,
+      speed: 500,
+      spaceBetween: 16,
+      autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+      },
+      on: {
+        init() {
+          updateBrandGridPagination(this, paginationEl);
+        },
+        slideChange() {
+          updateBrandGridPagination(this, paginationEl);
+        },
+      },
+      breakpoints: {
+        768: {
+          spaceBetween: 24,
+        },
+      },
+    });
+
+    function updateBrandGridPagination(swiperInstance, paginationNode) {
+      const bullets = paginationNode.querySelectorAll(".pagination-bullet");
+      const realIndex = swiperInstance.realIndex;
+
+      bullets.forEach((bullet, index) => {
+        if (index === realIndex) {
+          bullet.classList.remove("bg-main-gray-200");
+          bullet.classList.add("bg-main-yellow");
+        } else {
+          bullet.classList.remove("bg-main-yellow");
+          bullet.classList.add("bg-main-gray-200");
+        }
+      });
+    }
+
+    paginationEl
+      .querySelectorAll(".pagination-bullet")
+      .forEach((bullet, index) => {
+        bullet.addEventListener("click", () => swiper.slideToLoop(index));
+      });
+  });
+}
+
+function initProductsGridCardSwiper() {
+  const root = document.querySelector("[data-products-grid-card-slider]");
+  if (!root || typeof Swiper === "undefined") return;
+
+  const lgMinWidth = 1024;
+  let swiperInstance = null;
+
+  function updatePagination(swiper, paginationEl) {
+    const bullets = paginationEl.querySelectorAll(".pagination-bullet");
+    const realIndex = swiper.realIndex;
+
+    bullets.forEach((bullet, index) => {
+      if (index === realIndex) {
+        bullet.classList.remove("bg-main-gray-200");
+        bullet.classList.add("bg-main-yellow");
+      } else {
+        bullet.classList.remove("bg-main-yellow");
+        bullet.classList.add("bg-main-gray-200");
+      }
+    });
+  }
+
+  function destroySwiper() {
+    if (!swiperInstance) return;
+    swiperInstance.destroy(true, true);
+    swiperInstance = null;
+  }
+
+  function initSwiper() {
+    if (window.innerWidth >= lgMinWidth) {
+      destroySwiper();
+      return;
+    }
+
+    if (swiperInstance) return;
+
+    const swiperEl = root.querySelector(".products-grid-card-swiper");
+    const paginationEl = root.querySelector(".products-grid-card-pagination");
+    if (!swiperEl || !paginationEl) return;
+
+    swiperInstance = new Swiper(swiperEl, {
+      loop: true,
+      speed: 500,
+      spaceBetween: 20,
+      slidesPerView: 1,
+      autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+      },
+      on: {
+        init() {
+          updatePagination(this, paginationEl);
+        },
+        slideChange() {
+          updatePagination(this, paginationEl);
+        },
+      },
+    });
+
+    paginationEl.querySelectorAll(".pagination-bullet").forEach((bullet, index) => {
+      bullet.addEventListener("click", () => swiperInstance.slideToLoop(index));
+    });
+  }
+
+  initSwiper();
+  window.addEventListener("resize", initSwiper);
+}
+
+function initBrandsLogosSwiper() {
+  const root = document.querySelector("[data-brands-logos-slider]");
+  const swiperEl = root?.querySelector(".brands-logos-swiper");
+  const prevEl = root?.querySelector("[data-brands-logos-prev]");
+  const nextEl = root?.querySelector("[data-brands-logos-next]");
+
+  if (!swiperEl || typeof Swiper === "undefined") return;
+
+  new Swiper(swiperEl, {
+    loop: true,
+    speed: 600,
+    slidesPerView: 8,
+    spaceBetween: 20,
+    autoplay: {
+      delay: 3000,
+      disableOnInteraction: false,
+      pauseOnMouseEnter: true,
+    },
+    navigation: {
+      prevEl,
+      nextEl,
+    },
+  });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   initCartPriceSticky();
+  initBrandGridSwipers();
+  initProductsGridCardSwiper();
+  initBrandsLogosSwiper();
 
   // Initialize all swipers on the page
   const swipers = document.querySelectorAll(".series-swiper");
 
   swipers.forEach((swiperEl) => {
+    // Popular products row manages its own card swipers via Alpine
+    if (swiperEl.closest("#products")) return;
+
     // Find the corresponding custom pagination for this swiper
     const swiperContainer = swiperEl.closest(".border");
     const paginationContainer = swiperContainer

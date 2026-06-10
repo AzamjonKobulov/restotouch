@@ -4,41 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <!-- Global loader + x-cloak helper -->
-    <style>
-      [x-cloak] {
-        display: none !important;
-      }
-      #page-loader {
-        position: fixed;
-        inset: 0;
-        background: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        transition:
-          opacity 200ms ease,
-          visibility 200ms ease;
-      }
-      #page-loader.page-loader--hide {
-        opacity: 0;
-        visibility: hidden;
-      }
-      .page-loader__spinner {
-        width: 48px;
-        height: 48px;
-        border: 4px solid #c6e7ff;
-        border-top-color: #303030;
-        border-radius: 50%;
-        animation: page-loader-spin 0.9s linear infinite;
-      }
-      @keyframes page-loader-spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-    </style>
     <!-- Styles -->
     <link rel="stylesheet" href="./css/styles.css" />
     <script defer src="./js/loader.js"></script>
@@ -79,7 +44,8 @@
     </script>
     <!-- Header -->
     <header
-      class="max-xl:mt-4 mb-6 xl:mb-4"
+      class="site-header sticky z-50 lg:bg-white mb-6 xl:mb-4"
+      :class="isScrolled && 'is-scrolled'"
       x-data="{ 
       selectedCategory: 'Фарфоровая и керамическая посуда',
       showProducts: false,
@@ -365,26 +331,65 @@
         ],
       },
       isScrolled: false,
-      init() {
-        // Check scrollbar on initial load
-        this.checkScrollbar();
-        
-        window.addEventListener('scroll', () => {
-          let scrollY = window.scrollY;
-          let width = window.innerWidth;
-          
-          // Only apply scroll detection on lg and above screens (overlay is hidden under lg)
-          if (width >= 1024) {
-            if (width >= 1280) { // xl and above
-              this.isScrolled = scrollY > 98;
-            } else { // lg
-              this.isScrolled = scrollY > 84;
-            }
-          } else {
-            // Under lg - overlay is hidden, so no need to track scroll
-            this.isScrolled = false;
-          }
+      showPageLinks: true,
+      pageLinksLocked: false,
+      pageLinksHideAt: 140,
+      pageLinksShowAt: 80,
+      lastScrollY: 0,
+      setPageLinks(show) {
+        if (this.showPageLinks === show || this.pageLinksLocked) return;
+        const bar = this.$refs.pageLinksBar;
+        const heightBefore = bar?.scrollHeight ?? 0;
+        this.showPageLinks = show;
+        this.pageLinksLocked = true;
+        this.$nextTick(() => {
+          const heightAfter = bar?.scrollHeight ?? 0;
+          const diff = heightBefore - heightAfter;
+          if (diff !== 0) window.scrollBy(0, -diff);
+          setTimeout(() => {
+            this.pageLinksLocked = false;
+          }, 400);
         });
+      },
+      init() {
+        this.checkScrollbar();
+        this.lastScrollY = window.scrollY;
+
+        window.addEventListener(
+          'scroll',
+          () => {
+            const scrollY = window.scrollY;
+            const width = window.innerWidth;
+            const delta = scrollY - this.lastScrollY;
+
+            if (!this.pageLinksLocked) {
+              if (width >= 1024) {
+                if (scrollY <= this.pageLinksShowAt) {
+                  this.setPageLinks(true);
+                } else if (scrollY >= this.pageLinksHideAt && delta > 10) {
+                  this.setPageLinks(false);
+                } else if (delta < -15) {
+                  this.setPageLinks(true);
+                }
+              } else if (!this.showPageLinks) {
+                this.showPageLinks = true;
+              }
+            }
+
+            if (width >= 1024) {
+              if (width >= 1280) {
+                this.isScrolled = scrollY > 98;
+              } else {
+                this.isScrolled = scrollY > 84;
+              }
+            } else {
+              this.isScrolled = false;
+            }
+
+            this.lastScrollY = scrollY;
+          },
+          { passive: true },
+        );
       }
     }"
     >
@@ -933,82 +938,88 @@
         </div>
 
         <!-- Pages Links -->
-        <div class="hidden lg:block border-b border-main-silver py-4">
-          <ul
-            class="flex-center gap-8 xl:gap-10.5 text-xs/3.5 xl:text-main-sm/4.5"
-          >
-            <li>
-              <a
-                href="#"
-                class="hover:text-main-gray transition-all duration-200"
-                >О компании</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="hover:text-main-gray transition-all duration-200"
-                >Наше производство</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="hover:text-main-gray transition-all duration-200"
-                >Бренды</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="inline-block flex-center bg-[#17BFBF] text-white rounded-[2px] pt-0.5 px-2"
-              >
-                Распродажа
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                class="hover:text-main-gray transition-all duration-200"
-                >Новинки</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="hover:text-main-gray transition-all duration-200"
-                >Доставка</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="hover:text-main-gray transition-all duration-200"
-                >Оплата</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="hover:text-main-gray transition-all duration-200"
-                >Наши клиенты</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="hover:text-main-gray transition-all duration-200"
-                >Сотрудничество</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="hover:text-main-gray transition-all duration-200"
-                >Контакты</a
-              >
-            </li>
-          </ul>
+        <div
+          x-ref="pageLinksBar"
+          class="nav-extra-links nav-extra-links--pages hidden lg:block"
+          :class="showPageLinks ? 'nav-extra-links--open' : 'nav-extra-links--closed'"
+        >
+          <div class="border-b border-main-silver py-4">
+            <ul
+              class="flex-center gap-8 xl:gap-10.5 text-xs/3.5 xl:text-main-sm/4.5"
+            >
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-main-gray transition-all duration-200"
+                  >О компании</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-main-gray transition-all duration-200"
+                  >Наше производство</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-main-gray transition-all duration-200"
+                  >Бренды</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="inline-block flex-center bg-[#17BFBF] text-white rounded-[2px] pt-0.5 px-2"
+                >
+                  Распродажа
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-main-gray transition-all duration-200"
+                  >Новинки</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-main-gray transition-all duration-200"
+                  >Доставка</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-main-gray transition-all duration-200"
+                  >Оплата</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-main-gray transition-all duration-200"
+                  >Наши клиенты</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-main-gray transition-all duration-200"
+                  >Сотрудничество</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-main-gray transition-all duration-200"
+                  >Контакты</a
+                >
+              </li>
+            </ul>
+          </div>
         </div>
 
         <!-- Catalog -->
@@ -1333,7 +1344,7 @@
                   <li
                     class="flex-between gap-3 cursor-pointer rounded-lg lg:hover:bg-main-silver/50 transition-colors duration-200 lg:py-2 lg:px-2.5"
                     :class="selectedCategory === 'Мебель и декор' ? 'lg:bg-main-silver' : ''"
-                    @click="navigateToProducts('Мебель иx декор')"
+                    @click="navigateToProducts('Мебель и декор')"
                   >
                     <div class="flex items-center gap-3">
                       <div
@@ -2097,7 +2108,7 @@
         </div>
         <!-- Catalog overlay -->
         <div
-          :class="isScrolled ? 'fixed top-0 inset-x-0 bottom-0 w-full hidden lg:block bg-main-black/50 transition-all duration-150 ease-out' : 'fixed top-21 xl:top-24 inset-x-0 bottom-0 w-full hidden lg:block bg-main-black/50 transition-all duration-150 ease-out'"
+          :class="isScrolled ? 'fixed top-0 inset-x-0 bottom-0 w-full hidden lg:block bg-main-black/50 transition-all duration-300 ease-out' : 'fixed top-21 xl:top-24 inset-x-0 bottom-0 w-full hidden lg:block bg-main-black/50 transition-all duration-300 ease-out'"
           x-show="catalogOpen"
           @click="catalogOpen = false"
           x-transition:enter="transition-opacity ease-out duration-300"
