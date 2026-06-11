@@ -3933,12 +3933,7 @@
                         country: 'Portland (турция)',
                         name: 'Ariane Daro',
                         price: 'От 1820 ₽',
-                        images: [
-                          './assets/images/series-1.jpg',
-                          './assets/images/series-1.jpg',
-                          './assets/images/series-1.jpg',
-                          './assets/images/series-1.jpg'
-                        ]
+                        images: ['./assets/images/series-1.jpg']
                       },
                       {
                         country: 'Portland (турция)',
@@ -4151,50 +4146,7 @@
                       }
                     ],
                     init() {
-                      this.$nextTick(() => {
-                        // Initialize swipers after Alpine renders
-                        let swipers = document.querySelectorAll('.series-swiper');
-                        swipers.forEach((swiperEl) => {
-                          let swiperContainer = swiperEl.closest('.border');
-                          let paginationContainer = swiperContainer
-                            ? swiperContainer.querySelector('.custom-pagination')
-                            : null;
-                          if (!paginationContainer) return;
-                          
-                          let swiper = new Swiper(swiperEl, {
-                            loop: true,
-                            on: {
-                              init: function () {
-                                updateCustomPagination(this, paginationContainer);
-                              },
-                              slideChange: function () {
-                                updateCustomPagination(this, paginationContainer);
-                              },
-                            },
-                          });
-                          
-                          function updateCustomPagination(swiperInstance, paginationEl) {
-                            let bullets = paginationEl.querySelectorAll('.pagination-bullet');
-                            let realIndex = swiperInstance.realIndex;
-                            bullets.forEach((bullet, index) => {
-                              if (index === realIndex) {
-                                bullet.classList.remove('bg-main-silver');
-                                bullet.classList.add('bg-main-yellow');
-                              } else {
-                                bullet.classList.remove('bg-main-yellow');
-                                bullet.classList.add('bg-main-silver');
-                              }
-                            });
-                          }
-                          
-                          let bullets = paginationContainer.querySelectorAll('.pagination-bullet');
-                          bullets.forEach((bullet, index) => {
-                            bullet.addEventListener('click', () => {
-                              swiper.slideToLoop(index);
-                            });
-                          });
-                        });
-                      });
+                      this.$nextTick(() => initSeriesProductSwipers(this.$el));
                     }
                   }"
                 >
@@ -4202,41 +4154,54 @@
                     <div
                       class="border border-main-silver rounded-lg sm:rounded-2xl"
                     >
-                      <!-- Slider -->
-                      <div
-                        class="swiper series-swiper h-55 sm:h-74 rounded-lg sm:rounded-2xl overflow-hidden"
-                      >
-                        <div class="swiper-wrapper">
-                          <template
-                            x-for="(image, imgIndex) in item.images"
-                            :key="imgIndex"
-                          >
-                            <div class="swiper-slide">
-                              <img
-                                :src="image"
-                                :alt="item.name"
-                                class="size-full object-cover"
-                              />
-                            </div>
-                          </template>
-                        </div>
-                      </div>
-
-                      <!-- Custom Pagination -->
-                      <div
-                        class="custom-pagination flex items-center gap-1 mt-2 px-2"
-                      >
-                        <template
-                          x-for="(image, bulletIndex) in item.images"
-                          :key="bulletIndex"
-                        >
+                      <template x-if="item.images.length > 1">
+                        <div>
                           <div
-                            class="pagination-bullet w-full h-0.5 rounded-full cursor-pointer"
-                            :class="bulletIndex === 0 ? 'bg-main-yellow' : 'bg-main-silver'"
-                            :data-index="bulletIndex"
-                          ></div>
-                        </template>
-                      </div>
+                            class="swiper series-swiper h-55 sm:h-74 rounded-lg sm:rounded-2xl overflow-hidden"
+                          >
+                            <div class="swiper-wrapper">
+                              <template
+                                x-for="(image, imgIndex) in item.images"
+                                :key="imgIndex"
+                              >
+                                <div class="swiper-slide">
+                                  <img
+                                    :src="image"
+                                    :alt="item.name"
+                                    class="size-full object-cover"
+                                  />
+                                </div>
+                              </template>
+                            </div>
+                          </div>
+
+                          <div
+                            class="custom-pagination flex items-center gap-1 mt-2 px-2"
+                          >
+                            <template
+                              x-for="(image, bulletIndex) in item.images"
+                              :key="bulletIndex"
+                            >
+                              <div
+                                class="pagination-bullet w-full h-0.5 rounded-full cursor-pointer"
+                                :class="bulletIndex === 0 ? 'bg-main-yellow' : 'bg-main-silver'"
+                                :data-index="bulletIndex"
+                              ></div>
+                            </template>
+                          </div>
+                        </div>
+                      </template>
+                      <template x-if="item.images.length === 1">
+                        <div
+                          class="h-55 sm:h-74 rounded-lg sm:rounded-2xl overflow-hidden"
+                        >
+                          <img
+                            :src="item.images[0]"
+                            :alt="item.name"
+                            class="size-full object-cover"
+                          />
+                        </div>
+                      </template>
 
                       <div class="space-y-2.5 mt-3.5 px-2 pb-2">
                         <p
@@ -4266,12 +4231,7 @@
                       {
                         name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
                         price: 'От 1820 ₽',
-                        images: [
-                          './assets/images/plate.png',
-                          './assets/images/plate.png',
-                          './assets/images/plate.png',
-                          './assets/images/plate.png'
-                        ],
+                        images: ['./assets/images/plate.png'],
                         art: '81250112',
                         oldCost: '2000 ₽',
                         cost: '1820 ₽',
@@ -4383,12 +4343,7 @@
                       {
                         name: 'Салатник полуглубокий, Summa, IO Crema, 24 Салатник полуглубокий, Summa, IO Crema,',
                         price: 'От 1820 ₽',
-                        images: [
-                          './assets/images/plate.png',
-                          './assets/images/plate.png',
-                          './assets/images/plate.png',
-                          './assets/images/plate.png'
-                        ],
+                        images: ['./assets/images/plate.png'],
                         art: '81250112',
                         oldCost: '2000 ₽',
                         cost: '1820 ₽',
@@ -4422,50 +4377,7 @@
                       
                     ],
                     init() {
-                      this.$nextTick(() => {
-                        // Initialize swipers after Alpine renders
-                        let swipers = document.querySelectorAll('.series-swiper');
-                        swipers.forEach((swiperEl) => {
-                          let swiperContainer = swiperEl.closest('.border');
-                          let paginationContainer = swiperContainer
-                            ? swiperContainer.querySelector('.custom-pagination')
-                            : null;
-                          if (!paginationContainer) return;
-                          
-                          let swiper = new Swiper(swiperEl, {
-                            loop: true,
-                            on: {
-                              init: function () {
-                                updateCustomPagination(this, paginationContainer);
-                              },
-                              slideChange: function () {
-                                updateCustomPagination(this, paginationContainer);
-                              },
-                            },
-                          });
-                          
-                          function updateCustomPagination(swiperInstance, paginationEl) {
-                            let bullets = paginationEl.querySelectorAll('.pagination-bullet');
-                            let realIndex = swiperInstance.realIndex;
-                            bullets.forEach((bullet, index) => {
-                              if (index === realIndex) {
-                                bullet.classList.remove('bg-main-silver');
-                                bullet.classList.add('bg-main-yellow');
-                              } else {
-                                bullet.classList.remove('bg-main-yellow');
-                                bullet.classList.add('bg-main-silver');
-                              }
-                            });
-                          }
-                          
-                          let bullets = paginationContainer.querySelectorAll('.pagination-bullet');
-                          bullets.forEach((bullet, index) => {
-                            bullet.addEventListener('click', () => {
-                              swiper.slideToLoop(index);
-                            });
-                          });
-                        });
-                      });
+                      this.$nextTick(() => initSeriesProductSwipers(this.$el));
                     }
                   }"
                 >
@@ -4473,9 +4385,9 @@
                     <div
                       class="border border-main-silver rounded-2xl overflow-hidden"
                     >
-                      <!-- Slider -->
                       <div
-                        class="swiper series-swiper h-57 sm:h-74 relative rounded-lg sm:rounded-2xl overflow-hidden"
+                        class="h-57 sm:h-74 relative rounded-lg sm:rounded-2xl overflow-hidden"
+                        :class="item.images.length > 1 ? 'swiper series-swiper' : ''"
                       >
                         <span
                           class="h-4.5 text-[9px]/4.5 absolute top-2 left-2 z-10 font-rooftop font-medium uppercase bg-main-status-green rounded-[2px] px-1 pt-0.25"
@@ -4516,24 +4428,32 @@
                           class="h-4.5 absolute bottom-2 left-2 z-10 text-[9px]/3.25 font-rooftop font-medium uppercase bg-main-status-red text-white rounded-[2px] pb-0.5 pt-1 px-1"
                           >NEW</span
                         >
-                        <div class="swiper-wrapper">
-                          <template
-                            x-for="(image, imgIndex) in item.images"
-                            :key="imgIndex"
-                          >
-                            <div class="swiper-slide">
-                              <img
-                                :src="image"
-                                :alt="item.name"
-                                class="size-full"
-                              />
-                            </div>
-                          </template>
-                        </div>
+                        <template x-if="item.images.length > 1">
+                          <div class="swiper-wrapper">
+                            <template
+                              x-for="(image, imgIndex) in item.images"
+                              :key="imgIndex"
+                            >
+                              <div class="swiper-slide">
+                                <img
+                                  :src="image"
+                                  :alt="item.name"
+                                  class="size-full"
+                                />
+                              </div>
+                            </template>
+                          </div>
+                        </template>
+                        <img
+                          x-show="item.images.length === 1"
+                          :src="item.images[0]"
+                          :alt="item.name"
+                          class="size-full"
+                        />
                       </div>
 
-                      <!-- Custom Pagination -->
                       <div
+                        x-show="item.images.length > 1"
                         class="custom-pagination flex items-center gap-1 mt-2 px-2"
                       >
                         <template
@@ -4858,50 +4778,7 @@
               },
             ],
             init() {
-              this.$nextTick(() => {
-                // Initialize swipers after Alpine renders
-                let swipers = document.querySelectorAll('.series-swiper');
-                swipers.forEach((swiperEl) => {
-                  let swiperContainer = swiperEl.closest('.border');
-                  let paginationContainer = swiperContainer
-                    ? swiperContainer.querySelector('.custom-pagination')
-                    : null;
-                  if (!paginationContainer) return;
-                  
-                  let swiper = new Swiper(swiperEl, {
-                    loop: true,
-                    on: {
-                      init: function () {
-                        updateCustomPagination(this, paginationContainer);
-                      },
-                      slideChange: function () {
-                        updateCustomPagination(this, paginationContainer);
-                      },
-                    },
-                  });
-                  
-                  function updateCustomPagination(swiperInstance, paginationEl) {
-                    let bullets = paginationEl.querySelectorAll('.pagination-bullet');
-                    let realIndex = swiperInstance.realIndex;
-                    bullets.forEach((bullet, index) => {
-                      if (index === realIndex) {
-                        bullet.classList.remove('bg-main-silver');
-                        bullet.classList.add('bg-main-yellow');
-                      } else {
-                        bullet.classList.remove('bg-main-yellow');
-                        bullet.classList.add('bg-main-silver');
-                      }
-                    });
-                  }
-                  
-                  let bullets = paginationContainer.querySelectorAll('.pagination-bullet');
-                  bullets.forEach((bullet, index) => {
-                    bullet.addEventListener('click', () => {
-                      swiper.slideToLoop(index);
-                    });
-                  });
-                });
-              });
+              this.$nextTick(() => initSeriesProductSwipers(this.$el));
             }
           }"
           >
@@ -4909,9 +4786,9 @@
               <div
                 class="w-50.5 md:w-59 shrink-0 border border-main-silver rounded-2xl overflow-hidden"
               >
-                <!-- Slider -->
                 <div
-                  class="swiper series-swiper h-57 md:h-78 relative rounded-lg md:rounded-2xl overflow-hidden"
+                  class="h-57 md:h-78 relative rounded-lg md:rounded-2xl overflow-hidden"
+                  :class="item.images.length > 1 ? 'swiper series-swiper' : ''"
                 >
                   <span
                     class="h-4.5 text-[9px]/4.5 absolute top-2 left-2 z-10 font-rooftop font-medium uppercase bg-main-status-green rounded-[2px] px-1 pt-0.25"
@@ -4947,20 +4824,28 @@
                     class="h-4.5 absolute bottom-2 left-2 z-10 text-[9px]/4.5 font-rooftop font-medium uppercase bg-main-status-red text-white rounded-[2px] pt-0.25 px-1"
                     >NEW</span
                   >
-                  <div class="swiper-wrapper">
-                    <template
-                      x-for="(image, imgIndex) in item.images"
-                      :key="imgIndex"
-                    >
-                      <div class="swiper-slide">
-                        <img :src="image" :alt="item.name" class="size-full" />
-                      </div>
-                    </template>
-                  </div>
+                  <template x-if="item.images.length > 1">
+                    <div class="swiper-wrapper">
+                      <template
+                        x-for="(image, imgIndex) in item.images"
+                        :key="imgIndex"
+                      >
+                        <div class="swiper-slide">
+                          <img :src="image" :alt="item.name" class="size-full" />
+                        </div>
+                      </template>
+                    </div>
+                  </template>
+                  <img
+                    x-show="item.images.length === 1"
+                    :src="item.images[0]"
+                    :alt="item.name"
+                    class="size-full"
+                  />
                 </div>
 
-                <!-- Custom Pagination -->
                 <div
+                  x-show="item.images.length > 1"
                   class="custom-pagination flex items-center gap-1 mt-2 px-2"
                 >
                   <template

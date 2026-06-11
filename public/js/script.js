@@ -183,6 +183,54 @@ function initProductsGridCardSwiper() {
   window.addEventListener("resize", initSwiper);
 }
 
+function initSeriesProductSwipers(root = document) {
+  if (typeof Swiper === "undefined") return;
+
+  root.querySelectorAll(".series-swiper").forEach((swiperEl) => {
+    if (swiperEl.dataset.seriesSwiperInit === "true") return;
+
+    const slides = swiperEl.querySelectorAll(".swiper-slide");
+    if (slides.length <= 1) return;
+
+    const swiperContainer = swiperEl.closest(".border");
+    const paginationContainer = swiperContainer?.querySelector(".custom-pagination");
+    if (!paginationContainer) return;
+
+    swiperEl.dataset.seriesSwiperInit = "true";
+
+    const swiper = new Swiper(swiperEl, {
+      loop: true,
+      on: {
+        init() {
+          updateSeriesProductPagination(this, paginationContainer);
+        },
+        slideChange() {
+          updateSeriesProductPagination(this, paginationContainer);
+        },
+      },
+    });
+
+    paginationContainer.querySelectorAll(".pagination-bullet").forEach((bullet, index) => {
+      bullet.addEventListener("click", () => swiper.slideToLoop(index));
+    });
+  });
+}
+
+function updateSeriesProductPagination(swiperInstance, paginationEl) {
+  const bullets = paginationEl.querySelectorAll(".pagination-bullet");
+  const realIndex = swiperInstance.realIndex;
+
+  bullets.forEach((bullet, index) => {
+    if (index === realIndex) {
+      bullet.classList.remove("bg-main-silver");
+      bullet.classList.add("bg-main-yellow");
+    } else {
+      bullet.classList.remove("bg-main-yellow");
+      bullet.classList.add("bg-main-silver");
+    }
+  });
+}
+
 function initBrandsLogosSwiper() {
   const root = document.querySelector("[data-brands-logos-slider]");
   const swiperEl = root?.querySelector(".brands-logos-swiper");
@@ -214,55 +262,5 @@ document.addEventListener("DOMContentLoaded", function () {
   initProductsGridCardSwiper();
   initBrandsLogosSwiper();
 
-  // Initialize all swipers on the page
-  const swipers = document.querySelectorAll(".series-swiper");
-
-  swipers.forEach((swiperEl) => {
-    // Popular products row manages its own card swipers via Alpine
-    if (swiperEl.closest("#products")) return;
-
-    // Find the corresponding custom pagination for this swiper
-    const swiperContainer = swiperEl.closest(".border");
-    const paginationContainer = swiperContainer
-      ? swiperContainer.querySelector(".custom-pagination")
-      : null;
-
-    if (!paginationContainer) return;
-
-    const swiper = new Swiper(swiperEl, {
-      loop: true,
-      on: {
-        init: function () {
-          updateCustomPagination(this, paginationContainer);
-        },
-        slideChange: function () {
-          updateCustomPagination(this, paginationContainer);
-        },
-      },
-    });
-
-    // Update custom pagination based on active slide
-    function updateCustomPagination(swiperInstance, paginationEl) {
-      const bullets = paginationEl.querySelectorAll(".pagination-bullet");
-      const realIndex = swiperInstance.realIndex; // Get real index (accounts for loop)
-
-      bullets.forEach((bullet, index) => {
-        if (index === realIndex) {
-          bullet.classList.remove("bg-main-silver");
-          bullet.classList.add("bg-main-yellow");
-        } else {
-          bullet.classList.remove("bg-main-yellow");
-          bullet.classList.add("bg-main-silver");
-        }
-      });
-    }
-
-    // Make pagination bullets clickable
-    const bullets = paginationContainer.querySelectorAll(".pagination-bullet");
-    bullets.forEach((bullet, index) => {
-      bullet.addEventListener("click", () => {
-        swiper.slideToLoop(index);
-      });
-    });
-  });
+  initSeriesProductSwipers();
 });
