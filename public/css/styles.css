@@ -1097,6 +1097,9 @@
   .max-w-72 {
     max-width: calc(var(--spacing) * 72);
   }
+  .max-w-75 {
+    max-width: calc(var(--spacing) * 75);
+  }
   .max-w-87 {
     max-width: calc(var(--spacing) * 87);
   }
@@ -3090,6 +3093,11 @@
   .sm\:max-w-142 {
     @media (width >= 640px) {
       max-width: calc(var(--spacing) * 142);
+    }
+  }
+  .sm\:max-w-none {
+    @media (width >= 640px) {
+      max-width: none;
     }
   }
   .sm\:shrink {
