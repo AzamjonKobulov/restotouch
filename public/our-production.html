@@ -2297,7 +2297,7 @@
       </section>
 
       <!-- Our Clients -->
-      <section id="our-clients" class="pb-12 lg:pb-5">
+      <section id="our-clients" class="overflow-x-hidden pb-12 lg:pb-5">
         <div class="container-base px-0">
           <h2 class="text-3xl/8.75 font-medium font-rooftop-wide px-4">
             наши клиенты
@@ -4152,9 +4152,12 @@
                           />
                           <div>
                             <div
-                              class="flex-1 min-w-0 flex items-center gap-2 text-main-gray text-xs/3 sm:text-sm/4.75"
+                              class="flex-1 max-w-screen min-w-0 flex items-center gap-2 text-main-gray text-xs/3 sm:text-sm/4.75"
                             >
-                              <span class="truncate" x-text="file.name"></span>
+                              <span
+                                class="truncate line-clamp-1"
+                                x-text="file.name"
+                              ></span>
                               <span
                                 class="shrink-0"
                                 x-text="formatSize(file.size)"
