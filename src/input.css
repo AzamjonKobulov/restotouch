@@ -466,3 +466,58 @@ input[type="radio"]:checked + label span {
     --swiper-navigation-size: 0;
   }
 }
+
+/* Our production — client logos marquee */
+.clients-marquee {
+  width: 100%;
+}
+
+.clients-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: clients-marquee-scroll 35s linear infinite;
+}
+
+.clients-marquee:hover .clients-marquee__track {
+  animation-play-state: paused;
+}
+
+.clients-marquee__group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: calc(var(--spacing) * 12);
+  padding-right: calc(var(--spacing) * 12);
+}
+
+.clients-marquee__group img {
+  flex-shrink: 0;
+}
+
+@media (width < 768px) {
+  .clients-marquee__group {
+    gap: calc(var(--spacing) * 6);
+    padding-right: calc(var(--spacing) * 6);
+  }
+
+  .clients-marquee__group img {
+    height: 28px;
+    width: auto;
+  }
+}
+
+@keyframes clients-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clients-marquee__track {
+    animation: none;
+  }
+}
